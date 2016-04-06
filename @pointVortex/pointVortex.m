@@ -1,5 +1,5 @@
-classdef pointSingularity < potentialKind
-%pointSingularity represents a point singularity.
+classdef pointVortex < potentialKind
+%pointVortex represents a point vortex.
 
 % Everett Kropf, 2016
 % 
