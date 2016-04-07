@@ -37,7 +37,12 @@ methods
     end
     
     function C = setupPotential(C, W)
+        if isempty(W.theDomain.infImage)
+        error(PoTk.ErrorTypeString.RuntimeError, ...
+            'No image of infinity from the physical domain specified.')
+        end
         D = skpDomain(W.theDomain);
+        
         circ = double(C);
         if numel(circ) ~= D.m + 1
             error(PoTk.ErrorTypeString.RuntimeError, ...
