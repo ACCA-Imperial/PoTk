@@ -38,6 +38,10 @@ methods
         pv.strength = strength;
     end
     
+    function disp(pv)
+        disp(struct(pv))
+    end
+    
     function val = evalPotential(pv, z)
         val = complex(zeros(size(z)));
         g0v = pv.greensFunctions;
@@ -56,6 +60,11 @@ methods
             g0v{k} = greensC0(pv.location, D);
         end
         pv.greensFunctions = g0v;
+    end
+    
+    function pv = struct(pv)
+        pv = struct('location', pv.location, ...
+            'strength', pv.strength);
     end
 end
 
