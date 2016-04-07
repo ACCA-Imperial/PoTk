@@ -51,7 +51,7 @@ methods
         val = complex(zeros(size(z)));
         pf = D.potentialFunctions;
         for i = 1:numel(pf)
-            val = val + pf.evalPotential(z);
+            val = val + pf{i}.evalPotential(z);
         end
     end
     
