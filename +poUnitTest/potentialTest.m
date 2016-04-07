@@ -21,15 +21,45 @@ classdef potentialTest < matlab.unittest.TestCase
 properties
     dv3 = [-0.2517+0.3129i, 0.2307-0.4667i];
     qv3 = [0.2377, 0.1557];
+    
+    simple3
 end
 
-% methods(TestClassSetup)
-% end
+methods(TestClassSetup)
+    function simpleThree(test)
+        test.simple3 = unitDomain(test.dv3, test.qv3, 0);
+    end
+end
 
 methods(Test)
     function noPotential(test)
         W = potential(unitDomain(test.dv3, test.qv3));
         test.verifyEqual(W(0.5+0.1i), complex(0))
+    end
+    
+    function circulation(test)
+        cv = [1, 2, -1];
+        
+        c = circulation(cv(2:end));
+        test.verifyInstanceOf(c, 'circulation')
+        test.verifyInstanceOf(potential(test.simple3, c), 'potential');
+        
+        c = circulationNoNet(cv);
+        test.verifyInstanceOf(c, 'circulationNoNet')
+        test.verifyInstanceOf(potential(test.simple3, c), 'potential');
+    end
+    
+    function pointVortices(test)
+        av = [-0.27638-0.2309i, 0.63324+0.062974i];
+        gv = [-2, 1];
+        
+        pv = pointVortex(av, gv);
+        test.verifyInstanceOf(pv, 'pointVortex');
+        test.verifyInstanceOf(potential(test.simple3, pv), 'potential');
+
+        pv = pointVortexNoNet(av, gv);
+        test.verifyInstanceOf(pv, 'pointVortexNoNet');
+        test.verifyInstanceOf(potential(test.simple3, pv), 'potential');
     end
 end
 
