@@ -49,6 +49,12 @@ methods(Test)
         test.verifyInstanceOf(potential(test.simple3, c), 'potential');
     end
     
+    function dipole(test)
+        dp = dipole(0, 1, pi/4);
+        test.verifyInstanceOf(dp, 'dipole');
+        test.verifyInstanceOf(potential(test.simple3, dp), 'potential');
+    end
+    
     function pointVortices(test)
         av = [-0.27638-0.2309i, 0.63324+0.062974i];
         gv = [-2, 1];
