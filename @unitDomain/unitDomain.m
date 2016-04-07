@@ -41,7 +41,7 @@ methods
         D.radii = qv;
         
         if nargin > 2
-            % FIXME: Verify beta.
+            % FIXME: Verify beta is in domain.
             D.infImage = beta;        
         end
         
