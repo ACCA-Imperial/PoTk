@@ -70,7 +70,7 @@ methods
         
         m = numel(D.dv);
         for j = 1:m
-            if any(abs(z(:) - D.dv(j)) < D.rv(j))
+            if any(abs(z(:) - D.dv(j)) < D.qv(j))
                 tf = false;
                 return
             end
@@ -109,7 +109,7 @@ methods(Static)
         m = numel(dv);
         s1 = abs(bsxfun(@minus, dv, dv.')) + diag(inf(m, 1)) ...
             - bsxfun(@plus, qv, qv');
-        s2 = abs(dv) + rv*exp(1i*angle(dv));
+        s2 = abs(dv) + qv.*exp(1i*angle(dv));
         if any(s1(:) <= 0) || any(s2(:) >= 1)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 'Circle intersection detected.')
