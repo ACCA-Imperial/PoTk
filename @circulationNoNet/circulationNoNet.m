@@ -38,8 +38,8 @@ methods
     
     function C = setupPotential(C, W)
         if isempty(W.theDomain.infImage)
-        error(PoTk.ErrorTypeString.RuntimeError, ...
-            'No image of infinity from the physical domain specified.')
+            error(PoTk.ErrorTypeString.RuntimeError, ...
+                'No image of infinity from the physical domain specified.')
         end
         D = skpDomain(W.theDomain);
         
