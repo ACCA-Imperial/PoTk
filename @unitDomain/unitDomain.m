@@ -58,6 +58,21 @@ methods
         end
     end
     
+    function C = circleRegion(D)
+        try
+            C = circleRegion([0; D.dv(:)], [1; D.qv(:)]);
+        catch err
+            if strcmp(err.identifier, 'MATLAB:UndefinedFunction')
+                error(PoTk.ErrorIdString.RuntimeError, ...
+                    ['This functionality requires the conformal mapping ' ...
+                    'toolkit (CMT).\nIf it is installed, check that its ' ...
+                    'directory is on the search path.'])
+            else
+                rethrow(err)
+            end
+        end
+    end
+    
     function tf = isin(D, z)
         % Check point z is in domain.
         %   tf = isin(D, z)
@@ -80,8 +95,7 @@ methods
     end
     
     function h = plot(D, varargin)
-        % FIXME: Give message if CMT is missing.
-        C = circleRegion([0; D.dv(:)], [1; D.qv(:)]);
+        C = circleRegion(D);
         h = plot(C, varargin{:});
         
         if ~nargout
