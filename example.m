@@ -45,6 +45,9 @@ D = unitDomain(dv, qv, beta);
 circ = circulation(2, -1);
 circn = circulationNoNet(1, 2, -1);
 
+% W = potential(D, circ);
+% W = potential(D, circn);
+
 
 %%
 % Point vortices.
@@ -59,12 +62,29 @@ gv = [1, -1, 1, 1];
 pv = pointVortex(zeta(av), gv);
 pvn = pointVortexNoNet(zeta(av), gv);
 
+% W = potential(D, pv);
+% W = potential(D, pvn);
+% W = potential(D, pv, circ);
+% W = potential(D, pvn, circn);
+
 
 %%
+% Source point.
 
-W = potential(D, pv, circ);
+a = av(1);
+m = 1;
+sp = source(zeta(a), m);
 
-wt = W(0.5+0.1i);
+% W = potential(D, sp);
+% W = potential(D, sp, pointVortex(zeta(a), -1));
+
+
+%%
+% Dipole.
+
+dp = dipole(beta, 1, pi/4);
+
+W = potential(D, dp);
 
 
 %%
@@ -73,10 +93,11 @@ wt = W(0.5+0.1i);
 wg = W(zeta(zg));
 
 figure(1), clf
-contour(real(zg), imag(zg), imag(wg), 20, 'linecolor', [0.2081, 0.1663, 0.5292])
+contour(real(zg), imag(zg), imag(wg), 20, ...
+    'linecolor', [0.2081, 0.1663, 0.5292])
 hold on
 fill(inv(Om))
 plot(Om)
-plot(av, 'k.')
+% plot(av, 'k.')
 hold off
 set(gca, 'dataaspectratio', [1, 1, 1])
