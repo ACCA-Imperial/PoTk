@@ -51,6 +51,16 @@ methods
         end
     end
     
+    function h = plot(D, varargin)
+        % FIXME: Give message if CMT is missing.
+        C = circleRegion([0; D.dv(:)], [1; D.qv(:)]);
+        h = plot(C, varargin{:});
+        
+        if ~nargout
+            clear h
+        end
+    end
+    
     function D = skpDomain(D)
         D = skpDomain(D.dv, D.qv);
     end
