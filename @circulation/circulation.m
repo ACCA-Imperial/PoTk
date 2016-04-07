@@ -1,4 +1,4 @@
-classdef circulation < double & potentialKind
+classdef circulation < potentialKind
 %circulation is a vector of boundary circulation values.
 
 % Everett Kropf, 2016
@@ -19,6 +19,7 @@ classdef circulation < double & potentialKind
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties(Access=protected)
+    circVector
     firstKindIntegrals
 end
 
@@ -33,12 +34,20 @@ methods
         end
         
         % FIXME: Check that input data is real only.
-        C = C@double(data);
+        C.circVector = data;
+    end
+    
+    function disp(C)
+        disp(double(C))
+    end
+    
+    function c = double(C)
+        c = C.circVector;
     end
     
     function val = evalPotential(C, z)
         val = complex(zeros(size(z)));
-        circ = double(C);
+        circ = C.circVector;
         vj = C.firstKindIntegrals;
         
         for j = find(circ(:) ~= 0)'
@@ -48,7 +57,7 @@ methods
     
     function C = setupPotential(C, W)
         D = skpDomain(W.theDomain);
-        circ = double(C);
+        circ = C.circVector;
         if numel(circ) ~= D.m
             error(PoTk.ErrorTypeString.RuntimeError, ...
                 ['The number of circulation values and inner circles ' ...
@@ -60,6 +69,14 @@ methods
             vj{j} = vjFirstKind(j, D);
         end
         C.firstKindIntegrals = vj;
+    end
+    
+    function out = subsref(C, S)
+        if strcmp(S(1).type, '()')
+            out = subsref(double(C), S);
+        else
+            out = builtin('subsref', C, S);
+        end
     end
 end
 

@@ -27,13 +27,13 @@ methods
     function C = circulationNoNet(varargin)
         C = C@circulation(varargin{:});
         
-        circ = double(C);
+        circ = C.circVector;
         C.netCirculation(circ(2:end));
     end
     
     function val = evalPotential(C, z)
         val = C.netCirculation.evalPotential(z) ...
-            - sum(double(C))*C.greensFunction(z);
+            - sum(C.circVector(:))*C.greensFunction(z);
     end
     
     function C = setupPotential(C, W)
@@ -43,7 +43,7 @@ methods
         end
         D = skpDomain(W.theDomain);
         
-        circ = double(C);
+        circ = C.circVector;
         if numel(circ) ~= D.m + 1
             error(PoTk.ErrorTypeString.RuntimeError, ...
                 ['Number of circulation values must be one greater ' ...
