@@ -109,7 +109,7 @@ methods(Static)
         m = numel(dv);
         s1 = abs(bsxfun(@minus, dv, dv.')) + diag(inf(m, 1)) ...
             - bsxfun(@plus, qv, qv');
-        s2 = abs(dv) + qv.*exp(1i*angle(dv));
+        s2 = abs(dv) + qv;
         if any(s1(:) <= 0) || any(s2(:) >= 1)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 'Circle intersection detected.')
