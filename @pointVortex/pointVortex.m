@@ -57,7 +57,7 @@ methods
         g0v = cell(1, numel(pv.location));
         
         for k = find(pv.strength(:) ~= 0)'
-            g0v{k} = greensC0(pv.location, D);
+            g0v{k} = greensC0(pv.location(k), D);
         end
         pv.greensFunctions = g0v;
     end
