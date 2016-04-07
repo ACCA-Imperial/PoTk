@@ -36,19 +36,47 @@ methods
             return
         end
         
-        % FIXME: Check for circle intersections.
+        D.checkUnitDomain(dv, qv)
         D.centers = dv;
         D.radii = qv;
         
         if nargin > 2
-            % FIXME: Verify beta is in domain.
+            if numel(beta) ~= 1
+                error(PoTk.ErrorIdString.InvalidArgument, ...
+                    'Argument beta must be a scalar value.')
+            end
+            if ~isin(D, beta)
+                error(PoTk.ErrorIdString.InvalidArgument, ...
+                    'Point beta must be in the bounded domain.')
+            end
             D.infImage = beta;        
         end
         
         if nargin > 3
-            % FIXME: Do something with maps.
+            % Is this going to get used?
             D.conformalMaps = maps;
         end
+    end
+    
+    function tf = isin(D, z)
+        % Check point z is in domain.
+        %   tf = isin(D, z)
+        
+        % Assume z is not scalar.
+        if any(abs(z(:)) >= 1)
+            tf = false;
+            return
+        end
+        
+        m = numel(D.dv);
+        for j = 1:m
+            if any(abs(z(:) - D.dv(j)) < D.rv(j))
+                tf = false;
+                return
+            end
+        end
+        
+        tf = true;
     end
     
     function h = plot(D, varargin)
@@ -73,6 +101,19 @@ methods % Setting and getting.
     
     function qv = get.qv(D)
         qv = D.radii;
+    end
+end
+
+methods(Static)
+    function checkUnitDomain(dv, qv)
+        m = numel(dv);
+        s1 = abs(bsxfun(@minus, dv, dv.')) + diag(inf(m, 1)) ...
+            - bsxfun(@plus, qv, qv');
+        s2 = abs(dv) + rv*exp(1i*angle(dv));
+        if any(s1(:) <= 0) || any(s2(:) >= 1)
+            error(PoTk.ErrorIdString.RuntimeError, ...
+                'Circle intersection detected.')
+        end
     end
 end
 
