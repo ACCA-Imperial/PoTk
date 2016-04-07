@@ -61,6 +61,15 @@ methods(Test)
         test.verifyInstanceOf(pv, 'pointVortexNoNet');
         test.verifyInstanceOf(potential(test.simple3, pv), 'potential');
     end
+    
+    function source(test)
+        a = -0.27638-0.2309i;
+        g = -2;
+        
+        sp = source(a, g);
+        test.verifyInstanceOf(sp, 'source');
+        test.verifyInstanceOf(potential(test.simple3, sp), 'potential');
+    end
 end
 
 end
