@@ -28,7 +28,7 @@ methods
         C = C@circulation(varargin{:});
         
         circ = C.circVector;
-        C.netCirculation(circ(2:end));
+        C.netCirculation = circulation(circ(2:end));
     end
     
     function val = evalPotential(C, z)
