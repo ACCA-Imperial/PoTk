@@ -20,6 +20,8 @@ classdef potential
 
 properties(SetAccess=protected)
     theDomain
+    
+    potentialFunctions
 end
 
 methods
@@ -33,6 +35,11 @@ methods
                 'Domain must be a "unitDomain" object.')
         end
         W.theDomain = D;
+        
+        for i = 1:numel(varargin)
+            % FIXME: Check argument is a 'potentialKind'.
+            W.potentialFunctions{end+1} = varargin{i}.setupPotential(W);
+        end
     end
     
     function val = feval(D, z)
@@ -41,8 +48,11 @@ methods
             return
         end
         
-        % Placeholder.
-        val = z;
+        val = complex(zeros(size(z)));
+        pf = D.potentialFunctions;
+        for i = 1:numel(pf)
+            val = val + pf.evalPotential(z);
+        end
     end
     
     function out = subsref(W, S)
@@ -57,27 +67,3 @@ methods
 end
 
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

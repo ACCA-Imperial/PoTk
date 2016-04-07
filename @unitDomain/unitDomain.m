@@ -21,6 +21,8 @@ classdef unitDomain
 properties(SetAccess=protected)
     centers
     radii
+    infImage
+    conformalMaps
 end
 
 properties(Dependent)
@@ -29,15 +31,24 @@ properties(Dependent)
 end
 
 methods
-    function D = unitDomain(dv, qv)
+    function D = unitDomain(dv, qv, beta, maps)
         if ~nargin
             return
         end
         
-        % Check for circle intersections.
-        
+        % FIXME: Check for circle intersections.
         D.centers = dv;
         D.radii = qv;
+        
+        % FIXME: Verify beta.
+        D.infImage = beta;
+        
+        % FIXME: Do something with maps.
+        D.conformalMaps = maps;
+    end
+    
+    function D = skpDomain(D)
+        D = skpDomain(D.dv, D.qv);
     end
 end
 

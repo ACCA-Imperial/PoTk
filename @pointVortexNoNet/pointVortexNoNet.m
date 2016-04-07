@@ -1,5 +1,5 @@
-classdef(Abstract) potentialKind
-%potentialKind describes a type of contribution to the potential.
+classdef pointVortexNoNet < potentialKind
+%pointVortexNoNet represents point vortices with no net circulation.
 
 % Everett Kropf, 2016
 % 
@@ -18,9 +18,5 @@ classdef(Abstract) potentialKind
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-methods(Abstract)
-    val = evalPotential(pk, z)
-    pk = setupPotential(pk, W)
-end
 
 end

@@ -1,5 +1,5 @@
-classdef circulation < double & potentialKind
-%circulation is a vector of boundary circulation values.
+classdef circulationNoNet < circulation
+%circulationNoNet removes net circulation from unit circle.
 
 % Everett Kropf, 2016
 % 
@@ -19,47 +19,34 @@ classdef circulation < double & potentialKind
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties(Access=protected)
-    firstKindIntegrals
+    netCirculation
+    greensFunction
 end
 
 methods
-    function C = circulation(varargin)
-        if ~nargin
-            data = [];
-        elseif nargin == 1
-            data = varargin{1};
-        else
-            data = cell2mat(varargin);
-        end
+    function C = circulationNoNet(varargin)
+        C = C@circulation(varargin{:});
         
-        % FIXME: Check that input data is real only.
-        C = C@double(data);
+        circ = double(C);
+        C.netCirculation(circ(2:end));
     end
     
     function val = evalPotential(C, z)
-        val = complex(zeros(size(z)));
-        circ = double(C);
-        vj = C.firstKindIntegrals;
-        
-        for j = find(circ(:) ~= 0)'
-            val = val + circ(j)*vj{j}(z);
-        end
+        val = C.netCirculation.evalPotential(z) ...
+            - sum(double(C))*C.greensFunction(z);
     end
     
     function C = setupPotential(C, W)
         D = skpDomain(W.theDomain);
         circ = double(C);
-        if numel(circ) ~= D.m
+        if numel(circ) ~= D.m + 1
             error(PoTk.ErrorTypeString.RuntimeError, ...
-                ['The number of circulation values and inner circles ' ...
-                'must match.'])
+                ['Number of circulation values must be one greater ' ...
+                'than the number\nof inner boundaries.']);
         end
         
-        vj = cell(1, numel(circ));
-        for j = find(circ(:) ~= 0)'
-            vj{j} = vjFirstKind(j, D);
-        end
-        C.firstKindIntegrals = vj;
+        C.netCirculation = C.netCirculation.setupPotential(W);
+        C.greensFunction = greensC0(W.theDomain.infImage, D);
     end
 end
 
