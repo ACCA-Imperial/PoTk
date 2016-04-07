@@ -33,8 +33,11 @@ methods
             data = cell2mat(varargin);
         end
         
-        % FIXME: Check that input data is real only.
-        C.circVector = data;
+        if any(imag(data(:)) ~= 0)
+            error(PoTk.ErrorIdString.InvalidArgument, ...
+                'Circulation values must be real scalars.')
+        end
+        C.circVector = data(:)';
     end
     
     function disp(C)

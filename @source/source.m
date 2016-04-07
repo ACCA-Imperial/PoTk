@@ -31,8 +31,16 @@ methods
             return
         end
         
-        % FIXME: Verify input data.
+        if numel(location) ~= 1
+            error(PoTk.ErrorIdString.InvalidArgument, ...
+                'Location must be a single point.')
+        end
         s.location = location;
+        
+        if ~(numel(strength) == 1 && imag(strength) == 0)
+            error(PoTk.ErrorIdString.InvalidArgument, ...
+                'Strength must be a real scalar.')
+        end
         s.strength = strength;
     end
     

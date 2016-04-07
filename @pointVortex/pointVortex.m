@@ -33,8 +33,16 @@ methods
             return
         end
         
-        % FIXME: Check vectors are same size. Check strength is real only.
+        if ~isequal(size(location), size(strength))
+            error(PoTk.ErrorIdString.InvalidArgument, ...
+                'Location and strength vectors must be same size.')
+        end
         pv.location = location;
+        
+        if any(imag(strength(:)) ~= 0)
+            error(PoTk.ErrorIdString.InvalidArgument, ...
+                'Strength values must be all real.')
+        end
         pv.strength = strength;
     end
     

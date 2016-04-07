@@ -37,7 +37,12 @@ methods
         W.theDomain = D;
         
         for i = 1:numel(varargin)
-            % FIXME: Check argument is a 'potentialKind'.
+            if ~isa(varargin{i}, 'potentialKind')
+                error(PoTk.ErrorIdString.InvalidArgument, ...
+                    ['Expected a "potentialKind" object as argument in ' ...
+                    'position %d.\nRecieved a "%s" instead.'], ...
+                    i+1, class(varargin{i}))
+            end
             W.potentialFunctions{end+1} = varargin{i}.setupPotential(W);
         end
     end
