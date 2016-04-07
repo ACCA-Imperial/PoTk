@@ -1,5 +1,16 @@
 classdef potential
-%potential is the complex potential.
+%POTENTIAL is the complex potential.
+%
+%  W = potential(D, varargin)
+%    Constructs the potential object given a unitDomain object D and zero
+%    or more potentialKind objects.
+%
+%Once constructed, the potential at points zeta in the bounded unit domain
+%may be evaluated by the syntax
+%
+%  val = W(zeta)
+%
+%See also unitDomain, potentialKind, listKinds.
 
 % Everett Kropf, 2016
 % 

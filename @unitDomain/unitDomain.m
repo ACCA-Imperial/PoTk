@@ -1,5 +1,14 @@
 classdef unitDomain
 %unitDomain is the domain bounded by the unit disk.
+%
+%  D = unitDomain(dv, qv, beta)
+%  D = unitDomain(..., maps)
+%    Constructs an object representing the (punctured) unit disk. The
+%    vectors dv and qv represent boundary circles bounded by the unit
+%    circle. The point beta represents the image of infinity from some
+%    conforamlly equivalent domain to the (punctured) unit disk. The
+%    conformal map (and its inverse and derivatives) is optionally given by
+%    the maps argument.
 
 % Everett Kropf, 2016
 % 

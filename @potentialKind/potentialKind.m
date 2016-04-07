@@ -1,5 +1,19 @@
 classdef(Abstract) potentialKind
 %potentialKind describes a type of contribution to the potential.
+%
+%Abstract class specifying interface for potential contributions.
+%Subclasses must implement two functions:
+%
+%  val = evalPotential(obj, z)
+%    Given a set of points z in the bounded unit domain, return the set
+%    val of potential values.
+%
+%  obj = setupPotential(obj, W)
+%    Given a potential object, perform setup actions in anticipation of
+%    calls to evalPotential later. The problem domain may be read from the
+%    potential object W.
+%
+%See also potential, listKinds.
 
 % Everett Kropf, 2016
 % 
