@@ -40,11 +40,15 @@ methods
         D.centers = dv;
         D.radii = qv;
         
-        % FIXME: Verify beta.
-        D.infImage = beta;
+        if nargin > 2
+            % FIXME: Verify beta.
+            D.infImage = beta;        
+        end
         
-        % FIXME: Do something with maps.
-        D.conformalMaps = maps;
+        if nargin > 3
+            % FIXME: Do something with maps.
+            D.conformalMaps = maps;
+        end
     end
     
     function D = skpDomain(D)
