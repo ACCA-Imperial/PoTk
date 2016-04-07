@@ -25,9 +25,14 @@ end
 
 methods
     function pv = pointVortexNoNet(location, strength)
-        pv = pv@pointVortex(location, strength);
+        if ~nargin
+            args = {};
+        else
+            args = {location, strength};
+        end
+        pv = pv@pointVortex(args{:});
         
-        pv.netPointVortex = pointVortex(location, strength);
+        pv.netPointVortex = pointVortex(args{:});
     end
     
     function val = evalPotential(pv, z)
