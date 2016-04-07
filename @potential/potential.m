@@ -31,7 +31,7 @@ methods
         end
         
         if ~isa(D, 'unitDomain')
-            error(PoTk.ErrorTypeString.InvalidArgument, ...
+            error(PoTk.ErrorIdString.InvalidArgument, ...
                 'Domain must be a "unitDomain" object.')
         end
         W.theDomain = D;

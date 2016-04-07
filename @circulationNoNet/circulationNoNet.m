@@ -38,14 +38,14 @@ methods
     
     function C = setupPotential(C, W)
         if isempty(W.theDomain.infImage)
-            error(PoTk.ErrorTypeString.RuntimeError, ...
+            error(PoTk.ErrorIdString.RuntimeError, ...
                 'No image of infinity from the physical domain specified.')
         end
         D = skpDomain(W.theDomain);
         
         circ = C.circVector;
         if numel(circ) ~= D.m + 1
-            error(PoTk.ErrorTypeString.RuntimeError, ...
+            error(PoTk.ErrorIdString.RuntimeError, ...
                 ['Number of circulation values must be one greater ' ...
                 'than the number\nof inner boundaries.']);
         end
