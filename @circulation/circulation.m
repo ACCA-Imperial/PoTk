@@ -51,14 +51,20 @@ methods
     end
     
     function disp(C)
+        %Display instance as double.
+        
         disp(double(C))
     end
     
     function c = double(C)
+        %Convert to double.
+        
         c = C.circVector;
     end
         
     function out = subsref(C, S)
+        %Provide double type indexing access to circulation values.
+        
         if strcmp(S(1).type, '()')
             out = subsref(double(C), S);
         else

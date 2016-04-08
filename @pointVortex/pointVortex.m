@@ -1,5 +1,15 @@
 classdef pointVortex < potentialKind
 %pointVortex represents a point vortex.
+%
+%  pv = pointVortex(location, strength)
+%    Constructs a pointVortex object where location is a vector of points
+%    located in a domain given by a relatedly defined unitDomain object.
+%    The vector strength is a vector of scalars the same size as the
+%    location vector indicating the strength of each point vortex. All net
+%    flow from the point vortices is assigned to the unit circle as a
+%    circulation of strength -sum(strength).
+%
+%See also potential, unitDomain, pointVortexNoNet.
 
 % Everett Kropf, 2016
 % 
@@ -47,10 +57,14 @@ methods
     end
     
     function disp(pv)
+        %Display instance as structure.
+        
         disp(struct(pv))
     end
     
     function pv = struct(pv)
+        %Convert instance to a structure.
+        
         pv = struct('location', pv.location, ...
             'strength', pv.strength);
     end

@@ -1,5 +1,17 @@
 classdef source < potentialKind
 %source represents a source (or sink).
+%
+%  s = source(location, strength)
+%    Constructs a point source in the bounded circular domain at location,
+%    which must be a valid point inside a relatedly defined unitDomain
+%    object. The strength is a scalar indicating the strength of the
+%    source. A source (or sink) of equal and opposite strength is placed at
+%    the location given by the property unitDomain.infImage, which
+%    interpreted as the image of the point at infinity under a conformal
+%    map from an unbounded physical domain to the bounded circular domain.
+%    See the beta argument in the unitDomain class.
+%
+%See also potential, unitDomain.
 
 % Everett Kropf, 2016
 % 
