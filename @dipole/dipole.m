@@ -1,5 +1,14 @@
 classdef dipole < potentialKind
 %dipole represents a dipole.
+%
+%  d = dipole(location, strength)
+%  d = dipole(location, strength, angle)
+%    Constructs a dipole in the bounded circular domain at the given
+%    location which should be inside a relatedly defined unitDomain. The
+%    scalar strengh specifies the strength of the dipole. The optional
+%    argument angle (defaults to 0) specifies the angle of the dipole.
+%
+%See also potential, unitDomain.
 
 % Everett Kropf, 2016
 % 
@@ -18,7 +27,7 @@ classdef dipole < potentialKind
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-properties(Access=protected)
+properties(SetAccess=protected)
     location
     strength
     angle = 0
@@ -67,13 +76,13 @@ methods(Hidden)
     end
     
     function d = setupPotential(d, W)
-        if isempty(W.theDomain.infImage)
+        beta = d.location;
+        if ~isin(W.theDomain, beta)
             error(PoTk.ErrorIdString.RuntimeError, ...
-                'No image of infinity from the physical domain specified.')
+                'The dipole must be located inside the bounded circle domain.')
         end
         
         D = skpDomain(W.theDomain);
-        beta = W.theDomain.infImage;
         chi = d.angle;
         h = d.dhForwardDiff;
         db = beta + h*[1, 1i];
