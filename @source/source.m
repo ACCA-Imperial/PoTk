@@ -43,7 +43,9 @@ methods
         end
         s.strength = strength;
     end
-    
+end
+   
+methods(Hidden)
     function val = evalPotential(s, z)
         omv = s.primeFunctions;
         val = s.strength*log(omv{1}(z).*omv{2}(z)...

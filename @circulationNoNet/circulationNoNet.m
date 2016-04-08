@@ -44,7 +44,9 @@ methods
         circ = C.circVector;
         C.netCirculation = circulation(circ(2:end));
     end
-    
+end
+
+methods(Hidden)
     function val = evalPotential(C, z)
         val = C.netCirculation.evalPotential(z) ...
             - sum(C.circVector(:))*C.greensFunction(z);

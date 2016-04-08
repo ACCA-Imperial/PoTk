@@ -57,7 +57,17 @@ methods
     function c = double(C)
         c = C.circVector;
     end
-    
+        
+    function out = subsref(C, S)
+        if strcmp(S(1).type, '()')
+            out = subsref(double(C), S);
+        else
+            out = builtin('subsref', C, S);
+        end
+    end
+end
+
+methods(Hidden)
     function val = evalPotential(C, z)
         val = complex(zeros(size(z)));
         circ = C.circVector;
@@ -82,14 +92,6 @@ methods
             vj{j} = vjFirstKind(j, D);
         end
         C.firstKindIntegrals = vj;
-    end
-    
-    function out = subsref(C, S)
-        if strcmp(S(1).type, '()')
-            out = subsref(double(C), S);
-        else
-            out = builtin('subsref', C, S);
-        end
     end
 end
 

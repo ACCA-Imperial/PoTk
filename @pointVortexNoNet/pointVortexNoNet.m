@@ -34,7 +34,9 @@ methods
         
         pv.netPointVortex = pointVortex(args{:});
     end
-    
+end
+
+methods(Hidden)    
     function val = evalPotential(pv, z)
         val = pv.netPointVortex.evalPotential(z);
         val = val - sum(pv.strength(:))*pv.greensFunction(z);

@@ -32,7 +32,7 @@ classdef(Abstract) potentialKind
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-methods(Abstract)
+methods(Abstract,Hidden)
     val = evalPotential(pk, z)
     pk = setupPotential(pk, W)
 end

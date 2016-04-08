@@ -49,7 +49,9 @@ methods
             d.angle = angle;
         end
     end
-    
+end
+
+methods(Hidden)
     function val = evalPotential(d, z)
         val = complex(zeros(size(z)));
         
