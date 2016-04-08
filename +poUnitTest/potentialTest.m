@@ -56,7 +56,7 @@ methods(Test)
     end
     
     function pointVortices(test)
-        av = [-0.27638-0.2309i, 0.63324+0.062974i];
+        av = [-0.27638-0.2309i; 0.63324+0.062974i];
         gv = [-2, 1];
         
         pv = pointVortex(av, gv);
@@ -75,6 +75,12 @@ methods(Test)
         sp = source(a, g);
         test.verifyInstanceOf(sp, 'source');
         test.verifyInstanceOf(potential(test.simple3, sp), 'potential');
+    end
+    
+    function uniformFlow(test)
+        uf = uniformFlow(1, pi/4);
+        test.verifyInstanceOf(uf, 'uniformFlow');
+        test.verifyInstanceOf(potential(test.simple3, uf), 'potential');
     end
 end
 
