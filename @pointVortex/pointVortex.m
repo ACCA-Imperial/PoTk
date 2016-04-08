@@ -43,7 +43,7 @@ methods
             return
         end
         
-        if ~isequal(size(location), size(strength))
+        if ~isequal(size(location(:)), size(strength(:)))
             error(PoTk.ErrorIdString.InvalidArgument, ...
                 'Location and strength vectors must be same size.')
         end
