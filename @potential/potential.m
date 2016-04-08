@@ -59,6 +59,9 @@ methods
     end
     
     function val = feval(D, z)
+        %Evaluate the potential at a point z.
+        %  val = feval(D, z)
+        
         if isempty(D.theDomain)
             val = nan(size(z));
             return
@@ -73,6 +76,9 @@ methods
     
     function out = subsref(W, S)
         % Provide function-like behaviour.
+        %
+        %   W = potential(...);
+        %   val = W(z);
         
         if numel(S) == 1 && strcmp(S.type, '()')
             out = feval(W, S.subs{:});

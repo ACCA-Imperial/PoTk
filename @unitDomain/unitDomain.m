@@ -68,6 +68,9 @@ methods
     end
     
     function C = circleRegion(D)
+        %Convert unitDomain to CMT circleRegion.
+        %Requires the conformal mapping toolkit (CMT) be installed.
+        
         try
             C = circleRegion([0; D.dv(:)], [1; D.qv(:)]);
         catch err
@@ -104,6 +107,9 @@ methods
     end
     
     function h = plot(D, varargin)
+        %Use the CMT to plot the domain.
+        %Requires the conformal mapping toolkit (CMT) be installed.
+        
         C = circleRegion(D);
         h = plot(C, varargin{:});
         
@@ -113,6 +119,7 @@ methods
     end
     
     function D = skpDomain(D)
+        %Convert a unitDomain to an skpDomain object.
         D = skpDomain(D.dv, D.qv);
     end
 end
@@ -129,6 +136,9 @@ end
 
 methods(Static)
     function checkUnitDomain(dv, qv)
+        %Check that all circles are within the unit circle, and that there
+        %are no circle intersections.
+        
         m = numel(dv);
         s1 = abs(bsxfun(@minus, dv, dv.')) + diag(inf(m, 1)) ...
             - bsxfun(@plus, qv, qv');
