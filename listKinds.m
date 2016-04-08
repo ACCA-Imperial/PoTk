@@ -30,7 +30,7 @@ curdir = pwd;
 cd(podir)
 
 dinfo = what;
-potKind = {};
+fprintf('\nKinds of potential contributions in PoTk:\n\n')
 for i = 1:numel(dinfo.classes)
     cname = dinfo.classes{i};
     if meta.class.fromName(cname).Abstract
@@ -38,15 +38,9 @@ for i = 1:numel(dinfo.classes)
     end
     obj = eval(cname);
     if isa(obj, 'potentialKind')
-        potKind{end+1} = cname; %#ok<AGROW>
+        fprintf('  %s\n', cname)
     end
 end
-
-fprintf('Kinds of potential contributions in PoTk:\n')
-for i = 1:numel(potKind)
-    name = potKind{i};
-    fprintf('  %s\n', name)
-end
-fprintf('See help text for each for details.\n')
+fprintf('\nSee help text for each for details.\n\n')
 
 cd(curdir)
