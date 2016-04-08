@@ -1,4 +1,4 @@
-classdef dipole < potentialKind
+classdef dipole < pointSingularity
 %dipole represents a dipole.
 %
 %  d = dipole(location, strength)
@@ -28,8 +28,6 @@ classdef dipole < potentialKind
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties(SetAccess=protected)
-    location
-    strength
     angle = 0
     
     dhForwardDiff = 1e-8;
@@ -57,6 +55,14 @@ methods
         if nargin > 2
             d.angle = angle;
         end
+    end
+    
+    function d = struct(d)
+        %Convert instance to structure.
+        
+        chi = d.angle;
+        d = struct@pointSingularity(d);
+        d.angle = chi;
     end
 end
 
@@ -94,7 +100,7 @@ methods(Hidden)
         end
         if mod(chi + pi/2, pi) > eps(pi)
             % Vertical component.
-            g0v{3} = greensC0(db(2), g0v{2});
+            g0v{3} = greensC0(db(2), g0v{1});
         end
         d.greensFunctions = g0v;
     end

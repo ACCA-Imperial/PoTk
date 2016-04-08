@@ -1,4 +1,4 @@
-classdef pointVortex < potentialKind
+classdef pointVortex < pointSingularity
 %pointVortex represents a point vortex.
 %
 %  pv = pointVortex(location, strength)
@@ -28,11 +28,6 @@ classdef pointVortex < potentialKind
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-properties(SetAccess=protected)
-    location
-    strength
-end    
-
 properties(Access=protected)
     greensFunctions
 end
@@ -54,19 +49,6 @@ methods
                 'Strength values must be all real.')
         end
         pv.strength = strength;
-    end
-    
-    function disp(pv)
-        %Display instance as structure.
-        
-        disp(struct(pv))
-    end
-    
-    function pv = struct(pv)
-        %Convert instance to a structure.
-        
-        pv = struct('location', pv.location, ...
-            'strength', pv.strength);
     end
 end
 

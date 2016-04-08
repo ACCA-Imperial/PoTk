@@ -1,4 +1,4 @@
-classdef source < potentialKind
+classdef source < pointSingularity
 %source represents a source (or sink).
 %
 %  s = source(location, strength)
@@ -31,9 +31,6 @@ classdef source < potentialKind
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties(Access=protected)
-    location
-    strength
-    
     primeFunctions
 end
 
