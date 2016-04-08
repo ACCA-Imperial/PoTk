@@ -1,5 +1,19 @@
 classdef circulationNoNet < circulation
 %circulationNoNet removes net circulation from unit circle.
+%
+%  C = circulation(c0, c1, c2, ..., cm)
+%  C = circulation([c0, c1, c2, ..., cm])
+%    Creates a circulation object which describes the potential
+%    contribution due to circulation around the m+1 boundary circles of a
+%    unitDomain object. For j = 0:m, each cj is a real scalar value
+%    signifying the circulation strentgh on boundary j. The net circulation
+%    is then assigned to a point vortex designated as the property
+%    unitDomain.infImage. (See the beta argumnet in the unitDomain
+%    constructor.) For a conformal map from an unbounded physical domain
+%    to the bounded unit domain, this is the image of the point at infinity
+%    under this map.
+%
+%See also potential, unitDomain, circulation.
 
 % Everett Kropf, 2016
 % 

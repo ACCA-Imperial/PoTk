@@ -1,5 +1,15 @@
 classdef circulation < potentialKind
 %circulation is a vector of boundary circulation values.
+%
+%  C = circulation(c1, c2, ..., cm)
+%  C = circulation([c1, c2, ..., cm])
+%    Creates a circulation object which describes the potential
+%    contribution due to circulation around m inner boundary circles in a
+%    unitDomain object. For j = 1:m, each cj is a real scalar value
+%    signifying the circulation strentgh on boundary j. The bounding unit
+%    circle then has a net circulation of -sum([c1, c2, ..., cm]).
+%
+%See also potential, unitDomain, circulationNoNet.
 
 % Everett Kropf, 2016
 % 
