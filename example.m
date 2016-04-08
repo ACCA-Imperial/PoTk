@@ -82,9 +82,19 @@ sp = source(zeta(a), m);
 %%
 % Dipole.
 
-dp = dipole(beta, 1, pi/4);
+zd = 0.70599 + 1.3893i;
+dp = dipole(zeta(zd), 1, 0);
+% dp = dipole(beta, 1, pi/4);
 
-W = potential(D, dp);
+% W = potential(D, dp);
+
+
+%%
+% Uniform background flow.
+
+uf = uniformFlow(1, pi/4);
+
+W = potential(D, uf);
 
 
 %%
