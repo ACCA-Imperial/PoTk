@@ -53,6 +53,10 @@ methods(Hidden)
     end
     
     function C = setupPotential(C, W)
+        if W.theDomain.m == 0
+            error(PoTk.ErrorIdString.RuntimeError, ...
+                'Use only plain "circulation" for simply connected domain.')
+        end
         if isempty(W.theDomain.infImage)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 'No image of infinity from the physical domain specified.')

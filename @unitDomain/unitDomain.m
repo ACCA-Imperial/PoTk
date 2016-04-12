@@ -28,15 +28,16 @@ classdef unitDomain
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties(SetAccess=protected)
-    centers
-    radii
-    infImage
-    conformalMaps
+    centers             % Circle centers vector.
+    radii               % Circle radii vector.
+    infImage            % Image of infinity to domain under given map.
+    conformalMaps       % Conformal maps (TBD).
 end
 
 properties(Dependent)
-    dv
-    qv
+    dv                  % Alias to centers.
+    qv                  % Alias to radii.
+    m                   % Shortcut for numel(centers).
 end
 
 methods
@@ -124,16 +125,6 @@ methods
     end
 end
 
-methods % Setting and getting.
-    function dv = get.dv(D)
-        dv = D.centers;
-    end
-    
-    function qv = get.qv(D)
-        qv = D.radii;
-    end
-end
-
 methods(Static)
     function checkUnitDomain(dv, qv)
         %Check that all circles are within the unit circle, and that there
@@ -147,6 +138,20 @@ methods(Static)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 'Circle intersection detected.')
         end
+    end
+end
+
+methods % Setting and getting.
+    function dv = get.dv(D)
+        dv = D.centers;
+    end
+    
+    function qv = get.qv(D)
+        qv = D.radii;
+    end
+    
+    function m = get.m(D)
+        m = numel(D.centers);
     end
 end
 
