@@ -68,6 +68,16 @@ methods(Test)
         test.verifyInstanceOf(potential(test.simple3, pv), 'potential');
     end
     
+    function sourceSinkPair(test)
+        a = -0.090472-0.20942i;
+        b = 0.30524+0.24257i;
+        m = 1.2;
+        
+        ss = sourceSinkPair(a, b, m);
+        test.verifyInstanceOf(ss, 'sourceSinkPair');
+        test.verifyInstanceOf(potential(test.simple3, ss), 'potential');
+    end
+    
     function source(test)
         a = -0.27638-0.2309i;
         g = -2;

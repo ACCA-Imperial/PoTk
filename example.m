@@ -69,6 +69,17 @@ pvn = pointVortexNoNet(zeta(av), gv);
 
 
 %%
+% Source/sink pair.
+
+a = -2.6551+3.2733i;
+b = 2.0119-3.7273i;
+m = 1.2;
+ss = sourceSinkPair(zeta(a), zeta(b), m);
+
+W = potential(D, ss);
+
+
+%%
 % Source point.
 
 a = av(1);
@@ -94,7 +105,7 @@ dp = dipole(zeta(zd), 1, 0);
 
 uf = uniformFlow(1, pi/4);
 
-W = potential(D, uf);
+% W = potential(D, uf);
 
 
 %%
