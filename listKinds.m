@@ -1,4 +1,4 @@
-function listKinds()
+function s = listKinds()
 %listKinds lists potentialKind objects.
 %
 %  listKinds()
@@ -27,10 +27,21 @@ function listKinds()
 podir = fileparts(mfilename('fullpath'));
 curdir = pwd;
 
+quiet = logical(nargout);
+function faprintf(varargin)
+    if quiet
+        return
+    end
+    fprintf(varargin{:})
+end
+
 cd(podir)
 
+if nargout
+    s = {};
+end
 dinfo = what;
-fprintf('\nKinds of potential contributions in PoTk:\n\n')
+faprintf('\nKinds of potential contributions in PoTk:\n\n')
 for i = 1:numel(dinfo.classes)
     cname = dinfo.classes{i};
     if meta.class.fromName(cname).Abstract
@@ -38,9 +49,15 @@ for i = 1:numel(dinfo.classes)
     end
     obj = eval(cname);
     if isa(obj, 'potentialKind')
-        fprintf('  %s\n', cname)
+        if ~nargout
+            fprintf('  %s\n', cname)
+        else
+            s = [s; {cname}]; %#ok<AGROW>
+        end
     end
 end
-fprintf('\nSee help text for each for details.\n\n')
+faprintf('\nSee help text for each for details.\n\n')
 
 cd(curdir)
+
+end
