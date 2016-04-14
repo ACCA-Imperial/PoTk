@@ -53,15 +53,15 @@ methods(Hidden)
     end
     
     function C = setupPotential(C, W)
-        if W.theDomain.m == 0
+        if W.domain.m == 0
             error(PoTk.ErrorIdString.RuntimeError, ...
                 'Use only plain "circulation" for simply connected domain.')
         end
-        if isempty(W.theDomain.infImage)
+        if isempty(W.domain.infImage)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 'No image of infinity from the physical domain specified.')
         end
-        D = skpDomain(W.theDomain);
+        D = skpDomain(W.domain);
         
         circ = C.circVector;
         if numel(circ) ~= D.m + 1
@@ -71,7 +71,7 @@ methods(Hidden)
         end
         
         C.netCirculation = C.netCirculation.setupPotential(W);
-        C.greensFunction = greensC0(W.theDomain.infImage, D);
+        C.greensFunction = greensC0(W.domain.infImage, D);
     end
 end
 

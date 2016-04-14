@@ -30,7 +30,7 @@ classdef potential
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties(SetAccess=protected)
-    theDomain
+    domain
     
     potentialFunctions
 end
@@ -45,7 +45,7 @@ methods
             error(PoTk.ErrorIdString.InvalidArgument, ...
                 'Domain must be a "unitDomain" object.')
         end
-        W.theDomain = D;
+        W.domain = D;
         
         for i = 1:numel(varargin)
             if ~isa(varargin{i}, 'potentialKind')
@@ -62,7 +62,7 @@ methods
         %Evaluate the potential at a point z.
         %  val = feval(D, z)
         
-        if isempty(D.theDomain)
+        if isempty(D.domain)
             val = nan(size(z));
             return
         end

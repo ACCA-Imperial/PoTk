@@ -64,7 +64,7 @@ methods(Hidden)
     end
     
     function pv = setupPotential(pv, W)
-        D = skpDomain(W.theDomain);
+        D = skpDomain(W.domain);
         g0v = cell(1, numel(pv.location));
         
         for k = find(pv.strength(:) ~= 0)'

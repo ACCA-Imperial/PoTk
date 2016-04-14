@@ -56,18 +56,18 @@ methods(Hidden)
     end
     
     function pv = setupPotential(pv, W)
-        if W.theDomain.m == 0
+        if W.domain.m == 0
             error(PoTk.ErrorIdString.RuntimeError, ...
                 'Use only plain "pointVortex" for simply connected domain.')
         end
-        if isempty(W.theDomain.infImage)
+        if isempty(W.domain.infImage)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 'No image of infinity from the physical domain specified.')
         end
-        D = skpDomain(W.theDomain);
+        D = skpDomain(W.domain);
         
         pv.netPointVortex = pv.netPointVortex.setupPotential(W);
-        pv.greensFunction = greensC0(W.theDomain.infImage, D);
+        pv.greensFunction = greensC0(W.domain.infImage, D);
     end
 end
 

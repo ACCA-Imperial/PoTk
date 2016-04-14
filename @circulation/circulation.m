@@ -85,7 +85,7 @@ methods(Hidden)
     end
     
     function C = setupPotential(C, W)
-        D = skpDomain(W.theDomain);
+        D = skpDomain(W.domain);
         circ = C.circVector;
         if numel(circ) ~= D.m
             error(PoTk.ErrorIdString.RuntimeError, ...
