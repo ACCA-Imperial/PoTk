@@ -41,11 +41,12 @@ methods
             return
         end
         
-        if ~isa(D, 'unitDomain')
+        if ~isa(D, 'potentialDomain')
             error(PoTk.ErrorIdString.InvalidArgument, ...
-                'Domain must be a "unitDomain" object.')
+                'Domain must be a "potentialDomain" object.')
         end
         W.domain = D;
+        isPlane = isa(D, 'planeDomain');
         
         for i = 1:numel(varargin)
             if ~isa(varargin{i}, 'potentialKind')
@@ -54,7 +55,18 @@ methods
                     'position %d.\nRecieved a "%s" instead.'], ...
                     i+1, class(varargin{i}))
             end
-            W.potentialFunctions{end+1} = varargin{i}.setupPotential(W);
+            
+            pk = varargin{i};
+            if ~isPlane
+                pk = pk.setupPotential(W);
+            else
+                assert(pk.okForPlane, ...
+                    PoTk.ErrorIdString.InvalidArgument, ...
+                    ['Potential contribution "%s" makes no sense in ', ...
+                    'the entire plane.'], class(pk))
+                pk.entirePotential = true;
+            end
+            W.potentialFunctions{end+1} = pk;
         end
     end
     

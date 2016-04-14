@@ -32,9 +32,29 @@ classdef(Abstract) potentialKind
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-methods(Abstract,Hidden)
+properties(Hidden)
+    entirePotential = false
+end
+
+properties(Dependent,Hidden)
+    okForPlane
+end
+
+methods(Hidden)
     val = evalPotential(pk, z)
     pk = setupPotential(pk, W)
+end
+
+methods(Access=protected)
+    function bool = getOkForPlane(~)
+        bool = false;
+    end
+end
+
+methods
+    function bool = get.okForPlane(pk)
+        bool = getOkForPlane(pk);
+    end
 end
 
 end
