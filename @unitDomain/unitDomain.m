@@ -1,4 +1,4 @@
-classdef unitDomain
+classdef unitDomain < potentialDomain
 %unitDomain is the domain bounded by the unit disk.
 %
 %  D = unitDomain(dv, qv, beta)
