@@ -54,6 +54,14 @@ end
 
 methods(Hidden)
     function val = evalPotential(pv, z)
+        if pv.entirePlane
+            N = numel(pv.location);
+            val = reshape(sum(...
+                arrayfun(@(k) log(z(:) - pv.location(k))/2i/pi, 1:N), 2), ...
+                size(z));
+            return
+        end
+        
         val = complex(zeros(size(z)));
         g0v = pv.greensFunctions;
         s = pv.strength;
@@ -71,6 +79,12 @@ methods(Hidden)
             g0v{k} = greensC0(pv.location(k), D);
         end
         pv.greensFunctions = g0v;
+    end
+end
+
+methods(Access=protected)
+    function bool = getOkForPlane(~)
+        bool = true;
     end
 end
 

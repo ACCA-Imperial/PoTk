@@ -51,6 +51,11 @@ end
 
 methods(Hidden)    
     function val = evalPotential(pv, z)
+        if pv.entirePlane
+            val = evalPotential@pointVortex(pv, z);
+            return
+        end
+        
         val = pv.netPointVortex.evalPotential(z);
         val = val - sum(pv.strength(:))*pv.greensFunction(z);
     end

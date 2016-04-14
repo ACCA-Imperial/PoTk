@@ -68,6 +68,11 @@ end
 
 methods(Hidden)
     function val = evalPotential(d, z)
+        if d.entirePotential
+            val = d.strength./(z - d.location)/2/pi*exp(1i*d.angle);
+            return
+        end
+        
         val = complex(zeros(size(z)));
         
         g0v = d.greensFunctions;
@@ -103,6 +108,12 @@ methods(Hidden)
             g0v{3} = greensC0(db(2), g0v{1});
         end
         d.greensFunctions = g0v;
+    end
+end
+
+methods(Access=protected)
+    function bool = getOkForPlane(~)
+        bool = true;
     end
 end
 

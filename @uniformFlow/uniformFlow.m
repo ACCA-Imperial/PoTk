@@ -46,6 +46,15 @@ methods
 end
 
 methods(Hidden)
+    function val = evalPotential(uf, z)
+        if uf.entireDomain
+            val = uf.strength*z*exp(-1i*uf.angle);
+            return
+        end
+        
+        val = evalPotential@dipole(uf, z);
+    end
+    
     function uf = setupPotential(uf, W)
         beta = W.domain.infImage;
         if isempty(beta)
@@ -55,6 +64,12 @@ methods(Hidden)
         uf.location = beta;
         
         uf = setupPotential@dipole(uf, W);
+    end
+end
+
+methods(Access=protected)
+    function bool = getOkForPlane(~)
+        bool = true;
     end
 end
 

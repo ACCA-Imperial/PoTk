@@ -57,6 +57,15 @@ methods
 end
    
 methods(Hidden)
+    function val = evalPotential(s, z)
+        if s.entireDomain
+            val = s.strength*log(z - s.location)/2/pi;
+            return
+        end
+        
+        val = evalPotential@sourceSinkPair(s, z);
+    end
+    
     function s = setupPotential(s, W)
         if isempty(W.domain.infImage)
             error(PoTk.ErrorIdString.RuntimeError, ...

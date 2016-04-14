@@ -70,6 +70,10 @@ end
    
 methods(Hidden)
     function val = evalPotential(s, z)
+        if s.entirePlane
+            val = s.strength*log((z - s.location)./(z - s.opposite))/2/pi;
+            return
+        end
         omv = s.primeFunctions;
         val = s.strength*log(omv{1}(z).*omv{2}(z)...
             ./omv{3}(z)./omv{4}(z))/(2*pi);
@@ -96,6 +100,12 @@ methods(Hidden)
             skprime(beta, om), ...
             skprime(1/conj(beta), om)};
         s.primeFunctions = omv;
+    end
+end
+
+methods(Access=protected)
+    function bool = getOkForPlane(~)
+        bool = true;
     end
 end
 
