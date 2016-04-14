@@ -42,17 +42,28 @@ methods(Test)
         
         c = circulation(cv(2:end));
         test.verifyInstanceOf(c, 'circulation')
-        test.verifyInstanceOf(potential(test.simple3, c), 'potential');
+
+        W = potential(test.simple3, c);
+        test.verifyInstanceOf(W, 'potential');
         
         c = circulationNoNet(cv);
         test.verifyInstanceOf(c, 'circulationNoNet')
-        test.verifyInstanceOf(potential(test.simple3, c), 'potential');
+        
+        W = potential(test.simple3, c);
+        test.verifyInstanceOf(W, 'potential');
+        
+        import matlab.unittest.constraints.Throws
+        test.verifyThat(@() potential(planeDomain, circulation), ...
+            Throws('PoTk:InvalidArgument'))
+        test.verifyThat(@() potential(planeDomain, circulationNoNet), ...
+            Throws('PoTk:InvalidArgument'))
     end
     
     function dipole(test)
         dp = dipole(0, 1, pi/4);
         test.verifyInstanceOf(dp, 'dipole');
         test.verifyInstanceOf(potential(test.simple3, dp), 'potential');
+        test.verifyInstanceOf(potential(planeDomain, dp), 'potential');
     end
     
     function pointVortices(test)
@@ -62,10 +73,12 @@ methods(Test)
         pv = pointVortex(av, gv);
         test.verifyInstanceOf(pv, 'pointVortex');
         test.verifyInstanceOf(potential(test.simple3, pv), 'potential');
+        test.verifyInstanceOf(potential(planeDomain, pv), 'potential');
 
         pv = pointVortexNoNet(av, gv);
         test.verifyInstanceOf(pv, 'pointVortexNoNet');
         test.verifyInstanceOf(potential(test.simple3, pv), 'potential');
+        test.verifyInstanceOf(potential(planeDomain, pv), 'potential');
     end
     
     function sourceSinkPair(test)
@@ -76,6 +89,7 @@ methods(Test)
         ss = sourceSinkPair(a, b, m);
         test.verifyInstanceOf(ss, 'sourceSinkPair');
         test.verifyInstanceOf(potential(test.simple3, ss), 'potential');
+        test.verifyInstanceOf(potential(planeDomain, ss), 'potential');
     end
     
     function source(test)
@@ -85,12 +99,21 @@ methods(Test)
         sp = source(a, g);
         test.verifyInstanceOf(sp, 'source');
         test.verifyInstanceOf(potential(test.simple3, sp), 'potential');
+        test.verifyInstanceOf(potential(planeDomain, sp), 'potential');
     end
     
     function uniformFlow(test)
         uf = uniformFlow(1, pi/4);
         test.verifyInstanceOf(uf, 'uniformFlow');
         test.verifyInstanceOf(potential(test.simple3, uf), 'potential');
+        test.verifyInstanceOf(potential(planeDomain, uf), 'potential');
+    end
+    
+    function kindListing(test)
+        import matlab.unittest.constraints.EveryCellOf
+        import matlab.unittest.constraints.IsInstanceOf
+        s = listKinds();
+        test.verifyThat(EveryCellOf(s), IsInstanceOf('char'))
     end
 end
 
