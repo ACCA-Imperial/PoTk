@@ -80,10 +80,11 @@ methods(Hidden)
     end
     
     function s = setupPotential(s, W)
-        D = W.unitDomain;
-        alpha = s.location;
-        beta = s.opposite;
+        zeta = W.domain.mapToUnitDomain;
+        alpha = zeta(s.location);
+        beta = zeta(s.opposite);
         
+        D = W.unitDomain;
         if ~isin(D, alpha)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 'The source point must be in the bounded unit domain.')
