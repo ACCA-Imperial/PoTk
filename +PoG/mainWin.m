@@ -891,14 +891,22 @@ methods(Access=protected)
     end
     
     function numberIslandsAndVortices(pg)
-        C = circleRegion(pg.circles{:});
-        fd = regionExt(...
-            C.centers, ...
-            C.radii, ...
-            zeros(1, numel(pg.circles)), ...
-            pg.vortices, ...
-            zeros(1, numel(pg.vortices)));
-        numberBoundaries(fd)
+        m = numel(pg.circles);
+        for j = 1:m
+            c = pg.circles{j}.center;
+            text(real(c), imag(c), num2str(j))
+        end
+        
+        ys = axis();
+        xs = 0.01*diff(ys(1:2));
+        ys = 0.01*diff(ys(3:4));
+        
+        n = numel(pg.vortices);
+        for k = 1:n
+            v = pg.vortices(k);
+            text(real(v) + xs, imag(v) + ys, num2str(k), ...
+                'color', 'm')
+        end
     end
     
     function readInputDomain(pg, ~)
