@@ -34,8 +34,8 @@ zg = meshgrid(Om);
 %%
 % Equivalent bounded unit domain.
 
-% D = unitDomain(Om);
-% zeta = Om.mapToUnitDomain;
+D = unitDomain(Om);
+zeta = Om.mapToUnitDomain;
 
 % zeta = mobius(0, rv(1), 1, -sv(1));
 % D = zeta(Om);
@@ -71,10 +71,10 @@ pvn = pointVortexNoNet((av), gv);
 % pv = pointVortex(zeta(av), gv);
 % pvn = pointVortexNoNet(zeta(av), gv);
 
-W = potential(Om, pv);
-% W = potential(D, pvn);
-% W = potential(D, pv, circ);
-% W = potential(D, pvn, circn);
+% W = potential(Om, pv);
+% W = potential(Om, pvn);
+% W = potential(Om, pv, circ);
+% W = potential(Om, pvn, circn);
 
 
 %%
@@ -83,9 +83,10 @@ W = potential(Om, pv);
 a = -2.6551+3.2733i;
 b = 2.0119-3.7273i;
 m = 1.2;
-ss = sourceSinkPair(zeta(a), zeta(b), m);
+ss = sourceSinkPair((a), (b), m);
+% ss = sourceSinkPair(zeta(a), zeta(b), m);
 
-% W = potential(D, ss);
+% W = potential(Om, ss);
 
 
 %%
@@ -93,9 +94,10 @@ ss = sourceSinkPair(zeta(a), zeta(b), m);
 
 a = av(1);
 m = 1;
+% sp = source((a), m);
 sp = source(zeta(a), m);
 
-% W = potential(D, sp);
+W = potential(D, sp);
 % W = potential(D, sp, pointVortex(zeta(a), -1));
 
 
