@@ -70,10 +70,9 @@ methods(Hidden)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 'No image of infinity from the physical domain specified.')
         end
-        D = skpDomain(Du);
         
         pv.netPointVortex = pv.netPointVortex.setupPotential(W);
-        pv.greensFunction = greensC0(Du.infImage, D);
+        pv.greensFunction = greensC0(Du.infImage, skpDomain(Du));
     end
 end
 

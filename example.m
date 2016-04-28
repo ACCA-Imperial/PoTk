@@ -66,10 +66,12 @@ av = [
     2.1618-1.3938i];
 gv = [1, -1, 1, 1];
 
-pv = pointVortex(zeta(av), gv);
-pvn = pointVortexNoNet(zeta(av), gv);
+pv = pointVortex((av), gv);
+pvn = pointVortexNoNet((av), gv);
+% pv = pointVortex(zeta(av), gv);
+% pvn = pointVortexNoNet(zeta(av), gv);
 
-% W = potential(D, pv);
+W = potential(Om, pv);
 % W = potential(D, pvn);
 % W = potential(D, pv, circ);
 % W = potential(D, pvn, circn);
@@ -83,7 +85,7 @@ b = 2.0119-3.7273i;
 m = 1.2;
 ss = sourceSinkPair(zeta(a), zeta(b), m);
 
-W = potential(D, ss);
+% W = potential(D, ss);
 
 
 %%
@@ -118,7 +120,8 @@ uf = uniformFlow(1, pi/4);
 %%
 % Plot streamlines.
 
-wg = W(zeta(zg));
+wg = W(zg);
+% wg = W(zeta(zg));
 
 figure(1), clf
 contour(real(zg), imag(zg), imag(wg), 20, ...
