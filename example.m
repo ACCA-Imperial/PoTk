@@ -15,28 +15,35 @@ rv = [
     1.2457
     0.93902
     0.932];
-Om = circleRegion(sv, rv);
+Om = unboundedCircles(sv, rv);
 
-ax = plotbox(Om, 1.2);
-res = 100;
-[zg, zeta] = meshgrid(linspace(ax(1), ax(2), res), ...
-    linspace(ax(3), ax(4), res));
-zg = complex(zg, zeta);
-for j = 1:numel(sv)
-    zg(abs(zg - sv(j)) <= rv(j)+eps(max(abs(sv)))) = nan;
-end
+zg = meshgrid(Om);
+
+% Om = circleRegion(sv, rv);
+
+% ax = plotbox(Om, 1.2);
+% res = 100;
+% [zg, zeta] = meshgrid(linspace(ax(1), ax(2), res), ...
+%     linspace(ax(3), ax(4), res));
+% zg = complex(zg, zeta);
+% for j = 1:numel(sv)
+%     zg(abs(zg - sv(j)) <= rv(j)+eps(max(abs(sv)))) = nan;
+% end
 
 
 %%
 % Equivalent bounded unit domain.
 
-zeta = mobius(0, rv(1), 1, -sv(1));
-D = zeta(Om);
-dv = D.centers(2:end);
-qv = D.radii(2:end);
-beta = pole(inv(zeta));
+D = unitDomain(Om);
+zeta = Om.mapToUnitDomain;
 
-D = unitDomain(dv, qv, beta);
+% zeta = mobius(0, rv(1), 1, -sv(1));
+% D = zeta(Om);
+% dv = D.centers(2:end);
+% qv = D.radii(2:end);
+% beta = pole(inv(zeta));
+% 
+% D = unitDomain(dv, qv, beta);
 
 
 %%
@@ -117,7 +124,7 @@ figure(1), clf
 contour(real(zg), imag(zg), imag(wg), 20, ...
     'linecolor', [0.2081, 0.1663, 0.5292])
 hold on
-fill(inv(Om))
+fill(inv(circleRegion(Om)))
 plot(Om)
 % plot(av, 'k.')
 hold off
