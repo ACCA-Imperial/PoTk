@@ -30,14 +30,15 @@ classdef potential
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties(SetAccess=protected)
-    domain
+    domain                          % The potential domain
     
-    potentialFunctions
+    potentialFunctions              % Cell array of potential contributions
 end
 
 methods
     function W = potential(D, varargin)
         if ~nargin
+            W.domain = planeDomain;
             return
         end
         
@@ -74,9 +75,9 @@ methods
         %override disp() builtin.
         
         D = W.domain;
-        if isempty(D) || D.m == 0
+        if isa(D, 'planeDomain')
             connstr = 'an entire';
-        elseif D.m == 1
+        elseif D.m == 0
             connstr = 'a simply connected';
         else
             connstr = 'a %d-connected';
@@ -105,7 +106,7 @@ methods
         %Evaluate the potential at a point z.
         %  val = feval(D, z)
         
-        if isempty(D.domain)
+        if isa(D, 'planeDomain')
             val = nan(size(z));
             return
         end
