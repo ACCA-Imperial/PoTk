@@ -62,7 +62,6 @@ methods(Hidden)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 'No image of infinity from the physical domain specified.')
         end
-        D = skpDomain(D);
         
         circ = C.circVector;
         if numel(circ) ~= D.m + 1
@@ -72,7 +71,7 @@ methods(Hidden)
         end
         
         C.netCirculation = C.netCirculation.setupPotential(W);
-        C.greensFunction = greensC0(D.infImage, D);
+        C.greensFunction = greensC0(D.infImage, skpDomain(D));
     end
 end
 
