@@ -35,10 +35,6 @@ properties(SetAccess=protected)
     potentialFunctions              % Cell array of potential contributions
 end
 
-properties(Access=protected)
-    unitDomainObject
-end
-
 methods
     function W = potential(D, varargin)
         if ~nargin
@@ -140,7 +136,7 @@ methods
         %
         %  D = unitDomain(W);
         
-        D = W.unitDomainObject;
+        D = unitDomain(W.domain);
     end
 end
 

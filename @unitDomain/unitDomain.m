@@ -44,6 +44,11 @@ methods
             return
         end
         
+        if isa(dv, 'unitDomain')
+            D = dv;
+            return
+        end
+        
         D.checkUnitDomain(dv, qv)
         D.centers = dv;
         D.radii = qv;
