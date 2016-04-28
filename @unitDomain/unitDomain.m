@@ -30,8 +30,6 @@ classdef unitDomain < potentialDomain
 properties(SetAccess=protected)
     centers             % Circle centers vector.
     radii               % Circle radii vector.
-    infImage            % Image of infinity to domain under given map.
-    conformalMaps       % Conformal maps (TBD).
 end
 
 properties(Dependent)
@@ -41,7 +39,7 @@ properties(Dependent)
 end
 
 methods
-    function D = unitDomain(dv, qv, beta, maps)
+    function D = unitDomain(dv, qv, beta)
         if ~nargin
             return
         end
@@ -62,10 +60,7 @@ methods
             D.infImage = beta;        
         end
         
-        if nargin > 3
-            % Is this going to get used?
-            D.conformalMaps = maps;
-        end
+        D.mapToUnitDomain = @(z) z;
     end
     
     function C = circleRegion(D)

@@ -1,11 +1,5 @@
-classdef planeDomain < potentialDomain
-%planeDomain is the entire complex plane.
-%
-%  D = planeDomain()
-%    Creates a planeDomain object for use in the complex potential
-%    function.
-%
-%See also potential.
+classdef(Abstract) anyDomain
+%anyDomain is the abstract notion of any domain for the potential.
 
 % Everett Kropf, 2016
 % 
@@ -23,11 +17,5 @@ classdef planeDomain < potentialDomain
 % 
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
-
-methods
-    function D = planeDomain()
-        D.mapToUnitDomain = @(z) z;
-    end
-end
 
 end

@@ -1,4 +1,4 @@
-classdef(Abstract) potentialDomain
+classdef(Abstract) potentialDomain < anyDomain
 %potentialDomain is a potential function domain.
 %
 %Abstract class denoting a generic potential function domain. Currently
@@ -21,5 +21,11 @@ classdef(Abstract) potentialDomain
 % 
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
+
+properties(SetAccess=protected)
+    infImage            % Image of infinity to domain under given map.
+    mapToUnitDomain     % How to put points in unit domain.
+    mapFromUnitDomain   % Hot to get point back from unit domain.
+end
 
 end

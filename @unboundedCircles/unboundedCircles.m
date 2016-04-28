@@ -21,7 +21,6 @@ classdef unboundedCircles < potentialDomain
 properties(Dependent)
     centers
     radii
-    
     m
 end
 
@@ -29,7 +28,6 @@ properties(SetAccess=protected,Hidden)
     circleRegionObject
     
     unitDomainObject
-    mapToUnitDomain
 end
 
 methods
@@ -55,6 +53,7 @@ methods
         % Construct unit domain.
         zeta = mobius(0, rv(1), 1, -sv(1));
         D.mapToUnitDomain = zeta;
+        D.mapFromUnitDomain = inv(zeta);
 
         Du = zeta(C);
         D.unitDomainObject = unitDomain(...
@@ -128,6 +127,12 @@ methods
         end
         
         ax = plotbox(D.circleRegionObject, scale);
+    end
+    
+    function D = unitDomain(D)
+        %Convert to unitDomain.
+        
+        D = D.unitDomainObject;
     end
 end
 
