@@ -47,7 +47,7 @@ end
 
 methods(Hidden)
     function val = evalPotential(uf, z)
-        if uf.entireDomain
+        if uf.entirePotential
             val = uf.strength*z*exp(-1i*uf.angle);
             return
         end
