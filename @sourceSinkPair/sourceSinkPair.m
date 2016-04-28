@@ -80,7 +80,7 @@ methods(Hidden)
     end
     
     function s = setupPotential(s, W)
-        D = skpDomain(W.unitDomain);
+        D = W.unitDomain;
         alpha = s.location;
         beta = s.opposite;
         
@@ -93,7 +93,7 @@ methods(Hidden)
                 'The sink point must be in the bounded unit domain.')
         end
         
-        om = skprime(alpha, D);
+        om = skprime(alpha, skpDomain(D));
         omv = {...
             om, ...
             skprime(1/conj(alpha), om), ...
