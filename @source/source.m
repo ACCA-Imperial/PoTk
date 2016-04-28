@@ -67,11 +67,12 @@ methods(Hidden)
     end
     
     function s = setupPotential(s, W)
-        if isempty(W.domain.infImage)
+        D = W.unitDomain;
+        if isempty(D.infImage)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 'No image of infinity from the physical domain specified.')
         end
-        s.opposite = W.domain.infImage;
+        s.opposite = D.infImage;
         s = setupPotential@sourceSinkPair(s, W);
     end
 end

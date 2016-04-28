@@ -56,7 +56,7 @@ methods(Hidden)
     end
     
     function uf = setupPotential(uf, W)
-        beta = W.domain.infImage;
+        beta = W.unitDomain.infImage;
         if isempty(beta)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 'No image of infinity from the physical domain specified.')

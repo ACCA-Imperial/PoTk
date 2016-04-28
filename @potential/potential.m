@@ -30,9 +30,13 @@ classdef potential
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties(SetAccess=protected)
-    domain                          % The potential domain
+    domain                          % A potentialDomain object.
     
     potentialFunctions              % Cell array of potential contributions
+end
+
+properties(Access=protected)
+    unitDomainObject
 end
 
 methods
@@ -42,9 +46,9 @@ methods
             return
         end
         
-        if ~isa(D, 'potentialDomain')
+        if ~isa(D, 'anyDomain')
             error(PoTk.ErrorIdString.InvalidArgument, ...
-                'Domain must be a "potentialDomain" object.')
+                'First argument must be a domain object.')
         end
         W.domain = D;
         isPlane = isa(D, 'planeDomain');
@@ -106,13 +110,13 @@ methods
         %Evaluate the potential at a point z.
         %  val = feval(D, z)
         
-        if isa(D, 'planeDomain')
+        pf = D.potentialFunctions;
+        if isempty(pf)
             val = nan(size(z));
             return
         end
         
         val = complex(zeros(size(z)));
-        pf = D.potentialFunctions;
         for i = 1:numel(pf)
             val = val + pf{i}.evalPotential(z);
         end
@@ -129,6 +133,14 @@ methods
         else
             out = builtin('subsref', W, S);
         end
+    end
+    
+    function D = unitDomain(W)
+        %Access unit domain.
+        %
+        %  D = unitDomain(W);
+        
+        D = W.unitDomainObject;
     end
 end
 

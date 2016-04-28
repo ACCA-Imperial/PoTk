@@ -80,7 +80,7 @@ methods(Hidden)
     end
     
     function s = setupPotential(s, W)
-        D = skpDomain(W.domain);
+        D = skpDomain(W.unitDomain);
         alpha = s.location;
         beta = s.opposite;
         

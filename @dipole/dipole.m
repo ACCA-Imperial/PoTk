@@ -87,13 +87,14 @@ methods(Hidden)
     end
     
     function d = setupPotential(d, W)
+        D = W.unitDomain;
         beta = d.location;
-        if ~isin(W.domain, beta)
+        if ~isin(D, beta)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 'The dipole must be located inside the bounded circle domain.')
         end
         
-        D = skpDomain(W.domain);
+        D = skpDomain(D);
         chi = d.angle;
         h = d.dhForwardDiff;
         db = beta + h*[1, 1i];
