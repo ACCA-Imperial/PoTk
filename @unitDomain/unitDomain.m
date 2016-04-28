@@ -76,10 +76,7 @@ methods
             C = circleRegion([0; D.dv(:)], [1; D.qv(:)]);
         catch err
             if strcmp(err.identifier, 'MATLAB:UndefinedFunction')
-                error(PoTk.ErrorIdString.RuntimeError, ...
-                    ['This functionality requires the conformal mapping ' ...
-                    'toolkit (CMT).\nIf it is installed, check that its ' ...
-                    'directory is on the search path.'])
+                PoTk.ErrorRequiresCMT()
             else
                 rethrow(err)
             end
