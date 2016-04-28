@@ -54,7 +54,7 @@ end
 
 methods(Hidden)
     function val = evalPotential(pv, z)
-        if pv.entirePlane
+        if pv.entirePotential
             N = numel(pv.location);
             val = reshape(sum(...
                 arrayfun(@(k) log(z(:) - pv.location(k))/2i/pi, 1:N), 2), ...

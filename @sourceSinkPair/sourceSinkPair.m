@@ -70,7 +70,7 @@ end
    
 methods(Hidden)
     function val = evalPotential(s, z)
-        if s.entirePlane
+        if s.entirePotential
             val = s.strength*log((z - s.location)./(z - s.opposite))/2/pi;
             return
         end

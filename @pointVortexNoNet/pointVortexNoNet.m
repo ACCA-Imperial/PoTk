@@ -51,7 +51,7 @@ end
 
 methods(Hidden)    
     function val = evalPotential(pv, z)
-        if pv.entirePlane
+        if pv.entirePotential
             val = evalPotential@pointVortex(pv, z);
             return
         end
