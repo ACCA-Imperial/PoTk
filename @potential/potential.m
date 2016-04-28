@@ -70,6 +70,37 @@ methods
         end
     end
     
+    function disp(W)
+        %override disp() builtin.
+        
+        D = W.domain;
+        if isempty(D) || D.m == 0
+            connstr = 'an entire';
+        elseif D.m == 1
+            connstr = 'a simply connected';
+        else
+            connstr = 'a %d-connected';
+        end
+        
+        poloc = strsplit(fileparts(which('potential')), filesep);
+        poloc = poloc{end-1};
+        fprintf(['  <a href="matlab:helpPopup %s/potential">' ...
+            'potential</a> is a complex potential on %s domain\n'], ...
+            poloc, connstr)
+        
+        pf = W.potentialFunctions;
+        if ~isempty(pf)
+            fprintf('\n  contributions to the potential are of kind\n')
+            for i = 1:numel(pf)
+                pname = class(pf{i});
+                fprintf('    <a href="matlab:helpPopup %s/%s">%s</a>\n', ...
+                    poloc, pname, pname)
+            end
+        end
+        
+        fprintf('\n')
+    end
+    
     function val = feval(D, z)
         %Evaluate the potential at a point z.
         %  val = feval(D, z)
