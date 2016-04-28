@@ -113,8 +113,9 @@ methods
         end
         
         val = complex(zeros(size(z)));
+        zeta = D.domain.mapToUnitDomain;
         for i = 1:numel(pf)
-            val = val + pf{i}.evalPotential(z);
+            val = val + pf{i}.evalPotential(zeta(z));
         end
     end
     
