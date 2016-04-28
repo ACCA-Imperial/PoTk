@@ -34,8 +34,8 @@ zg = meshgrid(Om);
 %%
 % Equivalent bounded unit domain.
 
-D = unitDomain(Om);
-zeta = Om.mapToUnitDomain;
+% D = unitDomain(Om);
+% zeta = Om.mapToUnitDomain;
 
 % zeta = mobius(0, rv(1), 1, -sv(1));
 % D = zeta(Om);
@@ -49,11 +49,11 @@ zeta = Om.mapToUnitDomain;
 %%
 % Circulation.
 
-circ = circulation(2, -1);
-circn = circulationNoNet(1, 2, -1);
+circ = circulation(2.2, -1);
+circn = circulationNoNet(1, 2.2, -1);
 
-% W = potential(D, circ);
-% W = potential(D, circn);
+% W = potential(Om, circ);
+% W = potential(Om, circn);
 
 
 %%
