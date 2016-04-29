@@ -80,10 +80,11 @@ methods(Hidden)
     end
     
     function s = setupPotential(s, W)
-        D = skpDomain(W.domain);
-        alpha = s.location;
-        beta = s.opposite;
+        zeta = W.domain.mapToUnitDomain;
+        alpha = zeta(s.location);
+        beta = zeta(s.opposite);
         
+        D = W.unitDomain;
         if ~isin(D, alpha)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 'The source point must be in the bounded unit domain.')
@@ -93,7 +94,7 @@ methods(Hidden)
                 'The sink point must be in the bounded unit domain.')
         end
         
-        om = skprime(alpha, D);
+        om = skprime(alpha, skpDomain(D));
         omv = {...
             om, ...
             skprime(1/conj(alpha), om), ...

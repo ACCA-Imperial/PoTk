@@ -77,23 +77,26 @@ methods(Hidden)
         
         g0v = d.greensFunctions;
         chi = d.angle;
+        U = d.strength;
         h = d.dhForwardDiff;
         if ~isempty(g0v{2})
-            val = val + (g0v{2}(z) - g0v{1}(z))/h*sin(chi);
+            val = val + 2*pi*U*(g0v{2}(z) - g0v{1}(z))/h*sin(chi);
         end
         if ~isempty(g0v{3})
-            val = val + (g0v{3}(z) - g0v{1}(z))/h*cos(chi);
+            val = val + 2*pi*U*(g0v{3}(z) - g0v{1}(z))/h*cos(chi);
         end
     end
     
     function d = setupPotential(d, W)
-        beta = d.location;
-        if ~isin(W.domain, beta)
+        D = W.unitDomain;
+        zeta = W.domain.mapToUnitDomain;
+        beta = zeta(d.location);
+        if ~isin(D, beta)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 'The dipole must be located inside the bounded circle domain.')
         end
         
-        D = skpDomain(W.domain);
+        D = skpDomain(D);
         chi = d.angle;
         h = d.dhForwardDiff;
         db = beta + h*[1, 1i];

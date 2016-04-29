@@ -72,11 +72,10 @@ methods(Hidden)
     end
     
     function pv = setupPotential(pv, W)
-        D = skpDomain(W.domain);
-        g0v = cell(1, numel(pv.location));
-        
+        zeta = W.domain.mapToUnitDomain;
+        g0v = cell(1, numel(pv.location));        
         for k = find(pv.strength(:) ~= 0)'
-            g0v{k} = greensC0(pv.location(k), D);
+            g0v{k} = greensC0(zeta(pv.location(k)), skpDomain(W.unitDomain));
         end
         pv.greensFunctions = g0v;
     end

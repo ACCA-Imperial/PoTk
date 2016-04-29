@@ -58,7 +58,7 @@ end
    
 methods(Hidden)
     function val = evalPotential(s, z)
-        if s.entireDomain
+        if s.entirePotential
             val = s.strength*log(z - s.location)/2/pi;
             return
         end
@@ -67,11 +67,16 @@ methods(Hidden)
     end
     
     function s = setupPotential(s, W)
-        if isempty(W.domain.infImage)
-            error(PoTk.ErrorIdString.RuntimeError, ...
-                'No image of infinity from the physical domain specified.')
+        D = W.unitDomain;
+        if isa(W.domain, 'unitDomain')
+            if isempty(D.infImage)
+                error(PoTk.ErrorIdString.RuntimeError, ...
+                    'No image of infinity from the physical domain specified.')
+            end
+            s.opposite = D.infImage;
+        else
+            s.opposite = inf;
         end
-        s.opposite = W.domain.infImage;
         s = setupPotential@sourceSinkPair(s, W);
     end
 end

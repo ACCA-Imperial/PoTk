@@ -42,8 +42,8 @@ D = unitDomain(dv, qv, beta);
 %%
 % Circulation.
 
-circ = circulation(2, -1);
-circn = circulationNoNet(1, 2, -1);
+circ = circulation(2.2, -1);
+circn = circulationNoNet(1, 2.2, -1);
 
 % W = potential(D, circ);
 % W = potential(D, circn);
@@ -76,7 +76,7 @@ b = 2.0119-3.7273i;
 m = 1.2;
 ss = sourceSinkPair(zeta(a), zeta(b), m);
 
-W = potential(D, ss);
+% W = potential(D, ss);
 
 
 %%
@@ -103,9 +103,11 @@ dp = dipole(zeta(zd), 1, 0);
 %%
 % Uniform background flow.
 
-uf = uniformFlow(1, pi/4);
+uf = uniformFlow(.4, pi/4);
 
 % W = potential(D, uf);
+
+W = potential(D, uf, circn, pv);
 
 
 %%
