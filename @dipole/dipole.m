@@ -77,12 +77,13 @@ methods(Hidden)
         
         g0v = d.greensFunctions;
         chi = d.angle;
+        U = d.strength;
         h = d.dhForwardDiff;
         if ~isempty(g0v{2})
-            val = val + (g0v{2}(z) - g0v{1}(z))/h*sin(chi);
+            val = val + 2*pi*U*(g0v{2}(z) - g0v{1}(z))/h*sin(chi);
         end
         if ~isempty(g0v{3})
-            val = val + (g0v{3}(z) - g0v{1}(z))/h*cos(chi);
+            val = val + 2*pi*U*(g0v{3}(z) - g0v{1}(z))/h*cos(chi);
         end
     end
     
