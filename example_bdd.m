@@ -86,7 +86,7 @@ a = av(1);
 m = 1;
 sp = source(zeta(a), m);
 
-W = potential(D, sp);
+% W = potential(D, sp);
 % W = potential(D, sp, pointVortex(zeta(a), -1));
 
 
@@ -103,9 +103,11 @@ dp = dipole(zeta(zd), 1, 0);
 %%
 % Uniform background flow.
 
-uf = uniformFlow(1, pi/4);
+uf = uniformFlow(.4, pi/4);
 
 % W = potential(D, uf);
+
+W = potential(D, uf, circn, pv);
 
 
 %%
