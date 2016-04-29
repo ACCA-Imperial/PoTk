@@ -56,12 +56,16 @@ methods(Hidden)
     end
     
     function uf = setupPotential(uf, W)
-        beta = W.unitDomain.infImage;
-        if isempty(beta)
-            error(PoTk.ErrorIdString.RuntimeError, ...
-                'No image of infinity from the physical domain specified.')
+        D = W.unitDomain;
+        if isa(W.domain, 'unitDomain')
+            if isempty(D.infImage)
+                error(PoTk.ErrorIdString.RuntimeError, ...
+                    'No image of infinity from the physical domain specified.')
+            end
+            uf.location = D.infImage;
+        else
+            uf.location = inf;
         end
-        uf.location = beta;
         
         uf = setupPotential@dipole(uf, W);
     end

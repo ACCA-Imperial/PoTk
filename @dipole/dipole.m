@@ -88,7 +88,8 @@ methods(Hidden)
     
     function d = setupPotential(d, W)
         D = W.unitDomain;
-        beta = d.location;
+        zeta = W.domain.mapToUnitDomain;
+        beta = zeta(d.location);
         if ~isin(D, beta)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 'The dipole must be located inside the bounded circle domain.')
