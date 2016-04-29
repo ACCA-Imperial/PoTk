@@ -19,31 +19,12 @@ Om = unboundedCircles(sv, rv);
 
 zg = meshgrid(Om);
 
-% Om = circleRegion(sv, rv);
-
-% ax = plotbox(Om, 1.2);
-% res = 100;
-% [zg, zeta] = meshgrid(linspace(ax(1), ax(2), res), ...
-%     linspace(ax(3), ax(4), res));
-% zg = complex(zg, zeta);
-% for j = 1:numel(sv)
-%     zg(abs(zg - sv(j)) <= rv(j)+eps(max(abs(sv)))) = nan;
-% end
-
 
 %%
 % Equivalent bounded unit domain.
 
 D = unitDomain(Om);
 zeta = Om.mapToUnitDomain;
-
-% zeta = mobius(0, rv(1), 1, -sv(1));
-% D = zeta(Om);
-% dv = D.centers(2:end);
-% qv = D.radii(2:end);
-% beta = pole(inv(zeta));
-% 
-% D = unitDomain(dv, qv, beta);
 
 
 %%
@@ -94,10 +75,10 @@ ss = sourceSinkPair((a), (b), m);
 
 a = av(1);
 m = 1;
-% sp = source((a), m);
-sp = source(zeta(a), m);
+sp = source((a), m);
+% sp = source(zeta(a), m);
 
-W = potential(D, sp);
+W = potential(Om, sp);
 % W = potential(D, sp, pointVortex(zeta(a), -1));
 
 
@@ -125,7 +106,7 @@ uf = uniformFlow(1, pi/4);
 wg = W(zg);
 % wg = W(zeta(zg));
 
-figure(1), clf
+figure(2), clf
 contour(real(zg), imag(zg), imag(wg), 20, ...
     'linecolor', [0.2081, 0.1663, 0.5292])
 hold on
