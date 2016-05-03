@@ -1,4 +1,4 @@
-classdef potential
+classdef potential < PoTk.evaluable
 %POTENTIAL is the complex potential.
 %
 %  W = potential(D, varargin)
@@ -116,19 +116,6 @@ methods
         zeta = D.domain.mapToUnitDomain;
         for i = 1:numel(pf)
             val = val + pf{i}.evalPotential(zeta(z));
-        end
-    end
-    
-    function out = subsref(W, S)
-        % Provide function-like behaviour.
-        %
-        %   W = potential(...);
-        %   val = W(z);
-        
-        if numel(S) == 1 && strcmp(S.type, '()')
-            out = feval(W, S.subs{:});
-        else
-            out = builtin('subsref', W, S);
         end
     end
     
