@@ -54,6 +54,8 @@ methods
         zeta = mobius(0, rv(1), 1, -sv(1));
         D.mapToUnitDomain = zeta;
         D.mapFromUnitDomain = inv(zeta);
+        % FIXME: This is kludge for dipole.
+        D.mapMultiplier = rv(1);
 
         Du = zeta(C);
         D.unitDomainObject = unitDomain(...

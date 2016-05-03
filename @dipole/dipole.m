@@ -30,8 +30,10 @@ classdef dipole < pointSingularity
 properties(SetAccess=protected)
     angle = 0
     
-    dhForwardDiff = 1e-8;
-    greensFunctions
+    greensXderivative
+    greensYderivative
+    % FIXME: This is a kludge.
+    mapMultiplier = 1
 end
 
 methods
@@ -75,42 +77,42 @@ methods(Hidden)
         
         val = complex(zeros(size(z)));
         
-        g0v = d.greensFunctions;
-        chi = d.angle;
         U = d.strength;
-        h = d.dhForwardDiff;
-        if ~isempty(g0v{2})
-            val = val + 2*pi*U*(g0v{2}(z) - g0v{1}(z))/h*sin(chi);
+        if U == 0
+            return
         end
-        if ~isempty(g0v{3})
-            val = val + 2*pi*U*(g0v{3}(z) - g0v{1}(z))/h*cos(chi);
+        
+        chi = d.angle;
+        a = d.mapMultiplier;
+        if mod(chi, pi) > eps(pi)
+            % "Horizontal" component.
+            dxg0 = d.greensXderivative;
+            val = val - 4*pi*U*a*sin(chi)*dxg0(z);
+        end
+        if mod(chi + pi/2, pi) > eps(pi)
+            % "Vertical" component.
+            dyg0 = d.greensYderivative;
+            val = val - 4*pi*U*a*cos(chi)*dyg0(z);
         end
     end
     
     function d = setupPotential(d, W)
         D = W.unitDomain;
         zeta = W.domain.mapToUnitDomain;
-        beta = zeta(d.location);
+        beta = zeta(d.location);        
         if ~isin(D, beta)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 'The dipole must be located inside the bounded circle domain.')
         end
+        d.mapMultiplier = W.domain.mapMultiplier;
         
+        if d.strength == 0
+            return
+        end
         D = skpDomain(D);
-        chi = d.angle;
-        h = d.dhForwardDiff;
-        db = beta + h*[1, 1i];
-        
-        g0v = {greensC0(beta, D), [], []};
-        if mod(chi, pi) > eps(pi)
-            % Horizontal component.
-            g0v{2} = greensC0(db(1), g0v{1});
-        end
-        if mod(chi + pi/2, pi) > eps(pi)
-            % Vertical component.
-            g0v{3} = greensC0(db(2), g0v{1});
-        end
-        d.greensFunctions = g0v;
+        dpg0 = greensC0Dp(beta, D);
+        [d.greensXderivative, d.greensYderivative] ...
+            = getPartialXyDerivatives(dpg0);
     end
 end
 
