@@ -61,7 +61,9 @@ methods
         % Construct unit domain.
         zeta = mobius(0, rv(1), 1, -sv(1));
         D.mapToUnitDomain = zeta;
+        D.mapToUnitDomainDeriv = @(z) -rv(1)./(z - sv(1)).^2;
         D.mapFromUnitDomain = inv(zeta);
+        D.mapFromUnitDomainDeriv = @(z) -rv(1)./z.^2;
         % FIXME: This is kludge for dipole.
         D.mapMultiplier = rv(1);
 

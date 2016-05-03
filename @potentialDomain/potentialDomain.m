@@ -25,7 +25,9 @@ classdef(Abstract) potentialDomain < anyDomain
 properties(SetAccess=protected)
     infImage            % Image of infinity to domain under given map.
     mapToUnitDomain     % How to put points in unit domain.
-    mapFromUnitDomain   % Hot to get point back from unit domain.
+    mapToUnitDomainDeriv
+    mapFromUnitDomain   % Hot to get points back from unit domain.
+    mapFromUnitDomainDeriv
     
     % FIXME: This is a kludge for the diplole.
     mapMultiplier = 1
