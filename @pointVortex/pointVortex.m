@@ -71,6 +71,27 @@ methods(Hidden)
         end
     end
     
+    function dpv = getDerivative(pv, domain, ~)
+        zeta = domain.mapToUnitDomain;
+        dzeta = domain.mapToUnitDomainDeriv;
+        
+        g0v = pv.greensFunctions;
+        dg0v = cell(size(g0v));
+        for k = find(pv.strength(:)' ~= 0)
+            dg0v{k} = diff(g0v{k});
+        end
+        
+        function v = dEval(z)
+            v = complex(zeros(size(z)));
+            sv = pv.strength;
+            for i = find(sv(:)' ~= 0)
+                v = v + sv(i)*dg0v{i}(zeta(z)).*dzeta(z);
+            end
+        end
+        
+        dpv = @dEval;
+    end
+    
     function pv = setupPotential(pv, W)
         zeta = W.domain.mapToUnitDomain;
         g0v = cell(1, numel(pv.location));        

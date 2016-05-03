@@ -18,7 +18,7 @@ rv = [
 Om = circleRegion(sv, rv);
 
 ax = plotbox(Om, 1.2);
-res = 100;
+res = 200;
 [zg, zeta] = meshgrid(linspace(ax(1), ax(2), res), ...
     linspace(ax(3), ax(4), res));
 zg = complex(zg, zeta);
@@ -65,7 +65,7 @@ pvn = pointVortexNoNet(zeta(av), gv);
 % W = potential(D, pv);
 % W = potential(D, pvn);
 % W = potential(D, pv, circ);
-% W = potential(D, pvn, circn);
+W = potential(D, pvn, circn);
 
 
 %%
@@ -107,7 +107,7 @@ uf = uniformFlow(.4, pi/4);
 
 % W = potential(D, uf);
 
-W = potential(D, uf, circn, pv);
+% W = potential(D, uf, circn, pv);
 
 
 %%

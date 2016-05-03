@@ -1,4 +1,4 @@
-classdef(Abstract) potentialKind < SKP.analyticUnitDifferentiable
+classdef(Abstract) potentialKind
 %potentialKind describes a type of contribution to the potential.
 %
 %Abstract class specifying interface for potential contributions.
@@ -43,17 +43,8 @@ end
 
 methods(Hidden)
     val = evalPotential(pk, z)
+    dpk = getDerivative(pk, W, n)
     pk = setupPotential(pk, W)
-    
-    function dp = getDerivative(pk, domain, n)
-        if isa(domain, 'planeDomain')
-            dp = entireDerivative(pk, n);
-            return
-        end
-        
-        pk.domain = skpDomain(unitDomain(domain));
-        dp = dftDerivative(pk, @(z) evalPotential(pk, z), n);
-    end
 end
 
 methods(Access=protected)
