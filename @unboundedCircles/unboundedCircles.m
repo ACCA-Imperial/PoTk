@@ -1,5 +1,13 @@
 classdef unboundedCircles < potentialDomain
 %unboundedCircles is a potential domain.
+%
+%  D = unboundedCircles(sv, rv)
+%  Creates an unbounded circle domain described by the vector of centers sv
+%  and the vector of radii rv.
+%
+%Requires the Conformal Mapping Toolkit.
+%
+%See also potentialDomain, unitDomain.
 
 % Everett Kropf, 2016
 % 
