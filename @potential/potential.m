@@ -80,7 +80,7 @@ methods
         elseif D.m == 0
             connstr = 'a simply connected';
         else
-            connstr = 'a %d-connected';
+            connstr = sprintf('a %d-connected', D.m+1);
         end
         
         poloc = strsplit(fileparts(which('potential')), filesep);
