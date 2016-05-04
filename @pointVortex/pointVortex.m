@@ -79,13 +79,15 @@ methods(Hidden)
         end
         
         function v = dEval(z)
-            v = 0;
             zz = domain.mapToUnitDomain(z);
-            dzz = domain.mapToUnitDomainDeriv(z);
+            dzeta = domain.mapToUnitDomainDeriv;
+
+            v = 0;
             sv = pv.strength;
             for i = find(sv(:)' ~= 0)
-                v = v + sv(i)*dg0v{i}(zz).*dzz;
+                v = v + sv(i)*dg0v{i}(zz);
             end
+            v = v.*dzeta(z);
         end
         
         dpv = @dEval;
