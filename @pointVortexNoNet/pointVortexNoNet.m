@@ -60,7 +60,7 @@ methods(Hidden)
         val = val - sum(pv.strength(:))*pv.greensFunction(z);
     end
     
-    function dpv = getDerivative(pv, domain, ~)
+    function dpv = getDerivative(pv, domain)
         zeta = domain.mapToUnitDomain;
         dzeta = domain.mapToUnitDomainDeriv;
         dg0v = diff(pv.greensFunction);

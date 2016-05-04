@@ -27,7 +27,7 @@ properties(SetAccess=protected)
 end
 
 methods
-    function dW = potentialDerivative(domain, potentialKinds, n)
+    function dW = potentialDerivative(domain, potentialKinds)
         if ~nargin
             return
         end
@@ -43,16 +43,11 @@ methods
                 'Second argument must be cell array of "potentialKind".')
         end
 
-        % FIXME: validate order input.
-        if nargin < 3
-            n = 1;
-        end
-        
         N = numel(potentialKinds);
         df = cell(1, N);
         names = cell(size(df));
         for i = 1:N
-            df{i} = getDerivative(potentialKinds{i}, domain, n);
+            df{i} = getDerivative(potentialKinds{i}, domain);
             names{i} = class(potentialKinds{i});
         end
         dW.derivativeFunctions = df;

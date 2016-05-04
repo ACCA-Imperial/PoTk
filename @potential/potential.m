@@ -71,19 +71,12 @@ methods
         end
     end
     
-    function dW = diff(W, n)
-        %Variable derivative of potential.
+    function dW = diff(W)
+        %First order variable derivative of potential.
         %
         %  dW = diff(W)
-        %  dW = diff(W, n)
-        %  Defaults to first derivative, but may be of order n.
         
-        % FIXME: validate order input.
-        if nargin < 2
-            n = 1;
-        end
-        
-        dW = potentialDerivative(W.domain, W.potentialFunctions, n);
+        dW = potentialDerivative(W.domain, W.potentialFunctions);
     end
     
     function disp(W)

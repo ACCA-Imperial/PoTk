@@ -96,7 +96,7 @@ methods(Hidden)
         end
     end
     
-    function dw = getDerivative(d, domain, ~)
+    function dw = getDerivative(d, domain)
         zeta = domain.mapToUnitDomain;
         dzeta = domain.mapToUnitDomainDeriv;
         

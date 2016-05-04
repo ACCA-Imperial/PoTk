@@ -80,7 +80,7 @@ methods(Hidden)
             ./omv{3}(z)./omv{4}(z))/(2*pi);
     end
     
-    function ds = getDerivative(s, domain, ~)
+    function ds = getDerivative(s, domain)
         zeta = domain.mapToUnitDomain;
         dzeta = domain.mapToUnitDomainDeriv;
         

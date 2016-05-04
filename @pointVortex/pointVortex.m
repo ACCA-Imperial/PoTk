@@ -71,7 +71,7 @@ methods(Hidden)
         end
     end
     
-    function dpv = getDerivative(pv, domain, ~)        
+    function dpv = getDerivative(pv, domain)
         g0v = pv.greensFunctions;
         dg0v = cell(size(g0v));
         for k = find(pv.strength(:)' ~= 0)

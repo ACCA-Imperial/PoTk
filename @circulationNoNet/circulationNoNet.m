@@ -52,7 +52,7 @@ methods(Hidden)
             - sum(C.circVector(:))*C.greensFunction(z);
     end
     
-    function dc = getDerivative(C, domain, ~)
+    function dc = getDerivative(C, domain)
         dnc = getDerivative(C.netCirculation, domain);
         dg0 = diff(C.greensFunction);
         zeta = domain.mapToUnitDomain;
