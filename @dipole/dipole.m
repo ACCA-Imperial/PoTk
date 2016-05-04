@@ -97,6 +97,11 @@ methods(Hidden)
     end
     
     function dw = getDerivative(d, domain)
+        if d.entirePotential
+            dw = @(z) -d.strength./(z - d.location).^2/2/pi*exp(1i*d.angle);
+            return
+        end
+        
         zeta = domain.mapToUnitDomain;
         dzeta = domain.mapToUnitDomainDeriv;
         

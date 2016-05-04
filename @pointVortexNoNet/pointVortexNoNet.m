@@ -61,6 +61,11 @@ methods(Hidden)
     end
     
     function dpv = getDerivative(pv, domain)
+        if pv.entirePotential
+            dpv = getDerivativeEntireDomain(pv);
+            return
+        end
+        
         zeta = domain.mapToUnitDomain;
         dzeta = domain.mapToUnitDomainDeriv;
         dg0v = diff(pv.greensFunction);
