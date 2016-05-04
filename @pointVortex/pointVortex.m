@@ -71,10 +71,7 @@ methods(Hidden)
         end
     end
     
-    function dpv = getDerivative(pv, domain, ~)
-        zeta = domain.mapToUnitDomain;
-        dzeta = domain.mapToUnitDomainDeriv;
-        
+    function dpv = getDerivative(pv, domain, ~)        
         g0v = pv.greensFunctions;
         dg0v = cell(size(g0v));
         for k = find(pv.strength(:)' ~= 0)
@@ -83,9 +80,11 @@ methods(Hidden)
         
         function v = dEval(z)
             v = 0;
+            zz = domain.mapToUnitDomain(z);
+            dzz = domain.mapToUnitDomainDeriv(z);
             sv = pv.strength;
             for i = find(sv(:)' ~= 0)
-                v = v + sv(i)*dg0v{i}(zeta(z)).*dzeta(z);
+                v = v + sv(i)*dg0v{i}(zz).*dzz;
             end
         end
         
