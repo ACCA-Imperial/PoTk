@@ -82,7 +82,7 @@ methods(Hidden)
         end
         
         function v = dEval(z)
-            v = complex(zeros(size(z)));
+            v = 0;
             sv = pv.strength;
             for i = find(sv(:)' ~= 0)
                 v = v + sv(i)*dg0v{i}(zeta(z)).*dzeta(z);
