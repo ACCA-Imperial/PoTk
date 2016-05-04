@@ -26,6 +26,8 @@ for j = 1:numel(sv)
     zg(abs(zg - sv(j)) <= rv(j)+eps(max(abs(sv)))) = nan;
 end
 
+zp = 0.51331+2.3099i;
+
 
 %%
 % Equivalent bounded unit domain.
@@ -65,7 +67,7 @@ pvn = pointVortexNoNet(zeta(av), gv);
 % W = potential(D, pv);
 % W = potential(D, pvn);
 % W = potential(D, pv, circ);
-W = potential(D, pvn, circn);
+% W = potential(D, pvn, circn);
 
 
 %%
@@ -97,7 +99,7 @@ zd = 0.70599 + 1.3893i;
 dp = dipole(zeta(zd), 1, 0);
 % dp = dipole(beta, 1, pi/4);
 
-% W = potential(D, dp);
+W = potential(D, dp);
 
 
 %%
@@ -110,6 +112,19 @@ uf = uniformFlow(.4, pi/4);
 % W = potential(D, uf, circn, pv);
 
 
+%%
+% Check derivatives against finite difference.
+
+% h = 1e-6;
+% fdW = @(z) (W(z + h) - W(z - h))/2/h;
+% 
+% dW = diff(W);
+% 
+% disp(fdW(zeta(zp)) - dW(zeta(zp)));
+
+
+%%
+return
 %%
 % Plot streamlines.
 

@@ -19,6 +19,8 @@ Om = unboundedCircles(sv, rv);
 
 zg = meshgrid(Om);
 
+zp = 0.51331+2.3099i;
+
 
 %%
 % Equivalent bounded unit domain.
@@ -85,7 +87,7 @@ zd = 0.70599 + 1.3893i;
 dp = dipole(zd, 1, 0);
 % dp = dipole(inf, 1, pi/4);
 
-% W = potential(Om, dp);
+W = potential(Om, dp);
 
 
 %%
@@ -95,9 +97,22 @@ uf = uniformFlow(.5, pi/4);
 
 % W = potential(Om, uf);
 
-W = potential(Om, uf, circn, pv);
+% W = potential(Om, uf, circn, pv);
 
 
+%%
+% Check derivatives against finite difference.
+
+h = 1e-6;
+fdW = @(z) (W(z + h) - W(z - h))/2/h;
+
+dW = diff(W);
+
+disp(abs(fdW(zp) - dW(zp)))
+
+
+%%
+return
 %%
 % Plot streamlines.
 
