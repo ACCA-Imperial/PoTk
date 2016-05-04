@@ -140,9 +140,8 @@ methods(Hidden)
             return
         end
         D = skpDomain(D);
-        dpg0 = greensC0Dp(beta, D);
-        [d.greensXderivative, d.greensYderivative] ...
-            = getPartialXyDerivatives(dpg0);
+        d.greensXderivative = greensC0Dpxy(beta, 'x', D);
+        d.greensYderivative = greensC0Dpxy(beta, 'y', d.greensXderivative);
     end
 end
 
