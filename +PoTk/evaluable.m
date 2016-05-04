@@ -1,9 +1,11 @@
-classdef(Abstract) potentialDomain < anyDomain
-%potentialDomain is a potential function domain.
+classdef(Abstract) evaluable
+%evaluable provides function like evaluation protocol.
 %
-%Abstract class denoting a generic potential function domain. Currently
-%only provides pedigree. All potential domains should have this as a
-%superclass.
+%Subclasses of this abstract class must implement a "function evaluation"
+%method with the signature
+%  v = feval(obj, z)
+%
+%See also subsref.
 
 % Everett Kropf, 2016
 % 
@@ -22,15 +24,23 @@ classdef(Abstract) potentialDomain < anyDomain
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-properties(SetAccess=protected)
-    infImage            % Image of infinity to domain under given map.
-    mapToUnitDomain     % How to put points in unit domain.
-    mapToUnitDomainDeriv
-    mapFromUnitDomain   % Hot to get points back from unit domain.
-    mapFromUnitDomainDeriv
-    
-    % FIXME: This is a kludge for the diplole.
-    mapMultiplier = 1
+methods
+    v = feval(obj, z)
+end
+
+methods(Hidden)
+    function out = subsref(obj, S)
+        % Provide function-like behaviour.
+        %
+        %   obj = classInstance(...);
+        %   v = obj(z);
+        
+        if numel(S) == 1 && strcmp(S.type, '()')
+            out = feval(obj, S.subs{:});
+        else
+            out = builtin('subsref', obj, S);
+        end
+    end
 end
 
 end

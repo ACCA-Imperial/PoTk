@@ -84,6 +84,27 @@ methods(Hidden)
         end
     end
     
+    function dc = getDerivative(C, domain)
+        circ = C.circVector;
+        cv = find(circ(:)' ~= 0);
+        vj = C.firstKindIntegrals;
+        dvj = cell(size(vj));
+        for k = cv
+            dvj{k} = diff(vj{k});
+        end
+        
+        function v = deval(z)
+            v = 0;
+            zz = domain.mapToUnitDomain(z);
+            dzz = domain.mapToUnitDomainDeriv(z);
+            for i = cv
+                v = v + circ(i)*dvj{i}(zz).*dzz;
+            end
+        end
+        
+        dc = @deval;
+    end
+    
     function C = setupPotential(C, W)
         D = skpDomain(W.unitDomain);
         circ = C.circVector;

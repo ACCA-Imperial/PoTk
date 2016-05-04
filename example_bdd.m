@@ -18,13 +18,15 @@ rv = [
 Om = circleRegion(sv, rv);
 
 ax = plotbox(Om, 1.2);
-res = 100;
+res = 200;
 [zg, zeta] = meshgrid(linspace(ax(1), ax(2), res), ...
     linspace(ax(3), ax(4), res));
 zg = complex(zg, zeta);
 for j = 1:numel(sv)
     zg(abs(zg - sv(j)) <= rv(j)+eps(max(abs(sv)))) = nan;
 end
+
+zp = 0.51331+2.3099i;
 
 
 %%
@@ -97,7 +99,7 @@ zd = 0.70599 + 1.3893i;
 dp = dipole(zeta(zd), 1, 0);
 % dp = dipole(beta, 1, pi/4);
 
-% W = potential(D, dp);
+W = potential(D, dp);
 
 
 %%
@@ -107,9 +109,22 @@ uf = uniformFlow(.4, pi/4);
 
 % W = potential(D, uf);
 
-W = potential(D, uf, circn, pv);
+% W = potential(D, uf, circn, pv);
 
 
+%%
+% Check derivatives against finite difference.
+
+% h = 1e-6;
+% fdW = @(z) (W(z + h) - W(z - h))/2/h;
+% 
+% dW = diff(W);
+% 
+% disp(fdW(zeta(zp)) - dW(zeta(zp)));
+
+
+%%
+return
 %%
 % Plot streamlines.
 

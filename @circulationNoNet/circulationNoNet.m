@@ -52,6 +52,14 @@ methods(Hidden)
             - sum(C.circVector(:))*C.greensFunction(z);
     end
     
+    function dc = getDerivative(C, domain)
+        dnc = getDerivative(C.netCirculation, domain);
+        dg0 = diff(C.greensFunction);
+        zeta = domain.mapToUnitDomain;
+        dzeta = domain.mapToUnitDomainDeriv;
+        dc = @(z) dnc(z) - sum(C.circVector(:))*dg0(zeta(z)).*dzeta(z);
+    end
+    
     function C = setupPotential(C, W)
         D = W.unitDomain;
         if D.m == 0

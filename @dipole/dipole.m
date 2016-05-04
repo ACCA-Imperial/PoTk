@@ -96,6 +96,41 @@ methods(Hidden)
         end
     end
     
+    function dw = getDerivative(d, domain)
+        if d.entirePotential
+            dw = @(z) -d.strength./(z - d.location).^2/2/pi*exp(1i*d.angle);
+            return
+        end
+        
+        zeta = domain.mapToUnitDomain;
+        dzeta = domain.mapToUnitDomainDeriv;
+        
+        dzg0x = diff(d.greensXderivative);
+        dzg0y = diff(d.greensYderivative);
+        
+        function v = deval(z)
+            v = 0;
+            
+            U = d.strength;
+            if U == 0
+                return
+            end
+            
+            chi = d.angle;
+            a = d.mapMultiplier;
+            zz = zeta(z);
+            if mod(chi, pi) > eps(pi)
+                v = v - 4*pi*U*a*sin(chi)*dzg0x(zz);
+            end
+            if mod(chi + pi/2, pi) > eps(pi)
+                v = v - 4*pi*U*a*cos(chi)*dzg0y(zz);
+            end
+            v = v.*dzeta(z);
+        end
+        
+        dw = @deval;
+    end
+    
     function d = setupPotential(d, W)
         D = W.unitDomain;
         zeta = W.domain.mapToUnitDomain;
@@ -110,9 +145,8 @@ methods(Hidden)
             return
         end
         D = skpDomain(D);
-        dpg0 = greensC0Dp(beta, D);
-        [d.greensXderivative, d.greensYderivative] ...
-            = getPartialXyDerivatives(dpg0);
+        d.greensXderivative = greensC0Dpxy(beta, 'x', D);
+        d.greensYderivative = greensC0Dpxy(beta, 'y', d.greensXderivative);
     end
 end
 

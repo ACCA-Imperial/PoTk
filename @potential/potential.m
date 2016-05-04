@@ -1,4 +1,4 @@
-classdef potential
+classdef potential < PoTk.evaluable
 %POTENTIAL is the complex potential.
 %
 %  W = potential(D, varargin)
@@ -71,6 +71,14 @@ methods
         end
     end
     
+    function dW = diff(W)
+        %First order variable derivative of potential.
+        %
+        %  dW = diff(W)
+        
+        dW = potentialDerivative(W.domain, W.potentialFunctions);
+    end
+    
     function disp(W)
         %override disp() builtin.
         
@@ -80,7 +88,7 @@ methods
         elseif D.m == 0
             connstr = 'a simply connected';
         else
-            connstr = 'a %d-connected';
+            connstr = sprintf('a %d-connected', D.m+1);
         end
         
         poloc = strsplit(fileparts(which('potential')), filesep);
@@ -116,19 +124,6 @@ methods
         zeta = D.domain.mapToUnitDomain;
         for i = 1:numel(pf)
             val = val + pf{i}.evalPotential(zeta(z));
-        end
-    end
-    
-    function out = subsref(W, S)
-        % Provide function-like behaviour.
-        %
-        %   W = potential(...);
-        %   val = W(z);
-        
-        if numel(S) == 1 && strcmp(S.type, '()')
-            out = feval(W, S.subs{:});
-        else
-            out = builtin('subsref', W, S);
         end
     end
     

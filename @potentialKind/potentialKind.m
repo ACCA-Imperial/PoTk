@@ -34,6 +34,7 @@ classdef(Abstract) potentialKind
 
 properties(Hidden)
     entirePotential = false
+    domain
 end
 
 properties(Dependent,Hidden)
@@ -42,10 +43,17 @@ end
 
 methods(Hidden)
     val = evalPotential(pk, z)
+    dpk = getDerivative(pk, W)
     pk = setupPotential(pk, W)
 end
 
 methods(Access=protected)
+    function entireDerivative(pk, ~)
+        error(PoTk.ErrorIdString.RuntimeError, ...
+            'Derivatives for class "%s" not yet implemented in entire plane.', ...
+            class(pk))
+    end
+    
     function bool = getOkForPlane(~)
         bool = false;
     end

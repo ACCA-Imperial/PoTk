@@ -57,8 +57,8 @@ methods(Hidden)
         if pv.entirePotential
             N = numel(pv.location);
             val = reshape(sum(...
-                arrayfun(@(k) log(z(:) - pv.location(k))/2i/pi, 1:N), 2), ...
-                size(z));
+                arrayfun(@(k) log(z(:) - pv.location(k)), 1:N), 2), ...
+                size(z))/2i/pi;
             return
         end
         
@@ -69,6 +69,40 @@ methods(Hidden)
         for k = find(s(:) ~= 0)'
             val = val + s(k)*g0v{k}(z);
         end
+    end
+    
+    function dpv = getDerivative(pv, domain)
+        if pv.entirePotential
+            dpv = getDerivativeEntireDomain(pv);
+            return
+        end
+        
+        g0v = pv.greensFunctions;
+        dg0v = cell(size(g0v));
+        for k = find(pv.strength(:)' ~= 0)
+            dg0v{k} = diff(g0v{k});
+        end
+        
+        function v = dEval(z)
+            zz = domain.mapToUnitDomain(z);
+            dzeta = domain.mapToUnitDomainDeriv;
+
+            v = 0;
+            sv = pv.strength;
+            for i = find(sv(:)' ~= 0)
+                v = v + sv(i)*dg0v{i}(zz);
+            end
+            v = v.*dzeta(z);
+        end
+        
+        dpv = @dEval;
+    end
+    
+    function dpv = getDerivativeEntireDomain(pv)
+        N = numel(pv.location);
+        dpv = @(z) reshape(sum(...
+            arrayfun(@(k) 1./(z(:) - pv.location(k)), 1:N), 2), ...
+            size(z))/2i/pi;
     end
     
     function pv = setupPotential(pv, W)

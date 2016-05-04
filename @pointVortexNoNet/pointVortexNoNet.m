@@ -60,6 +60,20 @@ methods(Hidden)
         val = val - sum(pv.strength(:))*pv.greensFunction(z);
     end
     
+    function dpv = getDerivative(pv, domain)
+        if pv.entirePotential
+            dpv = getDerivativeEntireDomain(pv);
+            return
+        end
+        
+        zeta = domain.mapToUnitDomain;
+        dzeta = domain.mapToUnitDomainDeriv;
+        dg0v = diff(pv.greensFunction);
+        dg0net = getDerivative(pv.netPointVortex, domain);
+        
+        dpv = @(z) dg0net(z) - sum(pv.strength(:))*dg0v(zeta(z)).*dzeta(z);
+    end
+    
     function pv = setupPotential(pv, W)
         Du = W.unitDomain;
         if Du.m == 0
