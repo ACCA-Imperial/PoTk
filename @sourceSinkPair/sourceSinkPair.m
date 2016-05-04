@@ -74,9 +74,29 @@ methods(Hidden)
             val = s.strength*log((z - s.location)./(z - s.opposite))/2/pi;
             return
         end
+        
         omv = s.primeFunctions;
         val = s.strength*log(omv{1}(z).*omv{2}(z)...
             ./omv{3}(z)./omv{4}(z))/(2*pi);
+    end
+    
+    function ds = getDerivative(s, domain, ~)
+        zeta = domain.mapToUnitDomain;
+        dzeta = domain.mapToUnitDomainDeriv;
+        
+        omv = s.primeFunctions;
+        domv = cellfun(@diff, omv, 'uniformoutput', false);
+        
+        function dv = deval(z)
+            zz = zeta(z);
+            
+            dv = s.strength ...
+                *(domv{1}(zz)./omv{1}(zz) + domv{2}(zz)./omv{2}(zz) ...
+                - domv{3}(zz)./omv{3}(zz) - domv{4}(zz)./omv{4}(zz)) ...
+                .*dzeta(z)/2/pi;
+        end
+        
+        ds = @deval;
     end
     
     function s = setupPotential(s, W)
