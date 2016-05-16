@@ -31,8 +31,8 @@ properties(SetAccess=protected)
     
     greensXderivative
     greensYderivative
-    % FIXME: This is a kludge.
-    mapMultiplier = 1
+    
+    dipoleMultiplier = 1           % From conformal map to unit domain.
 end
 
 methods
@@ -82,7 +82,7 @@ methods(Hidden)
         end
         
         chi = d.angle;
-        a = d.mapMultiplier;
+        a = d.dipoleMultiplier;
         if mod(chi, pi) > eps(pi)
             % "Horizontal" component.
             dxg0 = d.greensXderivative;
@@ -116,7 +116,7 @@ methods(Hidden)
             end
             
             chi = d.angle;
-            a = d.mapMultiplier;
+            a = d.dipoleMultiplier;
             zz = zeta(z);
             if mod(chi, pi) > eps(pi)
                 v = v - 4*pi*U*a*sin(chi)*dzg0x(zz);
@@ -138,7 +138,7 @@ methods(Hidden)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 'The dipole must be located inside the bounded circle domain.')
         end
-        d.mapMultiplier = W.domain.mapMultiplier;
+        d.dipoleMultiplier = W.domain.dipoleMultiplier;
         
         if d.strength == 0
             return

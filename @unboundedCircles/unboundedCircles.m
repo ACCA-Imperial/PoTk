@@ -64,8 +64,7 @@ methods
         D.mapToUnitDomainDeriv = @(z) -rv(1)./(z - sv(1)).^2;
         D.mapFromUnitDomain = inv(zeta);
         D.mapFromUnitDomainDeriv = @(z) -rv(1)./z.^2;
-        % FIXME: This is kludge for dipole.
-        D.mapMultiplier = rv(1);
+        D.dipoleMultiplier = rv(1);
 
         Du = zeta(C);
         D.unitDomainObject = unitDomain(...

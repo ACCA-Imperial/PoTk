@@ -41,8 +41,8 @@ properties(SetAccess=protected)
     mapFromUnitDomain   % Hot to get points back from unit domain.
     mapFromUnitDomainDeriv
     
-    % FIXME: This is a kludge for the diplole.
-    mapMultiplier = 1
+    % Dipole needs this value in a domain with boundaries.
+    dipoleMultiplier = 1
 end
 
 end
