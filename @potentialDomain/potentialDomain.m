@@ -1,9 +1,21 @@
 classdef(Abstract) potentialDomain
 %potentialDomain is a potential function domain.
 %
-%Abstract class denoting a generic potential function domain. Currently
-%only provides pedigree. All potential domains should have this as a
-%superclass.
+%Abstract class denoting a generic potential function domain. Provides
+%property storage for conformal maps to and from unit domain. Any subclass
+%with one or more boundaries should at a minimum define protected properties
+%
+%   mapToUnitDomain
+%   mapToUnitDomainDeriv
+%
+%on construction. Future implementations may also protected properties
+%
+%   mapFromUnitDomain
+%   mapFromUnitDomainDeriv
+%
+%be defined.
+%
+%See also unitDomain.
 
 % Everett Kropf, 2016
 % 
