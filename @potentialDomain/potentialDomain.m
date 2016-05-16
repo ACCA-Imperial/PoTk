@@ -1,4 +1,4 @@
-classdef(Abstract) potentialDomain < anyDomain
+classdef(Abstract) potentialDomain
 %potentialDomain is a potential function domain.
 %
 %Abstract class denoting a generic potential function domain. Currently
