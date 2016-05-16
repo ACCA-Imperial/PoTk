@@ -42,9 +42,9 @@ methods
             return
         end
         
-        if ~isa(D, 'anyDomain')
+        if ~isa(D, 'potentialDomain')
             error(PoTk.ErrorIdString.InvalidArgument, ...
-                'First argument must be a domain object.')
+                'First argument must be a ''potentialDomain'' object.')
         end
         W.domain = D;
         isPlane = isa(D, 'planeDomain');
