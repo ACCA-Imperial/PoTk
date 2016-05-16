@@ -17,8 +17,6 @@ rv = [
     0.932];
 Om = unboundedCircles(sv, rv);
 
-zg = meshgrid(Om);
-
 zp = 0.51331+2.3099i;
 
 
@@ -26,7 +24,7 @@ zp = 0.51331+2.3099i;
 % Equivalent bounded unit domain.
 
 D = unitDomain(Om);
-zeta = Om.mapToUnitDomain;
+% zeta = Om.mapToUnitDomain;
 
 
 %%
@@ -59,6 +57,23 @@ pvn = pointVortexNoNet(av, gv);
 
 
 %%
+% Sources and sinks.
+
+sv = [
+    -3.4112+4.2814i
+    -0.3047+3.9946i
+    1.3441+3.1821i
+    4.2117+2.752i
+    -1.38-4.0106i
+    0.84231-4.2256i
+    2.3717-4.2017i];
+mv = [1; 1; 2; 1; -1; -3; -1];
+sns = sourcesAndSinks(sv, mv);
+
+W = potential(Om, sns);
+
+
+%%
 % Source/sink pair.
 
 a = -2.6551+3.2733i;
@@ -87,7 +102,7 @@ zd = 0.70599 + 1.3893i;
 dp = dipole(zd, 1, 0);
 % dp = dipole(inf, 1, pi/4);
 
-W = potential(Om, dp);
+% W = potential(Om, dp);
 
 
 %%
@@ -115,6 +130,8 @@ disp(abs(fdW(zp) - dW(zp)))
 return
 %%
 % Plot streamlines.
+
+zg = meshgrid(Om, [], 2);
 
 wg = W(zg);
 
