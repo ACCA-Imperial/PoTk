@@ -2,11 +2,11 @@ classdef sourceSinkPair < pointSingularity
 %sourceSinkPair defines a source and a sink.
 %
 %  s = sourceSinkPair(location, opposite, strength)
-%    Constructs a point source and point sink pair in the bounded circular
-%    domain where the "source" is placed by the location variable and the
-%    sink is placed by the opposite variable. The strength scalar
-%    represents the strength of the pair, where a negative value swaps the
-%    source/sink role of the points.
+%    Constructs a point source and point sink pair in a potential domain
+%    where the "source" is placed by the location argument and the
+%    sink is placed by the opposite argument. The strength scalar
+%    represents the strength of the pair, where a negative value swaps
+%    the source/sink role of the points.
 %
 %See also potential, unitDomain, source, potentialKind.
 

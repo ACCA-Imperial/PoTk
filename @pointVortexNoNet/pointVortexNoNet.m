@@ -3,14 +3,13 @@ classdef pointVortexNoNet < pointVortex
 %
 %  pv = pointVortex(location, strength)
 %    Constructs a pointVortex object where location is a vector of points
-%    located in a domain given by a relatedly defined unitDomain object.
-%    The vector strength is a vector of scalars the same size as the
-%    location vector indicating the strength of each point vortex. The net
-%    added flow from the point vortices is then assigned to a point vortex
-%    designated as the property unitDomain.infImage. (See the beta
-%    argumnet in the unitDomain constructor.) For a conformal map from an
-%    unbounded physical domain to the bounded unit domain, this is the
-%    image of the point at infinity under this map.
+%    located in a potential domain. The vector strength is a vector of
+%    scalars the same size as the location vector indicating the strength
+%    of each point vortex. The net added flow from the point vortices is
+%    then assigned to a point vortex at infinity if the domain is
+%    unbounded, or a designated point in a bounded domain. In the case of
+%    unitDomain, this point is unitDomain.infImage (see the beta argument
+%    in the unitDomain constructor).
 %
 %See also potential, unitDomain, pointVortex.
 

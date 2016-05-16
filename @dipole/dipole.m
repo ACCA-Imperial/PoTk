@@ -3,9 +3,8 @@ classdef dipole < pointSingularity
 %
 %  d = dipole(location, strength)
 %  d = dipole(location, strength, angle)
-%    Constructs a dipole in the bounded circular domain at the given
-%    location which should be inside a relatedly defined unitDomain. The
-%    scalar strengh specifies the strength of the dipole. The optional
+%    Constructs a dipole at a point in a potential domain. The scalar
+%    strengh specifies the strength of the dipole. The optional
 %    argument angle (defaults to 0) specifies the angle of the dipole.
 %
 %See also potential, unitDomain.

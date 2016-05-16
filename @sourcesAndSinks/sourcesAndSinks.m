@@ -3,9 +3,10 @@ classdef sourcesAndSinks < pointSingularity
 %
 %  s = sourcesAndSinks(locations, strengths)
 %    Defines a collection of potential sources and sinks at the vector
-%    locations. The vector strengths must be the same size as locations.
-%    Locations must be within the potential domain. It is possible to
-%    have sum(strengths) ~= 0, but this will trigger a warning.
+%    locations in a potential domain. The vector strengths must be the
+%    same size as locations. Locations must be within the potential
+%    domain. It is possible to have sum(strengths) ~= 0, but this will
+%    trigger a warning.
 %
 %See also potential, unitDomain, planeDomain, potentialKind.
 

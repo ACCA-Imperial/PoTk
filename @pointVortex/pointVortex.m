@@ -3,11 +3,12 @@ classdef pointVortex < pointSingularity
 %
 %  pv = pointVortex(location, strength)
 %    Constructs a pointVortex object where location is a vector of points
-%    located in a domain given by a relatedly defined unitDomain object.
-%    The vector strength is a vector of scalars the same size as the
-%    location vector indicating the strength of each point vortex. All net
-%    flow from the point vortices is assigned to the unit circle as a
-%    circulation of strength -sum(strength).
+%    located in a potential domain. The vector strength is a vector of
+%    scalars the same size as the location vector indicating the strength
+%    of each point vortex. If there are any boundaries in the domain, the
+%    point vortices create a net circulation which is assigned to the
+%    boundary with the zero index. In the unit domain this means the net
+%    circulation is assigned to the bounding unit circle.
 %
 %See also potential, unitDomain, pointVortexNoNet.
 

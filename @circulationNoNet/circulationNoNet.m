@@ -4,14 +4,13 @@ classdef circulationNoNet < circulation
 %  C = circulation(c0, c1, c2, ..., cm)
 %  C = circulation([c0, c1, c2, ..., cm])
 %    Creates a circulation object which describes the potential
-%    contribution due to circulation around the m+1 boundary circles of a
-%    unitDomain object. For j = 0:m, each cj is a real scalar value
-%    signifying the circulation strentgh on boundary j. The net circulation
-%    is then assigned to a point vortex designated as the property
-%    unitDomain.infImage. (See the beta argumnet in the unitDomain
-%    constructor.) For a conformal map from an unbounded physical domain
-%    to the bounded unit domain, this is the image of the point at infinity
-%    under this map.
+%    contribution due to circulation around m+1 boundaries in a domain with
+%    connectivity m+1. For j = 0:m, each cj is a real scalar value
+%    signifying the circulation strength on the jth boundary. The net
+%    circulation is then assigned to a point vortex at infinity if the
+%    associated domain is unbounded, or a designated point in a bounded
+%    domain. In the case of unitDomain, this point is unitDomain.infImage
+%    (see the beta argument in the unitDomain constructor).
 %
 %See also potential, unitDomain, circulation.
 

@@ -2,14 +2,15 @@ classdef uniformFlow < dipole
 %uniformFlow is the uniform background flow.
 %
 %  uf = uniformFlow(strength, angle)
-%    Constructs a uniform flow potential. The flow strength is a real
-%    scalar value and the angle is in [0, 2*pi). The angle defaults to 0.
-%    Background flow relies on the existence of the property
-%    unitDomain.infImage, see the beta argument for unitDomain, which is
-%    the image of the point at infinity under a conformal map from an
-%    unbounded physical domain to the bounded circle domain.
+%    Constructs a uniform flow object in a potential domain.  The flow
+%    strength is a real scalar value and the angle is in [0, 2*pi). The
+%    angle defaults to 0. In an unbounded domain uniform flow is a dipole
+%    at the point at infinity. In a bounded domain this is some designated
+%    point in the domain; in the case of unitDomain, this point is
+%    unitDomain.infImage (see the beta argument in the unitDomain
+%    constructor).
 %
-%See also potential, unitDomain, dipole.
+%See also potential, dipole, unitDomain, unboundedCircles.
 
 % Everett Kropf, 2016
 % 

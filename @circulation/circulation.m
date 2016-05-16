@@ -4,10 +4,12 @@ classdef circulation < potentialKind
 %  C = circulation(c1, c2, ..., cm)
 %  C = circulation([c1, c2, ..., cm])
 %    Creates a circulation object which describes the potential
-%    contribution due to circulation around m inner boundary circles in a
-%    unitDomain object. For j = 1:m, each cj is a real scalar value
-%    signifying the circulation strentgh on boundary j. The bounding unit
-%    circle then has a net circulation of -sum([c1, c2, ..., cm]).
+%    contribution due to circulation around m >= 1 boundaries in a domain
+%    with connectivity m+1. For j = 1:m, each cj is a real scalar value
+%    signifying the circulation strentgh on boundary j. The boundary with
+%    index 0 then has a net circulation of -sum([c1, c2, ..., cm]). In the
+%    unit domain this means all of the "extra" circulation is assigned to
+%    the bounding unit circle.
 %
 %See also potential, unitDomain, circulationNoNet.
 
