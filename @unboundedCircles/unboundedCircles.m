@@ -85,7 +85,7 @@ methods
         %  zg = meshgrid(D, resolution)
         %  zg = meshgrid(D, resolution, scale)
         
-        if nargin < 2
+        if nargin < 2 || isempty(resolution)
             resolution = 200;
         end
         if nargin < 3
