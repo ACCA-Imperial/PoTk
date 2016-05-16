@@ -32,7 +32,7 @@ classdef potential < PoTk.evaluable
 properties(SetAccess=protected)
     domain                          % A potentialDomain object.
     
-    potentialFunctions              % Cell array of potential contributions
+    potentialKinds                  % Cell array of potential contributions
 end
 
 methods
@@ -67,7 +67,7 @@ methods
                     'the entire plane.'], class(pk))
                 pk.entirePotential = true;
             end
-            W.potentialFunctions{end+1} = pk;
+            W.potentialKinds{end+1} = pk;
         end
     end
     
@@ -76,7 +76,7 @@ methods
         %
         %  dW = diff(W)
         
-        dW = potentialDerivative(W.domain, W.potentialFunctions);
+        dW = potentialDerivative(W.domain, W.potentialKinds);
     end
     
     function disp(W)
@@ -97,11 +97,11 @@ methods
             'potential</a> is a complex potential on %s domain\n'], ...
             poloc, connstr)
         
-        pf = W.potentialFunctions;
-        if ~isempty(pf)
+        pk = W.potentialKinds;
+        if ~isempty(pk)
             fprintf('\n  contributions to the potential are of kind\n')
-            for i = 1:numel(pf)
-                pname = class(pf{i});
+            for i = 1:numel(pk)
+                pname = class(pk{i});
                 fprintf('    <a href="matlab:helpPopup %s/%s">%s</a>\n', ...
                     poloc, pname, pname)
             end
@@ -114,16 +114,16 @@ methods
         %Evaluate the potential at a point z.
         %  val = feval(D, z)
         
-        pf = D.potentialFunctions;
-        if isempty(pf)
+        pk = D.potentialKinds;
+        if isempty(pk)
             val = nan(size(z));
             return
         end
         
         val = complex(zeros(size(z)));
         zeta = D.domain.mapToUnitDomain;
-        for i = 1:numel(pf)
-            val = val + pf{i}.evalPotential(zeta(z));
+        for i = 1:numel(pk)
+            val = val + pk{i}.evalPotential(zeta(z));
         end
     end
     
