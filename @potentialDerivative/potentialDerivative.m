@@ -1,5 +1,17 @@
 classdef potentialDerivative < PoTk.evaluable
 %potentialDerivative is a derivative of the potential.
+%
+%  W = potential(D, ...)
+%  dW = diff(W)
+%    Create the derivative of the potential object; this indirectly calls
+%    the potentialDerivative constructor.
+
+%The potentialDerivative constructor may be called directly, and has the
+%same argument signature as potential, but potentialDerivative assumes the
+%potentialKind objects have already been "blessed" by the potential
+%constructor.
+%  
+%See also potential, potentialKind.
 
 % Everett Kropf, 2016
 % 
