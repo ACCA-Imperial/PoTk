@@ -2,11 +2,14 @@ classdef(Abstract) potentialKind
 %potentialKind describes a type of contribution to the potential.
 %
 %Abstract class specifying interface for potential contributions.
-%Subclasses (non-abstract) must implement two functions:
+%Subclasses (non-abstract) must implement three functions:
 %
 %  val = evalPotential(obj, z)
 %    Given a set of points z in the bounded unit domain, return the set
 %    val of potential values.
+%
+%  dkp = getDerivative(pd, domain)
+%    Return a function handle to evaluate the potential derivative.
 %
 %  obj = setupPotential(obj, W)
 %    Given a potential object, perform setup actions in anticipation of
