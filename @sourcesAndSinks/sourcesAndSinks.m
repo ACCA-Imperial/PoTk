@@ -59,12 +59,24 @@ methods
     end
     
     function [sv, mv] = sources(s)
+        %Returns source points (positive strentgh value).
+        %
+        %  [sv, mv] = sources(s)
+        %  Where sv are the locations and mv are the strengths of the
+        %  source points.
+        
         mask = s.strength > 0;
         sv = s.location(mask);
         mv = s.strength(mask);
     end
     
     function [sv, mv] = sinks(s)
+        %Returns sink points (negative strentgh value).
+        %
+        %  [sv, mv] = sinks(s)
+        %  Where sv are the locations and mv are the strengths of the
+        %  sink points.
+        
         mask = s.strength < 0;
         sv = s.location(mask);
         mv = s.strength(mask);

@@ -2,15 +2,16 @@ classdef potential < PoTk.evaluable
 %POTENTIAL is the complex potential.
 %
 %  W = potential(D, varargin)
-%    Constructs the potential object given a unitDomain object D and zero
-%    or more potentialKind objects.
+%    Constructs the potential object given a potential domain object D and
+%    zero or more potentialKind objects.
 %
-%Once constructed, the potential at points zeta in the bounded unit domain
+%Once constructed, the potential at points z in the potential domain
 %may be evaluated by the syntax
 %
-%  val = W(zeta)
+%  val = W(z)
 %
-%See also unitDomain, potentialKind, listKinds.
+%See also potentialDomain, unitDomain, unboundedCircles, potentialKind,
+%listKinds.
 
 % Everett Kropf, 2016
 % 
@@ -74,7 +75,10 @@ methods
     function dW = diff(W)
         %First order variable derivative of potential.
         %
-        %  dW = diff(W)
+        %  dW = DIFF(W)
+        %  dval = dW(z)
+        %  Where dW is a function handle which computes the derivative of
+        %  the potential W at points z in the domain.
         
         dW = potentialDerivative(W.domain, W.potentialKinds);
     end
