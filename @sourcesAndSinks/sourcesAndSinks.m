@@ -50,8 +50,8 @@ methods
         strengths = strengths(:);
         
         if sum(strengths) ~= 0
-            warning('PoTk:FlowImbalance', ...
-                'Source and sink strengths do not sum to zero.')
+            error(PoTk.ErrorIdString.RuntimeError, ...
+                'Mass imbalance; source and sink strengths do not sum to zero.')
         end
         
         s.location = locations;
