@@ -4,11 +4,13 @@ clear
 
 %%
 
-D = unitDomain(0, 0.25, -0.75);
-% D = planeDomain();
+% D = unitDomain(0, 0.25, -0.75);
+D = planeDomain();
 pv = pointVortex(0.7, 1);
 uf = uniformFlow(1, 0);
 W = potential(D, pv, uf);
+
+analytic(W)
 
 
 %%
