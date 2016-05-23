@@ -119,12 +119,11 @@ methods
         %  val = feval(D, z)
         
         pk = D.potentialKinds;
+        val = complex(zeros(size(z)));
         if isempty(pk)
-            val = nan(size(z));
             return
         end
         
-        val = complex(zeros(size(z)));
         zeta = D.domain.mapToUnitDomain;
         for i = 1:numel(pk)
             val = val + pk{i}.evalPotential(zeta(z));
