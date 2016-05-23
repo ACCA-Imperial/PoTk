@@ -85,7 +85,7 @@ methods(Hidden)
         end
     end
     
-    function dc = getDerivative(C, ~)
+    function dc = getDerivative(C)
         circ = C.circVector;
         cv = find(circ(:)' ~= 0);
         vj = C.firstKindIntegrals;

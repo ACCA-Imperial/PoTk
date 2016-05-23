@@ -59,7 +59,7 @@ methods
         df = cell(1, N);
         names = cell(size(df));
         for i = 1:N
-            df{i} = getDerivative(potentialKinds{i}, domain);
+            df{i} = getDerivative(potentialKinds{i});
             names{i} = class(potentialKinds{i});
         end
         dW.derivativeFunctions = df;

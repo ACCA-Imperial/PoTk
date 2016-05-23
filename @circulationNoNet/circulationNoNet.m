@@ -49,8 +49,8 @@ methods(Hidden)
             - sum(C.circVector(:))*C.greensFunction(z);
     end
     
-    function dc = getDerivative(C, domain)
-        dnc = getDerivative(C.netCirculation, domain);
+    function dc = getDerivative(C)
+        dnc = getDerivative(C.netCirculation);
         dg0 = diff(C.greensFunction);
         dc = @(z) dnc(z) - sum(C.circVector(:))*dg0(z);
     end

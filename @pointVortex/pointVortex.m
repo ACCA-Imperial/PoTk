@@ -72,7 +72,7 @@ methods(Hidden)
         end
     end
     
-    function dpv = getDerivative(pv, ~)
+    function dpv = getDerivative(pv)
         if pv.entirePotential
             dpv = getDerivativeEntireDomain(pv);
             return

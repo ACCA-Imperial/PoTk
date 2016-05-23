@@ -46,7 +46,7 @@ end
 
 methods(Hidden)
     val = evalPotential(pk, z)
-    dpk = getDerivative(pk, W)
+    dpk = getDerivative(pk)
     pk = setupPotential(pk, W)
 end
 

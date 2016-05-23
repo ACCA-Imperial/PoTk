@@ -57,14 +57,14 @@ methods(Hidden)
         val = val - sum(pv.strength(:))*pv.greensFunction(z);
     end
     
-    function dpv = getDerivative(pv, domain)
+    function dpv = getDerivative(pv)
         if pv.entirePotential
             dpv = getDerivativeEntireDomain(pv);
             return
         end
         
         dg0v = diff(pv.greensFunction);
-        dg0net = getDerivative(pv.netPointVortex, domain);
+        dg0net = getDerivative(pv.netPointVortex);
         
         dpv = @(z) dg0net(z) - sum(pv.strength(:))*dg0v(z);
     end

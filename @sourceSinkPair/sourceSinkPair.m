@@ -80,7 +80,7 @@ methods(Hidden)
             ./omv{3}(z)./omv{4}(z))/(2*pi);
     end
     
-    function ds = getDerivative(s, ~)
+    function ds = getDerivative(s)
         if s.entirePotential
             ds = @(z) s.strength ...
                 *(1./(z - s.location) - 1./(z - s.opposite))/2/pi;

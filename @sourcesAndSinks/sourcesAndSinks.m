@@ -96,7 +96,7 @@ methods(Hidden)
         end
     end
     
-    function ds = getDerivative(s, ~)
+    function ds = getDerivative(s)
         if s.entirePotential
         end
                 
