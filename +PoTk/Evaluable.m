@@ -1,5 +1,5 @@
-classdef(Abstract) evaluable
-%evaluable provides function like evaluation protocol.
+classdef(Abstract) Evaluable
+%Evaluable provides function like evaluation protocol.
 %
 %Subclasses of this abstract class must implement a "function evaluation"
 %method with the signature
