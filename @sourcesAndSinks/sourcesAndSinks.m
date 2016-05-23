@@ -28,10 +28,6 @@ classdef sourcesAndSinks < pointSingularity
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 
-methods
-    
-end
-
 properties(Access=protected)
     primeFunctions
 end
