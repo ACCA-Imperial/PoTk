@@ -7,7 +7,7 @@ classdef source < sourceSinkPair
 %    of equal and opposite strength is placed at the point at infinity if
 %    the potential domain is unbounded, or a designated point in a bounded
 %    domain. In the case of unitDomain, this point is unitDomain.infImage
-%   (see the beta argument in the unitDomain constructor).
+%    (see the beta argument in the unitDomain constructor).
 %
 %See also potential, unitDomain.
 

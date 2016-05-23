@@ -5,10 +5,8 @@ classdef uniformFlow < dipole
 %    Constructs a uniform flow object in a potential domain.  The flow
 %    strength is a real scalar value and the angle is in [0, 2*pi). The
 %    angle defaults to 0. In an unbounded domain uniform flow is a dipole
-%    at the point at infinity. In a bounded domain this is some designated
-%    point in the domain; in the case of unitDomain, this point is
-%    unitDomain.infImage (see the beta argument in the unitDomain
-%    constructor).
+%    at the point at infinity. In the unitDomain this is some designated
+%    point (see the beta argument in the unitDomain constructor).
 %
 %See also potential, dipole, unitDomain, unboundedCircles.
 

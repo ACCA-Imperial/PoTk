@@ -96,7 +96,7 @@ methods(Hidden)
         end
     end
     
-    function ds = getDerivative(s, domain)
+    function ds = getDerivative(s, ~)
         if s.entirePotential
         end
                 
@@ -104,27 +104,22 @@ methods(Hidden)
         dfv = cell(size(pfv));
         dfv(:) = cellfun(@diff, pfv(:), 'uniformOutput', false);
         
-        zeta = domain.mapToUnitDomain;
-        dzeta = domain.mapToUnitDomainDeriv;
         function dv = deval(z)
-            zz = zeta(z);
             dv = complex(zeros(size(z)));
             
             mv = s.strength;
             for k = 1:numel(mv)
                 dv = dv + mv(k)/2/pi ...
-                    *(dfv{k,1}(zz)./pfv{k,1}(zz) + dfv{k,2}(zz)./pfv{k,2}(zz));
+                    *(dfv{k,1}(z)./pfv{k,1}(z) + dfv{k,2}(z)./pfv{k,2}(z));
             end
-            dv = dv.*dzeta(z);
         end
         
         ds = @deval;
     end
     
     function s = setupPotential(s, W)
-        zeta = W.domain.mapToUnitDomain;
         D = W.unitDomain;
-        av = zeta(s.location);
+        av = s.location;
         if ~isin(D, av)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 'Sources and sinks must be within the domain.')

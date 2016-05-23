@@ -95,14 +95,11 @@ methods(Hidden)
         end
     end
     
-    function dw = getDerivative(d, domain)
+    function dw = getDerivative(d, ~)
         if d.entirePotential
             dw = @(z) -d.strength./(z - d.location).^2/2/pi*exp(1i*d.angle);
             return
         end
-        
-        zeta = domain.mapToUnitDomain;
-        dzeta = domain.mapToUnitDomainDeriv;
         
         dzg0x = diff(d.greensXderivative);
         dzg0y = diff(d.greensYderivative);
@@ -117,14 +114,12 @@ methods(Hidden)
             
             chi = d.angle;
             a = d.dipoleMultiplier;
-            zz = zeta(z);
             if mod(chi, pi) > eps(pi)
-                v = v - 4*pi*U*a*sin(chi)*dzg0x(zz);
+                v = v - 4*pi*U*a*sin(chi)*dzg0x(z);
             end
             if mod(chi + pi/2, pi) > eps(pi)
-                v = v - 4*pi*U*a*cos(chi)*dzg0y(zz);
+                v = v - 4*pi*U*a*cos(chi)*dzg0y(z);
             end
-            v = v.*dzeta(z);
         end
         
         dw = @deval;
@@ -132,13 +127,11 @@ methods(Hidden)
     
     function d = setupPotential(d, W)
         D = W.unitDomain;
-        zeta = W.domain.mapToUnitDomain;
-        beta = zeta(d.location);        
+        beta = d.location;
         if ~isin(D, beta)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 'The dipole must be located inside the bounded circle domain.')
         end
-        d.dipoleMultiplier = W.domain.dipoleMultiplier;
         
         if d.strength == 0
             return

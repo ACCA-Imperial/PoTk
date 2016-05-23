@@ -124,9 +124,8 @@ methods
             return
         end
         
-        zeta = D.domain.mapToUnitDomain;
         for i = 1:numel(pk)
-            val = val + pk{i}.evalPotential(zeta(z));
+            val = val + pk{i}.evalPotential(z);
         end
     end
     

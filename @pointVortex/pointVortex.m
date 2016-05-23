@@ -72,7 +72,7 @@ methods(Hidden)
         end
     end
     
-    function dpv = getDerivative(pv, domain)
+    function dpv = getDerivative(pv, ~)
         if pv.entirePotential
             dpv = getDerivativeEntireDomain(pv);
             return
@@ -85,15 +85,11 @@ methods(Hidden)
         end
         
         function v = dEval(z)
-            zz = domain.mapToUnitDomain(z);
-            dzeta = domain.mapToUnitDomainDeriv;
-
             v = 0;
             sv = pv.strength;
             for i = find(sv(:)' ~= 0)
-                v = v + sv(i)*dg0v{i}(zz);
+                v = v + sv(i)*dg0v{i}(z);
             end
-            v = v.*dzeta(z);
         end
         
         dpv = @dEval;
@@ -107,10 +103,9 @@ methods(Hidden)
     end
     
     function pv = setupPotential(pv, W)
-        zeta = W.domain.mapToUnitDomain;
         g0v = cell(1, numel(pv.location));        
         for k = find(pv.strength(:) ~= 0)'
-            g0v{k} = greensC0(zeta(pv.location(k)), skpDomain(W.unitDomain));
+            g0v{k} = greensC0(pv.location(k), skpDomain(W.unitDomain));
         end
         pv.greensFunctions = g0v;
     end

@@ -24,10 +24,4 @@ classdef planeDomain < potentialDomain
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-methods
-    function D = planeDomain()
-        D.mapToUnitDomain = @(z) z;
-    end
-end
-
 end

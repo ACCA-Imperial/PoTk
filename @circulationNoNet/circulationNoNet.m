@@ -4,13 +4,11 @@ classdef circulationNoNet < circulation
 %  C = circulation(c0, c1, c2, ..., cm)
 %  C = circulation([c0, c1, c2, ..., cm])
 %    Creates a circulation object which describes the potential
-%    contribution due to circulation around m+1 boundaries in a domain with
-%    connectivity m+1. For j = 0:m, each cj is a real scalar value
-%    signifying the circulation strength on the jth boundary. The net
-%    circulation is then assigned to a point vortex at infinity if the
-%    associated domain is unbounded, or a designated point in a bounded
-%    domain. In the case of unitDomain, this point is unitDomain.infImage
-%    (see the beta argument in the unitDomain constructor).
+%    contribution due to circulation around m inner circles and the unit
+%    circle. For j = 0:m, each cj is a real scalar value specifying the
+%    circulation strength on the jth circle. The net circulation is then
+%    assigned to a designated point in the domain (see the beta argument
+%    in the unitDomain constructor).
 %
 %See also potential, unitDomain, circulation.
 
@@ -54,9 +52,7 @@ methods(Hidden)
     function dc = getDerivative(C, domain)
         dnc = getDerivative(C.netCirculation, domain);
         dg0 = diff(C.greensFunction);
-        zeta = domain.mapToUnitDomain;
-        dzeta = domain.mapToUnitDomainDeriv;
-        dc = @(z) dnc(z) - sum(C.circVector(:))*dg0(zeta(z)).*dzeta(z);
+        dc = @(z) dnc(z) - sum(C.circVector(:))*dg0(z);
     end
     
     function C = setupPotential(C, W)

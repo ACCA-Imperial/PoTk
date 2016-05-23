@@ -39,11 +39,6 @@ end
 
 methods
     function D = unitDomain(dv, qv, beta)
-        D.mapToUnitDomain = @(z) z;
-        D.mapToUnitDomainDeriv = @(z) 1;
-        D.mapFromUnitDomain = @(z) z;
-        D.mapFromUnitDomainDeriv = @(z) 1;
-
         if ~nargin
             return
         end

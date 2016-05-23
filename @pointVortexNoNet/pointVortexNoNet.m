@@ -6,10 +6,8 @@ classdef pointVortexNoNet < pointVortex
 %    located in a potential domain. The vector strength is a vector of
 %    scalars the same size as the location vector indicating the strength
 %    of each point vortex. The net added flow from the point vortices is
-%    then assigned to a point vortex at infinity if the domain is
-%    unbounded, or a designated point in a bounded domain. In the case of
-%    unitDomain, this point is unitDomain.infImage (see the beta argument
-%    in the unitDomain constructor).
+%    then assigned to a point vortex at a designated point in the
+%    unitDomain (see the beta argument in the unitDomain constructor).
 %
 %See also potential, unitDomain, pointVortex.
 
@@ -65,12 +63,10 @@ methods(Hidden)
             return
         end
         
-        zeta = domain.mapToUnitDomain;
-        dzeta = domain.mapToUnitDomainDeriv;
         dg0v = diff(pv.greensFunction);
         dg0net = getDerivative(pv.netPointVortex, domain);
         
-        dpv = @(z) dg0net(z) - sum(pv.strength(:))*dg0v(zeta(z)).*dzeta(z);
+        dpv = @(z) dg0net(z) - sum(pv.strength(:))*dg0v(z);
     end
     
     function pv = setupPotential(pv, W)

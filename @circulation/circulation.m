@@ -4,12 +4,11 @@ classdef circulation < potentialKind
 %  C = circulation(c1, c2, ..., cm)
 %  C = circulation([c1, c2, ..., cm])
 %    Creates a circulation object which describes the potential
-%    contribution due to circulation around m >= 1 boundaries in a domain
-%    with connectivity m+1. For j = 1:m, each cj is a real scalar value
-%    signifying the circulation strentgh on boundary j. The boundary with
-%    index 0 then has a net circulation of -sum([c1, c2, ..., cm]). In the
-%    unit domain this means all of the "extra" circulation is assigned to
-%    the bounding unit circle.
+%    contribution due to circulation around m >= 1 inner boundaries in a
+%    unitDomain. For j = 1:m, each cj is a real scalar value signifying
+%    the circulation strength on boundary j. The unit circle then has a
+%    net circulation of -sum([c1, c2, ..., cm]); in other words, all of
+%    the "extra" circulation has been placed there.
 %
 %See also potential, unitDomain, circulationNoNet.
 
@@ -86,7 +85,7 @@ methods(Hidden)
         end
     end
     
-    function dc = getDerivative(C, domain)
+    function dc = getDerivative(C, ~)
         circ = C.circVector;
         cv = find(circ(:)' ~= 0);
         vj = C.firstKindIntegrals;
@@ -97,10 +96,8 @@ methods(Hidden)
         
         function v = deval(z)
             v = 0;
-            zz = domain.mapToUnitDomain(z);
-            dzz = domain.mapToUnitDomainDeriv(z);
             for i = cv
-                v = v + circ(i)*dvj{i}(zz).*dzz;
+                v = v + circ(i)*dvj{i}(z);
             end
         end
         

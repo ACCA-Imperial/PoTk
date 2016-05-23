@@ -1,21 +1,10 @@
 classdef(Abstract) potentialDomain
 %potentialDomain is a potential function domain.
 %
-%Abstract class denoting a generic potential function domain. Provides
-%property storage for conformal maps to and from unit domain. Any subclass
-%with one or more boundaries should at a minimum define protected properties
+%Abstract class denoting a generic potential function domain. Mainly exists
+%simply to provide pedigree.
 %
-%   mapToUnitDomain
-%   mapToUnitDomainDeriv
-%
-%on construction. Future implementations may also protected properties
-%
-%   mapFromUnitDomain
-%   mapFromUnitDomainDeriv
-%
-%be defined.
-%
-%See also unitDomain.
+%See also unitDomain, planeDomain.
 
 % Everett Kropf, 2016
 % 
@@ -33,16 +22,5 @@ classdef(Abstract) potentialDomain
 % 
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
-
-properties(SetAccess=protected)
-    infImage            % Image of infinity to domain under given map.
-    mapToUnitDomain     % How to put points in unit domain.
-    mapToUnitDomainDeriv
-    mapFromUnitDomain   % Hot to get points back from unit domain.
-    mapFromUnitDomainDeriv
-    
-    % Dipole needs this value in a domain with boundaries.
-    dipoleMultiplier = 1
-end
 
 end

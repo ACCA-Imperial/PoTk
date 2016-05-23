@@ -80,35 +80,29 @@ methods(Hidden)
             ./omv{3}(z)./omv{4}(z))/(2*pi);
     end
     
-    function ds = getDerivative(s, domain)
+    function ds = getDerivative(s, ~)
         if s.entirePotential
             ds = @(z) s.strength ...
                 *(1./(z - s.location) - 1./(z - s.opposite))/2/pi;
             return
         end
         
-        zeta = domain.mapToUnitDomain;
-        dzeta = domain.mapToUnitDomainDeriv;
-        
         omv = s.primeFunctions;
         domv = cellfun(@diff, omv, 'uniformoutput', false);
         
         function dv = deval(z)
-            zz = zeta(z);
-            
             dv = s.strength ...
-                *(domv{1}(zz)./omv{1}(zz) + domv{2}(zz)./omv{2}(zz) ...
-                - domv{3}(zz)./omv{3}(zz) - domv{4}(zz)./omv{4}(zz)) ...
-                .*dzeta(z)/2/pi;
+                *(domv{1}(z)./omv{1}(z) + domv{2}(z)./omv{2}(z) ...
+                - domv{3}(z)./omv{3}(z) - domv{4}(z)./omv{4}(z)) ...
+                /2/pi;
         end
         
         ds = @deval;
     end
     
     function s = setupPotential(s, W)
-        zeta = W.domain.mapToUnitDomain;
-        alpha = zeta(s.location);
-        beta = zeta(s.opposite);
+        alpha = s.location;
+        beta = s.opposite;
         
         D = W.unitDomain;
         if ~isin(D, alpha)
