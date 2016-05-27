@@ -1,9 +1,12 @@
-# PoTk #
+# README #
+
+### PoTk ###
+
 A potential theory toolkit for MATLAB based on the Schottky-Klein prime function.
 
 ### Installing ###
 
-* Make sure that [SKPrime](https://github.com/ehkropf/SKPrime) is installed.
+* Make sure that [SKPrime](https://github.com/ehkropf/SKPrime/blob/release/README.md) is installed.
 * Download zip (or tar.gz) of [latest release](https://github.com/ehkropf/PoTk/releases/latest).
 * Upack the zip (or tar.gz) somewhere.
 * Run the `install.m` function from MATLAB in the directory created in the previous step.
