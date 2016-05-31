@@ -72,27 +72,6 @@ methods
         end
     end
     
-    function analytic(W)
-        %analytic(W)
-        
-        PoTk.Expressable.fprintDoubleSeparator()
-        fprintf('Analytic expressions for potential contributions.\n')
-        
-        pk = W.potentialKinds;
-        for i = 1:numel(pk)
-            PoTk.Expressable.fprintSingleSeparator()
-            fprintf('Kind: %s\n\n', class(pk{i}))
-            if ~isa(pk{i}, 'PoTk.Expressable')
-                fprintf('  No expression given.\n')
-                continue
-            end
-            
-            printAnalyticExpression(pk{i})
-        end
-        
-        PoTk.Expressable.fprintDoubleSeparator()
-    end
-
     function dW = diff(W)
         %First order variable derivative of potential.
         %
@@ -147,6 +126,26 @@ methods
         
         for i = 1:numel(pk)
             val = val + pk{i}.evalPotential(z);
+        end
+    end
+    
+    function podoc(W)
+        %display analytic expression for potential.
+        
+        do = []; % Document object.
+        do.print('The analytic expression for the potential is\n')
+        
+        pk = W.potentialKinds;
+        n = numel(pk);
+        for i = 1:n
+            do.print(pk{i}.documentExpression())
+            pkUsed = pk{i}.termsUsed();
+            used = [used, pkUsed(:)]; %#ok<AGROW>
+        end
+        
+        do.print('where we define\n')
+        for i = 1:numel(used)
+            
         end
     end
     
