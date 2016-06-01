@@ -49,13 +49,14 @@ methods
         
         % m-file version
         mkdir(tpath)
-        tname = [tpath, '/podoc.m'];
-        fid = fopen(tname, 'w');
+        mname = [tpath, '/podoc.m'];
+        fid = fopen(mname, 'w');
         fprintf(fid, bufferToPublish(do));
         fclose(fid);
         
+        % convert to html and display
         mxdom = [fileparts(mfilename('fullpath')), '/mxdom2html.xsl'];
-        hname = publish(tname, 'stylesheet', mxdom, 'outputDir', tpath, ...
+        hname = publish(mname, 'stylesheet', mxdom, 'outputDir', tpath, ...
             'evalCode', false);
         open(hname)
     end
@@ -66,7 +67,7 @@ methods(Access=protected)
         out = sprintf('%s\n', '%%%%');
         for i = 1:numel(do.buffer)
             out = [out, sprintf('%s %s\n', '%%', ...
-                PoDoc.Document.protectBS(do.buffer{i}))]; %#ok<AGROW>
+                do.protectBS(do.buffer{i}))]; %#ok<AGROW>
         end
     end
 end
