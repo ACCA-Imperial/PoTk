@@ -45,9 +45,9 @@ methods
     function publish(do)
         %publish and display buffer.
         
-        % Write temp m-file.
-        PoTk.ensureTempdir;
         tpath = tempname(PoTk.tempdir);
+        
+        % m-file version
         mkdir(tpath)
         tname = [tpath, '/podoc.m'];
         fid = fopen(tname, 'w');

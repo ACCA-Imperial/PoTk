@@ -1,4 +1,4 @@
-function ensureTempdir()
+function ensureTempdir(p)
 %ensureTempdir ensures PoTk temp directory exists.
 
 % Everett Kropf, 2016
@@ -18,7 +18,6 @@ function ensureTempdir()
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-p = PoTk.tempdir;
 if ~exist(p, 'dir')
     mkdir(p)
 end

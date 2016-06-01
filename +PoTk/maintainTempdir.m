@@ -1,5 +1,5 @@
-function p = tempdir()
-%PoTk.tempdir gives the PoTk temporary work directory location.
+function maintainTempdir(p, min)
+%maintainTempdir cleans temp directory contents over min minutes old.
 
 % Everett Kropf, 2016
 %
@@ -18,10 +18,16 @@ function p = tempdir()
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-p = strsplit(fileparts(mfilename('fullpath')), filesep);
-p{end} = 'tmp';
-p = strjoin(p, filesep);
+if nargin < 2
+    min = 1;
+end
+min = min/1440;
 
-% FIXME: Should these be done somewhere else?
-PoTk.ensureTempdir(p);
-PoTk.maintainTempdir(p);
+dd = dir(p);
+for i = 3:numel(dd)
+    if dd(i).datenum + min < now
+        rmdir([p, '/', dd(i).name], 's')
+    end
+end
+
+end
