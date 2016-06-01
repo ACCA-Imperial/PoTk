@@ -85,14 +85,14 @@ methods
         %   tf = isin(D, z)
         
         % Assume z is not scalar.
-        if any(abs(z(:)) >= 1)
+        if any(abs(z(:)) > 1 + eps(2))
             tf = false;
             return
         end
         
         m = numel(D.dv);
         for j = 1:m
-            if any(abs(z(:) - D.dv(j)) < D.qv(j))
+            if any(abs(z(:) - D.dv(j)) <= D.qv(j) - eps(2))
                 tf = false;
                 return
             end
