@@ -38,7 +38,7 @@ methods
         str = [do.deqOpen, istr, do.deqClose];
     end
     
-    function str = ieqInline(do, istr, varargin)
+    function str = ieqInline(do, istr)
         str = [do.ieqOpen, istr, do.ieqClose];
     end
     
