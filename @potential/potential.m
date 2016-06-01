@@ -155,11 +155,16 @@ methods
                 end
         end
         
-        terms = containers.Map();
+        terms = {};
         for i = 1:n
             keys = pk{i}.docTermKeys();
             for key = keys
-                ...
+                if any(strcmp(key, terms))
+                    continue
+                end
+                
+                terms{end+1} = key; %#ok<AGROW>
+                do.printf(do.printTerm(key))
             end
         end
         
