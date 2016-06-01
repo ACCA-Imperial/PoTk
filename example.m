@@ -5,40 +5,27 @@ clear
 
 
 %%
-% Unbounded circle domain. Let's also have a grid to plot off.
+% Bounded circle domain. Let's also have a grid to plot off.
 
-sv = [
-    -0.48951-1.7395i
-    -1.6608+1.4423i
-    2.5874+0.16608i];
-rv = [
-    1.2457
-    0.93902
-    0.932];
-Om = circleRegion(sv, rv);
+dv = [
+    0.052448+0.36539i
+    -0.27972-0.12762i
+    0.48252-0.28147i];
+qv = [
+    0.15197
+    0.17955
+    0.20956];
+beta = -0.6i;
 
-ax = plotbox(Om, 1.2);
 res = 200;
-[zg, zeta] = meshgrid(linspace(ax(1), ax(2), res), ...
-    linspace(ax(3), ax(4), res));
-zg = complex(zg, zeta);
-for j = 1:numel(sv)
-    zg(abs(zg - sv(j)) <= rv(j)+eps(max(abs(sv)))) = nan;
+[xg, yg] = meshgrid(linspace(-1, 1, res));
+zg = complex(xg, yg);
+zg(abs(zg) > 1) = nan;
+for j = 1:numel(dv)
+    zg(abs(zg - dv(j)) <= qv(j) + eps(2)) = nan;
 end
 
-zp = 0.51331+2.3099i;
-
-
-%%
-% Equivalent bounded unit domain.
-
-zeta = mobius(0, rv(1), 1, -sv(1));
-D = zeta(Om);
-dv = D.centers(2:end);
-qv = D.radii(2:end);
-beta = pole(inv(zeta));
-
-D = unitDomain(dv, qv, beta);
+zp = 0.43032 + 0.22391i;
 
 
 %%
@@ -55,14 +42,15 @@ circn = circulationNoNet(1, 2.2, -1);
 % Point vortices.
 
 av = [
-    0.25641+0.38313i
-    -1.9915-0.58025i
-    0.7488+2.5454i
-    2.1618-1.3938i];
+    -0.43032+0.43382i
+    -0.0034985+0.083965i
+    0.26939+0.062974i
+    0.56327+0.062974i
+];
 gv = [1, -1, 1, 1];
 
-pv = pointVortex(zeta(av), gv);
-pvn = pointVortexNoNet(zeta(av), gv);
+pv = pointVortex(av, gv);
+pvn = pointVortexNoNet(av, gv);
 
 % W = potential(D, pv);
 % W = potential(D, pvn);
@@ -73,10 +61,10 @@ pvn = pointVortexNoNet(zeta(av), gv);
 %%
 % Source/sink pair.
 
-a = -2.6551+3.2733i;
-b = 2.0119-3.7273i;
+a = -0.4793+0.32886i;
+b = 0.59125+0.04898i;
 m = 1.2;
-ss = sourceSinkPair(zeta(a), zeta(b), m);
+ss = sourceSinkPair(a, b, m);
 
 % W = potential(D, ss);
 
@@ -86,17 +74,17 @@ ss = sourceSinkPair(zeta(a), zeta(b), m);
 
 a = av(1);
 m = 1;
-sp = source(zeta(a), m);
+sp = source(a, m);
 
 % W = potential(D, sp);
-% W = potential(D, sp, pointVortex(zeta(a), -1));
+% W = potential(D, sp, pointVortex(a, -1));
 
 
 %%
 % Dipole.
 
-zd = 0.70599 + 1.3893i;
-dp = dipole(zeta(zd), 1, 0);
+zd = -0.4863+0.40583i;
+dp = dipole(zd, 1, 0);
 % dp = dipole(beta, 1, pi/4);
 
 W = potential(D, dp);
@@ -120,7 +108,7 @@ uf = uniformFlow(.4, pi/4);
 % 
 % dW = diff(W);
 % 
-% disp(fdW(zeta(zp)) - dW(zeta(zp)));
+% disp(fdW(zp) - dW(zp));
 
 
 %%
@@ -128,14 +116,9 @@ return
 %%
 % Plot streamlines.
 
-wg = W(zeta(zg));
+wg = W(zg);
 
 figure(1), clf
 contour(real(zg), imag(zg), imag(wg), 20, ...
     'linecolor', [0.2081, 0.1663, 0.5292])
-hold on
-fill(inv(Om))
-plot(Om)
-% plot(av, 'k.')
-hold off
 set(gca, 'dataaspectratio', [1, 1, 1])
