@@ -132,52 +132,46 @@ methods
     function podoc(W)
         %display analytic expression for potential.
         
-        do = []; % Document object.
-        do.printf('The analytic expression for the potential is\n')
+        do = PoDoc.Document();
+        do.addln('The analytic expression for the potential is')
         
         pk = W.potentialKinds;
         n = numel(pk);
+        for i = 1:n
+            pk{i} = document(pk{i});
+        end
         
         switch n
             case 0
-                do.printf(do.deqLine('W(\\zeta) = 0'))
+                do.addln(do.deqLine('W(\zeta) = 0'))
                 
             case 1
-                do.printf(do.deqLine(pk{1}.documentExpression()))
+                do.addln(do.deqLine(...
+                    ['W(\zeta) = ', latex(pk{i})]))
                 
             otherwise
-                do.printf(do.deqLine(...
-                    'W(\\zeta) = \\sum_{\\mu=1}^K W_\\mu(\\zeta)'))
+                do.addln(do.deqLine(...
+                    'W(\zeta) = \sum_{\mu=1}^K W_\mu(\zeta)'))
                 for i = 1:n
-                    do.printf(...
-                        do.deqLine(pk{i}.documentExpression()))
-                    
+                    do.addln(do.deqLine(...
+                        ['W_i(\zeta) = ', latex(pk{i})]))
                 end
         end
         
         terms = {};
         for i = 1:n
-            keys = pk{i}.docTermKeys();
+            keys = pk{i}.termKeys();
             for key = keys
                 if any(strcmp(key, terms))
                     continue
                 end
                 
                 terms{end+1} = key; %#ok<AGROW>
-                do.printf(do.printTerm(key))
+                do.addln(do.printTerm(key))
             end
         end
         
-%         for i = 1:n
-%             do.printf(pk{i}.documentExpression())
-%             pkUsed = pk{i}.termsUsed();
-%             used = [used, pkUsed(:)]; %#ok<AGROW>
-%         end
-        
-%         do.printf('where we define\n')
-%         for i = 1:numel(used)
-%             
-%         end
+        do.publish()
     end
     
     function D = unitDomain(W)
