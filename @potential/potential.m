@@ -133,20 +133,46 @@ methods
         %display analytic expression for potential.
         
         do = []; % Document object.
-        do.print('The analytic expression for the potential is\n')
+        do.printf('The analytic expression for the potential is\n')
         
         pk = W.potentialKinds;
         n = numel(pk);
-        for i = 1:n
-            do.print(pk{i}.documentExpression())
-            pkUsed = pk{i}.termsUsed();
-            used = [used, pkUsed(:)]; %#ok<AGROW>
+        
+        switch n
+            case 0
+                do.printf(do.deqLine('W(\\zeta) = 0'))
+                
+            case 1
+                do.printf(do.deqLine(pk{1}.documentExpression()))
+                
+            otherwise
+                do.printf(do.deqLine(...
+                    'W(\\zeta) = \\sum_{\\mu=1}^K W_\\mu(\\zeta)'))
+                for i = 1:n
+                    do.printf(...
+                        do.deqLine(pk{i}.documentExpression()))
+                    
+                end
         end
         
-        do.print('where we define\n')
-        for i = 1:numel(used)
-            
+        terms = containers.Map();
+        for i = 1:n
+            keys = pk{i}.docTermKeys();
+            for key = keys
+                ...
+            end
         end
+        
+%         for i = 1:n
+%             do.printf(pk{i}.documentExpression())
+%             pkUsed = pk{i}.termsUsed();
+%             used = [used, pkUsed(:)]; %#ok<AGROW>
+%         end
+        
+%         do.printf('where we define\n')
+%         for i = 1:numel(used)
+%             
+%         end
     end
     
     function D = unitDomain(W)
