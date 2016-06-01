@@ -137,9 +137,9 @@ methods
         
         pk = W.potentialKinds;
         n = numel(pk);
-        for i = 1:n
-            pk{i} = document(pk{i});
-        end
+%         for i = 1:n
+%             pk{i} = document(pk{i});
+%         end
         
         switch n
             case 0
@@ -147,15 +147,19 @@ methods
                 
             case 1
                 do.addln(do.deqLine(...
-                    ['W(\zeta) = ', latex(pk{i})]))
+                    ['W(\zeta) = ', latexExpression(pk{1})]))
                 
             otherwise
                 do.addln(do.deqLine(...
                     'W(\zeta) = \sum_{\mu=1}^K W_\mu(\zeta)'))
                 for i = 1:n
                     do.addln(do.deqLine(...
-                        ['W_i(\zeta) = ', latex(pk{i})]))
+                        ['W_i(\zeta) = ', latexExpression(pk{i})]))
                 end
+        end
+        
+        if n > 0
+            do.addln('where we define')
         end
         
         terms = {};

@@ -41,6 +41,8 @@ properties(Hidden)
 end
 
 properties(Dependent,Hidden)
+    textName
+    termKeys
     okForPlane
 end
 
@@ -48,6 +50,11 @@ methods(Hidden)
     val = evalPotential(pk, z)
     dpk = getDerivative(pk)
     pk = setupPotential(pk, W)
+    
+    function str = latexExpression(pk)
+        str = ['\mathrm{no\; expression\; given}\quad\mathrm{(', ...
+            pk.textName, ')}'];
+    end
 end
 
 methods(Access=protected)
@@ -57,12 +64,20 @@ methods(Access=protected)
             class(pk))
     end
     
+    function str = getTextName(pk)
+        str = class(pk);
+    end
+    
     function bool = getOkForPlane(~)
         bool = false;
     end
 end
 
 methods
+    function str = get.textName(pk)
+        str = getTextName(pk);
+    end
+    
     function bool = get.okForPlane(pk)
         bool = getOkForPlane(pk);
     end
