@@ -28,16 +28,16 @@ classdef uniformFlow < dipole
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 methods
-    function uf = uniformFlow(strength, angle)
+    function uf = uniformFlow(strength, angle, scale)
         if ~nargin
             args = {};
         else
-            if nargin < 2
-                angle = 0;
+            if nargin < 3
+                scale = 1;
             end
             
             % Pass dipole a placeholder point.
-            args = {0, strength, angle};
+            args = {0, strength, angle, scale};
         end
         
         uf = uf@dipole(args{:});
