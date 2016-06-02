@@ -25,20 +25,54 @@ properties(Constant)
     deqClose = '\]'
 end
 
-properties(Access=protected)
+properties(SetAccess=protected)
     buffer = {}
 end
 
 methods
+    function do = Document(buffer)
+        if ~nargin
+            return
+        end
+        
+        if ~all(cellfun(@ischar, buffer(:)))
+            error(PoTk.ErrorIdString.InvalidArgument, ...
+                'Buffer must be cell array of strings.')
+        end
+        do.buffer = buffer;
+    end
+    
     function addln(do, str)
-        do.buffer = [do.buffer(:), str];
+        %add unformatted line to document.
+        
+        if nargin < 2 || isempty(str)
+            str = ' ';
+        end
+        
+        do.buffer = [do.buffer(:); str];
+    end
+    
+    function insertIntoLastLineFront(do, str)
+        %insert string at beginning of last line in buffer.
+        
+        do.buffer{end} = [str, do.buffer{end}];
+    end
+    
+    function deleteLastLine(do)
+        %deletes last line in buffer.
+        
+        do.buffer(end) = '';
     end
     
     function str = deqLine(do, istr)
+        %display equation mode.
+        
         str = [do.deqOpen, istr, do.deqClose];
     end
     
     function str = ieqInline(do, istr)
+        %inline equation mode.
+        
         str = [do.ieqOpen, istr, do.ieqClose];
     end
     
@@ -60,10 +94,23 @@ methods
             'evalCode', false);
         open(hname)
     end
+    
+    function do3 = vertcat(do1, do2)
+        %Vertical concatenation.
+        
+        if ~(isa(do1, 'PoDoc.Document') && isa(do2, 'PoDoc.Document'))
+            error(PoTk.ErrorIdString.InvalidArgument, ...
+                ['Cannot concatenate a PoDoc.Document object with a ', ...
+                'non-Document object.'])
+        end
+        do3 = PoDoc.Document([do1.buffer; do2.buffer]);
+    end
 end
 
 methods(Access=protected)
     function out = bufferToPublish(do)
+        %translate buffer to publish input.
+        
         out = sprintf('%s\n', '%%%%');
         for i = 1:numel(do.buffer)
             out = [out, sprintf('%s %s\n', '%%', ...
