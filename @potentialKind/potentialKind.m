@@ -55,6 +55,25 @@ methods(Hidden)
         str = ['\mathrm{no\; expression\; given}\quad\mathrm{(', ...
             pk.textName, ')}'];
     end
+    
+    function terms = docTerms(~)
+        %returns cell array of term keys used in potential definition.
+        
+        terms = {};
+    end
+    
+    function termLatexToDoc(pk, term, do)
+        try
+            feval([term, 'TermLatexToDoc'], pk, do)
+        catch
+            try
+                feval(['PoDoc.DefinedTerms.', term], do)
+            catch
+                warning(PoTk.ErrorIdString.UndefinedState, ...
+                    'Unable to find document term ''%s''', term)
+            end
+        end
+    end
 end
 
 methods(Access=protected)
