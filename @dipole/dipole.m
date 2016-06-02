@@ -28,18 +28,27 @@ classdef dipole < pointSingularity
 
 properties(SetAccess=protected)
     angle = 0
+    scale = 1
     
     greensXderivative
     greensYderivative
-    
-    dipoleMultiplier = 1           % From conformal map to unit domain.
 end
 
 methods
-    function d = dipole(location, strength, angle)
+    function d = dipole(location, strength, angle, scale)
         if ~nargin
             return
         end
+        
+        if nargin < 4
+            scale = 1;
+            % FIXME: Really need a new ID string for this message.
+            warning(PoTk.ErrorIdString.UndefinedState, ...
+                ['A scale should be specified if there is a map to ' ...
+                'a physical domain, flow strength may otherwise be ' ...
+                'inaccurate. Now set to 1 by default.'])
+        end
+        d.scale = scale;
         
         if numel(location) ~= 1
             error(PoTk.ErrorIdString.RuntimeError, ...
@@ -82,16 +91,16 @@ methods(Hidden)
         end
         
         chi = d.angle;
-        a = d.dipoleMultiplier;
+        b = d.scale;
         if mod(chi, pi) > eps(pi)
             % "Horizontal" component.
             dxg0 = d.greensXderivative;
-            val = val - 4*pi*U*a*sin(chi)*dxg0(z);
+            val = val - 4*pi*U*b*sin(chi)*dxg0(z);
         end
         if mod(chi + pi/2, pi) > eps(pi)
             % "Vertical" component.
             dyg0 = d.greensYderivative;
-            val = val - 4*pi*U*a*cos(chi)*dyg0(z);
+            val = val - 4*pi*U*b*cos(chi)*dyg0(z);
         end
     end
     
@@ -113,12 +122,12 @@ methods(Hidden)
             end
             
             chi = d.angle;
-            a = d.dipoleMultiplier;
+            b = d.scale;
             if mod(chi, pi) > eps(pi)
-                v = v - 4*pi*U*a*sin(chi)*dzg0x(z);
+                v = v - 4*pi*U*b*sin(chi)*dzg0x(z);
             end
             if mod(chi + pi/2, pi) > eps(pi)
-                v = v - 4*pi*U*a*cos(chi)*dzg0y(z);
+                v = v - 4*pi*U*b*cos(chi)*dzg0y(z);
             end
         end
         
