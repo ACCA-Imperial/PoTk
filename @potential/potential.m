@@ -178,10 +178,6 @@ methods
             do.addln('where we define')
             do.addln()
             
-            if numel(printed) > 1 && ~strncmp(dot.buffer{end}, 'and ', 4)
-                deleteLastLine(dot)
-                insertIntoLastLineFront(dot, 'and ')
-            end
             do = [do; dot];
         end
                 
