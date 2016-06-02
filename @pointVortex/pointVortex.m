@@ -110,10 +110,30 @@ methods(Hidden)
         pv.greensFunctions = g0v;
     end
     
+    function terms = docTerms(~)
+        terms = {'skprime', 'greensC0', 'pointVortex'};
+    end
+    
+    function str = latexExpression(pv)
         if pv.entirePotential
+            str = '\mathrm{entire plane potential not given yet}';
             return
         end
         
+        % FIXME: give different expressions for differing numbers of
+        % vortices.
+        str = [...
+            '\sum_{k=1}^N \gamma_k ', ...
+            'G_0(\zeta,\alpha_k,\overline{\alpha_k}) ', ...
+            '\qquad \mathrm{(point\; vortices)}'];
+    end
+    
+    function pointVortexTermLatexToDoc(~, do)
+        % FIXME: different expressions for 0, 1, or more than one points.
+        do.addln(...
+            ['the point vortex locations ', ...
+            do.ieqInline('\alpha_k'), ' with strength ', ...
+            do.ieqInline('\gamma_k')])
     end
 end
 
