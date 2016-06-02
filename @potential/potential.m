@@ -137,9 +137,22 @@ methods
         
         pk = W.potentialKinds;
         n = numel(pk);
-%         for i = 1:n
-%             pk{i} = document(pk{i});
-%         end
+        
+        dot = PoDoc.Document();
+        printed = {};
+        function addTerms(pkx)
+            terms = pkx.docTerms();
+            for j = 1:numel(terms)
+                term = terms{j};
+                if any(strcmp(term, printed))
+                    continue
+                end
+                printed{end+1} = term; %#ok<AGROW>
+                
+                pkx.termLatexToDoc(term, dot)
+                dot.addln()
+            end
+        end
         
         switch n
             case 0
@@ -148,33 +161,30 @@ methods
             case 1
                 do.addln(do.deqLine(...
                     ['W(\zeta) = ', latexExpression(pk{1})]))
+                addTerms(pk{1})
                 
             otherwise
                 do.addln(do.deqLine(...
                     'W(\zeta) = \sum_{\mu=1}^K W_\mu(\zeta)'))
                 for i = 1:n
                     do.addln(do.deqLine(...
-                        ['W_i(\zeta) = ', latexExpression(pk{i})]))
+                        ['W_', int2str(i), '(\zeta) = ', ...
+                        latexExpression(pk{i})]))
+                    addTerms(pk{i})
                 end
         end
         
-        if n > 0
+        if n > 0 && ~isempty(printed)
             do.addln('where we define')
-        end
-        
-        terms = {};
-        for i = 1:n
-            keys = pk{i}.termKeys();
-            for key = keys
-                if any(strcmp(key, terms))
-                    continue
-                end
-                
-                terms{end+1} = key; %#ok<AGROW>
-                do.addln(do.printTerm(key))
+            do.addln()
+            
+            if numel(printed) > 1 && ~strncmp(dot.buffer{end}, 'and ', 4)
+                deleteLastLine(dot)
+                insertIntoLastLineFront(dot, 'and ')
             end
+            do = [do; dot];
         end
-        
+                
         do.publish()
     end
     
