@@ -69,7 +69,11 @@ methods
         if strcmp(S(1).type, '()')
             out = subsref(double(C), S);
         else
-            out = builtin('subsref', C, S);
+            if nargout
+                out = builtin('subsref', C, S);
+            else
+                builtin('subsref', C, S)
+            end
         end
     end
 end
