@@ -1,11 +1,20 @@
 classdef dipole < pointSingularity
 %dipole represents a dipole.
 %
-%  d = dipole(location, strength)
-%  d = dipole(location, strength, angle)
+%  d = dipole(location, strength, angle, scale)
 %    Constructs a dipole at a point in a potential domain. The scalar
-%    strengh specifies the strength of the dipole. The optional
-%    argument angle (defaults to 0) specifies the angle of the dipole.
+%    strengh specifies the strength of the dipole. The argument angle 
+%    specifies the angle of the dipole. The scale is a scaling factor for
+%    the dipole flow associated with a conformal map to a physical domain;
+%    see below.
+%
+%  If z(zeta) is a conformal map from the unit domain to a physical domain
+%  and alpha is the location of the dipoel, the scaling factor is defined
+%  by the expression
+%
+%                 scale
+%    z(zeta) = ----------- + analytic part.
+%              zeta - beta
 %
 %See also potential, unitDomain.
 
