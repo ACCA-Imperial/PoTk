@@ -78,4 +78,18 @@ methods(Hidden)
     end
 end
 
+methods(Hidden) % Documentation
+    function str = latexExpression(C)
+        if numel(C.circVector) == 1
+            str = ['\Gamma_1 \left( v_1(\zeta) - ', ...
+                'G_0(\zeta,\beta,\overline{\beta}) \right)'];
+        else
+            str = [...
+                '\sum_{j=1}^m \Gamma_j \left( v_j(\zeta) - ', ...
+                'G_0(\zeta,\beta,\overline{\beta}) \right)'];
+        end
+        str = [str, ' \qquad\mathrm{(circulation)}'];
+    end
+end
+
 end
