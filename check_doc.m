@@ -26,8 +26,13 @@ uf = uniformFlow(1, 0);
 C = circulationNoNet([1, 1, -1]);
 % C = circulation([1, -1]);
 
+sv = [
+    -0.36035-0.32886i
+    0.53528-0.14694i];
+S = sourcesAndSinks(sv, [1; -1]);
+
 
 %%
 
-W = potential(D, C, pv, uf);
+W = potential(D, S, uf, pv, C);
 podoc(W)

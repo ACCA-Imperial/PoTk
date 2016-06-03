@@ -140,6 +140,39 @@ methods(Hidden)
     end
 end
 
+methods(Hidden) % Documentation
+    function terms = docTerms(s)
+        terms = {'sourcesAndSinks'};
+        if s.entirePotential
+            return
+        end
+        terms = ['skprime', terms];
+    end
+    
+    function str = latexExpression(s)
+        if s.entirePotential
+            str = [...
+                'sum_{k=1}^N \frac{m_k}{2\pi} ', ...
+                '\log(\zeta - s_k)'];
+            return
+        end
+        
+        str = ['\sum_{k=1}^N ', ...
+            '\frac{m}{2\pi} ', ...
+            '\log\left( \frac{\omega(\zeta,s_k)}', ...
+            '{\omega(\zeta,1/\overline{s_k})} \right)', ...
+            '\qquad\mathrm{(sources/sinks)}'];
+    end
+    
+    function sourcesAndSinksTermLatexToDoc(~, do)
+        do.addln([...
+            'the source/sink locations by ', ...
+            do.eqInline('s_k'), ' and the strengths ', ...
+            do.eqInline('m_k'), ', and we require ', ...
+            do.eqInline('\sum m_k = 0')])
+    end
+end
+
 methods(Access=protected)
     function bool = getOkForPlane(~)
         bool = true;
