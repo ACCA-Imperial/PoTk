@@ -65,10 +65,16 @@ methods(Hidden)
     function termLatexToDoc(pk, term, do)
         try
             feval([term, 'TermLatexToDoc'], pk, do)
-        catch
+        catch err
+            if ~strcmp(err.identifier, 'MATLAB:UndefinedFunction')
+                rethrow(err)
+            end
             try
                 feval(['PoDoc.DefinedTerms.', term], do)
-            catch
+            catch err
+                if ~strcmp(err.identifier, 'MATLAB:UndefinedFunction')
+                    rethrow(err)
+                end
                 warning(PoTk.ErrorIdString.UndefinedState, ...
                     'Unable to find document term ''%s''', term)
             end
