@@ -52,18 +52,6 @@ methods
         do.buffer = [do.buffer(:); str];
     end
     
-    function insertIntoLastLineFront(do, str)
-        %insert string at beginning of last line in buffer.
-        
-        do.buffer{end} = [str, do.buffer{end}];
-    end
-    
-    function deleteLastLine(do)
-        %deletes last line in buffer.
-        
-        do.buffer(end) = '';
-    end
-    
     function str = deqLine(do, istr)
         %display equation mode.
         
