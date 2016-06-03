@@ -68,7 +68,9 @@ methods(Hidden)
         
         uf = setupPotential@dipole(uf, W);
     end
-    
+end
+
+methods(Hidden) % Documentation    
     function terms = docTerms(~)
         terms = {'skprime', 'greensC0', 'uniformFlow'};
     end
