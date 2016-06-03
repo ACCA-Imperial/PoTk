@@ -42,7 +42,6 @@ end
 
 properties(Dependent,Hidden)
     textName
-    termKeys
     okForPlane
 end
 
