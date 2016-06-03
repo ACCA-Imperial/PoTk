@@ -1,4 +1,4 @@
-classdef pointVortex < pointSingularity & PoTk.Expressable
+classdef pointVortex < pointSingularity
 %pointVortex represents a point vortex.
 %
 %  pv = pointVortex(location, strength)

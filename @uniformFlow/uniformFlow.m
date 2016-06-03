@@ -1,4 +1,4 @@
-classdef uniformFlow < dipole & PoTk.Expressable
+classdef uniformFlow < dipole
 %uniformFlow is the uniform background flow.
 %
 %  uf = uniformFlow(strength, angle)

@@ -1,4 +1,4 @@
-classdef potential < PoTk.Evaluable
+classdef potential
 %POTENTIAL is the complex potential.
 %
 %  W = potential(D, varargin)
