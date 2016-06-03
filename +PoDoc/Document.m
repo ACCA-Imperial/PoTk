@@ -58,7 +58,7 @@ methods
         str = [do.deqOpen, istr, do.deqClose];
     end
     
-    function str = ieqInline(do, istr)
+    function str = eqInline(do, istr)
         %inline equation mode.
         
         str = [do.ieqOpen, istr, do.ieqClose];
