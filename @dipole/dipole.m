@@ -34,21 +34,20 @@ properties(SetAccess=protected)
     greensYderivative
 end
 
+properties(Access=private)
+    scaleWasGiven = false
+end
+
 methods
     function d = dipole(location, strength, angle, scale)
         if ~nargin
             return
         end
         
-        if nargin < 4
-            scale = 1;
-            % FIXME: Really need a new ID string for this message.
-            warning(PoTk.ErrorIdString.UndefinedState, ...
-                ['A scale should be specified if there is a map to ' ...
-                'a physical domain, flow strength may otherwise be ' ...
-                'inaccurate. Now set to 1 by default.'])
+        if nargin > 3
+            d.scaleWasGiven = true;
+            d.scale = scale;
         end
-        d.scale = scale;
         
         if numel(location) ~= 1
             error(PoTk.ErrorIdString.RuntimeError, ...
@@ -108,6 +107,15 @@ methods(Hidden)
         if d.entirePotential
             dw = @(z) -d.strength./(z - d.location).^2/2/pi*exp(1i*d.angle);
             return
+        end
+        
+        if ~d.scaleWasGiven
+            % FIXME: Really need a new ID string for this message.
+            warning('PoTk:dipole:noScale', ...
+                ['A scale for class %s should be specified ', ...
+                'if there is a map to a physical domain, potential due ', ...
+                'to %s may otherwise be inaccurate. Scale set to 1 by ', ...
+                'default.'], class(d))
         end
         
         dzg0x = diff(d.greensXderivative);

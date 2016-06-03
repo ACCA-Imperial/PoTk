@@ -32,12 +32,12 @@ methods
         if ~nargin
             args = {};
         else
-            if nargin < 3
-                scale = 1;
+            % Note dipole is given a placeholder point.
+            if nargin > 2
+                args = {0, strength, angle, scale};
+            else
+                args = {0, strength, angle};
             end
-            
-            % Pass dipole a placeholder point.
-            args = {0, strength, angle, scale};
         end
         
         uf = uf@dipole(args{:});
