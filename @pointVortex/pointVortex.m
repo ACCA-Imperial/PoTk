@@ -53,7 +53,7 @@ methods
     end
 end
 
-methods(Hidden)
+methods(Hidden) % Computation
     function val = evalPotential(pv, z)
         if pv.entirePotential
             N = numel(pv.location);
@@ -109,7 +109,9 @@ methods(Hidden)
         end
         pv.greensFunctions = g0v;
     end
-    
+end
+
+methods(Hidden) % Documentation
     function terms = docTerms(pv)
             terms = {'pointVortex'};
         if pv.entirePotential
