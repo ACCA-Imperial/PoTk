@@ -52,7 +52,7 @@ methods
         do.buffer = [do.buffer(:); str];
     end
     
-    function str = deqLine(do, istr)
+    function str = eqDisplay(do, istr)
         %display equation mode.
         
         str = [do.deqOpen, istr, do.deqClose];
