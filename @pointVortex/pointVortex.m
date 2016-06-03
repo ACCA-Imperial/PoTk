@@ -53,7 +53,7 @@ methods
     end
 end
 
-methods(Hidden)
+methods(Hidden) % Computation
     function val = evalPotential(pv, z)
         if pv.entirePotential
             N = numel(pv.location);
@@ -108,6 +108,56 @@ methods(Hidden)
             g0v{k} = greensC0(pv.location(k), skpDomain(W.unitDomain));
         end
         pv.greensFunctions = g0v;
+    end
+end
+
+methods(Hidden) % Documentation
+    function terms = docTerms(pv)
+            terms = {'pointVortex'};
+        if pv.entirePotential
+            return
+        end
+        terms = ['skprime', 'greensC0', terms];
+    end
+    
+    function str = latexExpression(pv)
+        if pv.entirePotential
+            if numel(pv.location) == 1
+                str = [...
+                    '\frac{\gamma}{2\pi\mathrm{i}} \log\left( ', ...
+                    '\zeta - \alpha \right)'];
+            else
+                str = [...
+                    '\frac{1}{2\pi\mathrm{i}} \sum_{k=1}^N \gamma_k ', ...
+                    '\log\left( \zeta - \alpha_k \right)'];
+            end
+            return
+        end
+        
+        if numel(pv.location) == 1
+            str = [...
+                '\gamma G_0(\zeta,\alpha,\overline{\alpha}) ', ...
+                '\qquad\mathrm{(point\;vortex)}'];
+        else
+            str = [...
+                '\sum_{k=1}^N \gamma_k ', ...
+                'G_0(\zeta,\alpha_k,\overline{\alpha_k}) ', ...
+                '\qquad \mathrm{(point\; vortices)}'];
+        end
+    end
+    
+    function pointVortexTermLatexToDoc(pv, do)
+        if numel(pv.location) == 1
+            do.addln(...
+                ['the point vortex located by ', ...
+                do.eqInline('\alpha'), ' with vortex strength ', ...
+                do.eqInline('\gamma')]);
+        else
+            do.addln(...
+                ['the point vortex locations by ', ...
+                do.eqInline('\alpha_k'), ' with strengths ', ...
+                do.eqInline('\gamma_k')])
+        end
     end
 end
 

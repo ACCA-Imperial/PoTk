@@ -41,6 +41,7 @@ properties(Hidden)
 end
 
 properties(Dependent,Hidden)
+    textName
     okForPlane
 end
 
@@ -48,6 +49,36 @@ methods(Hidden)
     val = evalPotential(pk, z)
     dpk = getDerivative(pk)
     pk = setupPotential(pk, W)
+    
+    function str = latexExpression(pk)
+        str = ['\mathrm{no\; expression\; given}\quad\mathrm{(', ...
+            pk.textName, ')}'];
+    end
+    
+    function terms = docTerms(~)
+        %returns cell array of term keys used in potential definition.
+        
+        terms = {};
+    end
+    
+    function termLatexToDoc(pk, term, do)
+        try
+            feval([term, 'TermLatexToDoc'], pk, do)
+        catch err
+            if ~strcmp(err.identifier, 'MATLAB:UndefinedFunction')
+                rethrow(err)
+            end
+            try
+                feval(['PoDoc.DefinedTerms.', term], do)
+            catch err
+                if ~strcmp(err.identifier, 'MATLAB:UndefinedFunction')
+                    rethrow(err)
+                end
+                warning(PoTk.ErrorIdString.UndefinedState, ...
+                    'Unable to find document term ''%s''', term)
+            end
+        end
+    end
 end
 
 methods(Access=protected)
@@ -57,12 +88,20 @@ methods(Access=protected)
             class(pk))
     end
     
+    function str = getTextName(pk)
+        str = class(pk);
+    end
+    
     function bool = getOkForPlane(~)
         bool = false;
     end
 end
 
 methods
+    function str = get.textName(pk)
+        str = getTextName(pk);
+    end
+    
     function bool = get.okForPlane(pk)
         bool = getOkForPlane(pk);
     end

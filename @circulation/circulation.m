@@ -69,7 +69,11 @@ methods
         if strcmp(S(1).type, '()')
             out = subsref(double(C), S);
         else
-            out = builtin('subsref', C, S);
+            if nargout
+                out = builtin('subsref', C, S);
+            else
+                builtin('subsref', C, S)
+            end
         end
     end
 end
@@ -118,6 +122,36 @@ methods(Hidden)
             vj{j} = vjFirstKind(j, D);
         end
         C.firstKindIntegrals = vj;
+    end
+end
+
+methods(Hidden) % Documentation
+    function terms = docTerms(~)
+        terms = {'firstKindIntegral', 'circulation'};
+    end
+    
+    function str = latexExpression(C)
+        if numel(C.circVector) == 1
+            str = '\Gamma_1 v_1(\zeta)';
+        else
+            str = '\sum_{j=1}^m \Gamma_j v_j(\zeta)';
+        end
+        str = [str, ' \qquad\mathrm{(circulation)}'];
+    end
+    
+    function circulationTermLatexToDoc(C, do)
+        if numel(C.circVector) == 1
+            do.addln(...
+                ['the circulation strength given by ', ...
+                do.eqInline('\Gamma_1'), ' on circle ', ...
+                do.eqInline('C_1')])
+        else
+            do.addln(...
+                ['the circulation strengths given by ', ...
+                do.eqInline('\Gamma_j'), ...
+                ' on each circle in ', ...
+                do.eqInline('\{ C_j : 1\le j\le m \}')])
+        end
     end
 end
 

@@ -85,4 +85,26 @@ methods(Hidden)
     end
 end
 
+methods(Hidden) % Documentation
+    function str = latexExpression(pv)
+        if pv.entirePotential
+            str = latexExpression@pointVortex(pv);
+            return
+        end
+        
+        if numel(pv.location) == 1
+            str = [...
+                '\gamma \left( G_0(\zeta,\alpha,\overline{\alpha}) ', ...
+                ' - G_0(\zeta,\beta,\overline{\beta}) \right)', ...
+                ' \qquad\mathrm{(point\;vortex)}'];
+        else
+            str = [...
+                '\sum_{k=1}^N \gamma_k ', ...
+                '\left( G_0(\zeta,\alpha_k,\overline{\alpha_k}) ', ...
+                ' - G_0(\zeta,\beta,\overline{\beta}) \right)', ...
+                ' \qquad\mathrm{(point\; vortices)}'];
+        end
+    end
+end
+
 end

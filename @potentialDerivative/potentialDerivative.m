@@ -1,4 +1,4 @@
-classdef potentialDerivative < PoTk.Evaluable
+classdef potentialDerivative
 %potentialDerivative is a derivative of the potential.
 %
 %  W = potential(D, ...)

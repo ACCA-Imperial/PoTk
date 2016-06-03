@@ -1,4 +1,4 @@
-classdef potential < PoTk.Evaluable
+classdef potential
 %POTENTIAL is the complex potential.
 %
 %  W = potential(D, varargin)
@@ -127,6 +127,61 @@ methods
         for i = 1:numel(pk)
             val = val + pk{i}.evalPotential(z);
         end
+    end
+    
+    function podoc(W)
+        %display analytic expression for potential.
+        
+        do = PoDoc.Document();
+        do.addln('The analytic expression for the potential is')
+        
+        pk = W.potentialKinds;
+        n = numel(pk);
+        
+        dot = PoDoc.Document();
+        printed = {};
+        function addTerms(pkx)
+            terms = pkx.docTerms();
+            for j = 1:numel(terms)
+                term = terms{j};
+                if any(strcmp(term, printed))
+                    continue
+                end
+                printed{end+1} = term; %#ok<AGROW>
+                
+                pkx.termLatexToDoc(term, dot)
+                dot.addln()
+            end
+        end
+        
+        switch n
+            case 0
+                do.addln(do.eqDisplay('W(\zeta) = 0'))
+                
+            case 1
+                do.addln(do.eqDisplay(...
+                    ['W(\zeta) = ', latexExpression(pk{1})]))
+                addTerms(pk{1})
+                
+            otherwise
+                do.addln(do.eqDisplay(...
+                    'W(\zeta) = \sum_{\mu=1}^K W_\mu(\zeta)'))
+                for i = 1:n
+                    do.addln(do.eqDisplay(...
+                        ['W_', int2str(i), '(\zeta) = ', ...
+                        latexExpression(pk{i})]))
+                    addTerms(pk{i})
+                end
+        end
+        
+        if n > 0 && ~isempty(printed)
+            do.addln('where we define')
+            do.addln()
+            
+            do = [do; dot];
+        end
+                
+        do.publish()
     end
     
     function D = unitDomain(W)
