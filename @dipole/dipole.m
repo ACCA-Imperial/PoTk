@@ -44,6 +44,7 @@ properties(SetAccess=protected)
 end
 
 properties(Access=private)
+    forSimplyConnected = false
     scaleWasGiven = false
 end
 
@@ -100,6 +101,11 @@ methods(Hidden)
         
         chi = d.angle;
         b = d.scale;
+        if d.forSimplyConnected
+            val = U*b*(exp(-1i*chi)*z + exp(1i*chi)./z);
+            return
+        end
+        
         if mod(chi, pi) > eps(pi)
             % "Horizontal" component.
             dxg0 = d.greensXderivative;
@@ -127,6 +133,13 @@ methods(Hidden)
                 'default.'], class(d))
         end
         
+        chi = d.angle;
+        b = d.scale;
+        if d.forSimplyConnected
+            dw = @(z) U*b*(exp(-1i*chi) - exp(1i*chi)./z.^2);
+            return
+        end
+        
         dzg0x = diff(d.greensXderivative);
         dzg0y = diff(d.greensYderivative);
         
@@ -138,8 +151,6 @@ methods(Hidden)
                 return
             end
             
-            chi = d.angle;
-            b = d.scale;
             if mod(chi, pi) > eps(pi)
                 v = v - 4*pi*U*b*sin(chi)*dzg0x(z);
             end
@@ -160,6 +171,10 @@ methods(Hidden)
         end
         
         if d.strength == 0
+            return
+        end
+        if D.m == 0
+            d.forSimplyConnected = true;
             return
         end
         D = skpDomain(D);
