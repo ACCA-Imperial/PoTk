@@ -101,14 +101,6 @@ methods(Hidden)
     end
     
     function dc = getDerivative(C)
-        circ = C.circVector;
-        cv = find(circ(:)' ~= 0);
-        vj = C.firstKindIntegrals;
-        dvj = cell(size(vj));
-        for k = cv
-            dvj{k} = diff(vj{k});
-        end
-        
         if C.isSimplyConnected
             beta = C.infImage;
             if beta == 0
@@ -117,6 +109,14 @@ methods(Hidden)
                 dc = @(z) 1./z/2i/pi;
             end
             return
+        end
+        
+        circ = C.circVector;
+        cv = find(circ(:)' ~= 0);
+        vj = C.firstKindIntegrals;
+        dvj = cell(size(vj));
+        for k = cv
+            dvj{k} = diff(vj{k});
         end
         
         function v = deval(z)
