@@ -18,9 +18,10 @@ function p = tempdir()
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-p = strsplit(fileparts(mfilename('fullpath')), filesep);
-p{end} = 'tmp';
-p = strjoin(p, filesep);
+p = [tempdir 'potktmp'];
+% p = strsplit(fileparts(mfilename('fullpath')), filesep);
+% p{end} = 'tmp';
+% p = strjoin(p, filesep);
 
 % FIXME: Should these be done somewhere else?
 PoTk.ensureTempdir(p);
