@@ -46,6 +46,7 @@ end
 properties(Access=private)
     forSimplyConnected = false
     scaleWasGiven = false
+    scaleWarningGiven = false
 end
 
 methods
@@ -99,6 +100,10 @@ methods(Hidden)
             return
         end
         
+        if ~d.scaleWasGiven
+            d.scaleWarning()
+        end
+        
         chi = d.angle;
         b = d.scale;
         if d.forSimplyConnected
@@ -125,12 +130,7 @@ methods(Hidden)
         end
         
         if ~d.scaleWasGiven
-            % FIXME: Really need a new ID string for this message.
-            warning('PoTk:dipole:noScale', ...
-                ['A scale for class %s should be specified ', ...
-                'if there is a map to a physical domain, potential due ', ...
-                'to %s may otherwise be inaccurate. Scale set to 1 by ', ...
-                'default.'], class(d))
+            d.scaleWarning()
         end
         
         chi = d.angle;
@@ -184,6 +184,20 @@ methods(Hidden)
 end
 
 methods(Access=protected)
+    function scaleWarning(d)
+        if d.scaleWarningGiven
+            return
+        end
+        
+        % FIXME: Really need a new ID string for this message.
+        warning('PoTk:dipole:noScale', ...
+                ['A scale for class %s should be specified ', ...
+                'if there is a map to a physical domain, potential ', ...
+                'since it may otherwise be inaccurate. Scale set to 1 ', ...
+                'by default.'], class(d))
+        d.scaleWarningGiven = true;
+    end
+    
     function bool = getOkForPlane(~)
         bool = true;
     end
