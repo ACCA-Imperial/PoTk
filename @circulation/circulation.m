@@ -32,6 +32,11 @@ classdef circulation < potentialKind
 properties(Access=protected)
     circVector
     firstKindIntegrals
+    infImage
+end
+
+properties(Access=private)
+    isSimplyConnected = false
 end
 
 methods
@@ -84,12 +89,32 @@ methods(Hidden)
         circ = C.circVector;
         vj = C.firstKindIntegrals;
         
+        if C.isSimplyConnected
+            beta = C.infImage;
+            if beta == 0
+                val = log(z)./2i/pi;
+            else
+                val = log((z - beta)./(z - 1/conj(beta)))/2i/pi;
+            end
+            return
+        end
+        
         for j = find(circ(:) ~= 0)'
             val = val + circ(j)*vj{j}(z);
         end
     end
     
     function dc = getDerivative(C)
+        if C.isSimplyConnected
+            beta = C.infImage;
+            if beta == 0
+                dc = @(z) (1./(z - beta) - 1./(z - 1/conj(beta)))/2i/pi;
+            else
+                dc = @(z) 1./z/2i/pi;
+            end
+            return
+        end
+        
         circ = C.circVector;
         cv = find(circ(:)' ~= 0);
         vj = C.firstKindIntegrals;
@@ -109,14 +134,27 @@ methods(Hidden)
     end
     
     function C = setupPotential(C, W)
-        D = skpDomain(W.unitDomain);
+        D = W.unitDomain;
         circ = C.circVector;
-        if numel(circ) ~= D.m
+        if (D.m > 0 && numel(circ) ~= D.m) || (D.m == 1 && numel(circ) ~= 1)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 ['The number of circulation values and inner circles ' ...
                 'must match.'])
         end
         
+        if D.m == 0
+            if isempty(D.infImage)
+                error(PoTk.ErrorIdString.InvalidValue, ...
+                    ['The image at infinity must be defined in the ', ...
+                    'unit domain for this contribution to make sense. ', ...
+                    'See the ''beta'' argument for ''unitDomain''.'])
+            end
+            C.infImage = D.infImage;
+            C.isSimplyConnected = true;
+            return
+        end
+        
+        D = skpDomain(D);
         vj = cell(1, numel(circ));
         for j = find(circ(:) ~= 0)'
             vj{j} = vjFirstKind(j, D);

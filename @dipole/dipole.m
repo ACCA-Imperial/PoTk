@@ -133,6 +133,7 @@ methods(Hidden)
             d.scaleWarning()
         end
         
+        U = d.strength;
         chi = d.angle;
         b = d.scale;
         if d.forSimplyConnected
@@ -146,7 +147,6 @@ methods(Hidden)
         function v = deval(z)
             v = 0;
             
-            U = d.strength;
             if U == 0
                 return
             end
