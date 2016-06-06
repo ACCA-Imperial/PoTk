@@ -105,14 +105,15 @@ methods(Hidden)
     end
     
     function C = setupPotential(C, W)
-        D = skpDomain(W.unitDomain);
+        D = W.unitDomain;
         circ = C.circVector;
-        if numel(circ) ~= D.m
+        if (D.m > 0 && numel(circ) ~= D.m) || (D.m == 1 && numel(circ) ~= 1)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 ['The number of circulation values and inner circles ' ...
                 'must match.'])
         end
         
+        D = skpDomain(D);
         vj = cell(1, numel(circ));
         for j = find(circ(:) ~= 0)'
             vj{j} = vjFirstKind(j, D);
