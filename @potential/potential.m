@@ -45,7 +45,7 @@ methods
         
         if ~isa(D, 'potentialDomain')
             error(PoTk.ErrorIdString.InvalidArgument, ...
-                'First argument must be a ''potentialDomain'' object.')
+                'First argument must be a "potentialDomain" object.')
         end
         W.domain = D;
         isPlane = isa(D, 'planeDomain');
@@ -65,7 +65,7 @@ methods
                 assert(pk.okForPlane, ...
                     PoTk.ErrorIdString.InvalidArgument, ...
                     ['Potential contribution "%s" makes no sense in ', ...
-                    'the entire plane.'], class(pk))
+                    'the entire plane domain.'], class(pk))
                 pk.entirePotential = true;
             end
             W.potentialKinds{end+1} = pk;
