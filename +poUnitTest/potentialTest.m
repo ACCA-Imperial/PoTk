@@ -1,4 +1,4 @@
-classdef potentialTest < matlab.unittest.TestCase
+classdef(Abstract) potentialTest < matlab.unittest.TestCase
 %potentialTest test suite for potential.
 
 % Everett Kropf, 2016
