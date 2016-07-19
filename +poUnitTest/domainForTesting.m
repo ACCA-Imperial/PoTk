@@ -18,4 +18,10 @@ classdef(Abstract) domainForTesting
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
+properties(Abstract)
+    label
+    domainObject
+    testPoints
+end
+
 end
