@@ -28,23 +28,23 @@ properties
 end
 
 methods(Test)
-    function checkPointVortex(test)
-        dispatchTestMethod(test, 'pointVortex')
+    function checkNet(test)
+        dispatchTestMethod(test, 'net')
     end
     
-    function checkPointVortexNoNet(test)
-        dispatchTestMethod(test, 'pointVortexNoNet')
+    function checkNoNet(test)
+        dispatchTestMethod(test, 'noNet')
     end
 end
 
 methods
-    function entirePointVortex(test)
+    function entireNet(test)
         av = test.entireVortexLocations;
         pv = pointVortex(av, test.vortexStrengths);
         test.checkEitherPV(pv)
     end
     
-    function entirePointVortexNoNet(test)
+    function entireNoNet(test)
         av = test.entireVortexLocations;
         pv = pointVortexNoNet(av, test.vortexStrengths);
         test.checkEitherPV(pv)

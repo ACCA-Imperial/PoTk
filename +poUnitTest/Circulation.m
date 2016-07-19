@@ -19,17 +19,17 @@ classdef Circulation < poUnitTest.TestCase
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 methods(Test)
-    function checkCirculation(test)
-        dispatchTestMethod(test, 'circulation')
+    function checkNet(test)
+        dispatchTestMethod(test, 'net')
     end
     
-    function checkCirculationNoNet(test)
-        dispatchTestMethod(test, 'circulationNoNet')
+    function checkNoNet(test)
+        dispatchTestMethod(test, 'noNet')
     end
 end
 
 methods
-    function entireCirculation(test)
+    function entireNet(test)
         D = test.domainObject;
         C = circulation(1, 2);
         test.verifyError(...
@@ -37,7 +37,7 @@ methods
             PoTk.ErrorIdString.InvalidArgument)
     end
     
-    function entireCirculationNoNet(test)
+    function entireNoNet(test)
         D = test.domain;
         C = circulationNoNet(1, 2);
         test.verifyError(...
