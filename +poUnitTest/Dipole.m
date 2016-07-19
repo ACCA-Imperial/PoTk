@@ -1,5 +1,5 @@
 classdef Dipole < poUnitTest.TestCase
-%poUnitTest.dipoleEntire checks the dipole in the entire plane domain.
+%poUnitTest.Dipole checks the dipole potential.
 
 % Everett Kropf, 2016
 % 
