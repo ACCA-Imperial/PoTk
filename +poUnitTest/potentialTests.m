@@ -19,6 +19,10 @@ classdef(Abstract) potentialTests < matlab.unittest.TestCase
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
+properties
+    defaultTolerance = 1e-12
+end
+
 properties(Abstract)
     domain
     testPoints

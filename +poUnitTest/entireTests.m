@@ -21,7 +21,11 @@ classdef(Abstract) entireTests < poUnitTest.potentialTests
 
 properties
     domain = planeDomain
-    testPoints
+    testPoints = [
+        0.95751+0.95717i
+        1.9298+0.97075i
+        0.47284+2.4008i
+        3.8824+0.56755i];
 end
 
 end
