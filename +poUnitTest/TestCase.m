@@ -29,7 +29,8 @@ end
 
 properties(ClassSetupParameter)
     domain = struct(...
-        'entire', poUnitTest.domainEntire())
+        'entire', poUnitTest.domainEntire(), ...
+        'simple', poUnitTest.domainSimple())
 end
 
 methods(TestClassSetup)
@@ -55,7 +56,15 @@ methods
         name(1) = upper(name(1));
         funcName = [domainLabel, name];
         callThis = @() test.(funcName);
-        callThis()
+        try
+            callThis()
+        catch err
+            if strcmp(err.identifier, 'MATLAB:noSuchMethodOrField')
+                test.verifyFail('Test not implemented yet.')
+            else
+                rethrow(err)
+            end
+        end
     end
 end
 
