@@ -30,6 +30,10 @@ end
 
 methods
     function checkAtTestPoints(test, ref, fun, tol)
+        if nargin < 4 || isempty(tol)
+            tol = test.defaultTolerance;
+        end
+        
         zp = test.testPoints;
         err = ref(zp) - fun(zp);
         test.verifyLessThan(max(abs(err)), tol)
