@@ -1,6 +1,5 @@
-classdef(Abstract) pointVortexEntire < poUnitTest.entireTests
-%poUnitTest.pointVortexEntire checks the point vortex calculations in the
-%entire plane domain.
+classdef PointVortex < poUnitTest.TestCase
+%poUnitTest.PointVortex tests the point vortex potential.
 
 % Everett Kropf, 2016
 % 
@@ -20,7 +19,7 @@ classdef(Abstract) pointVortexEntire < poUnitTest.entireTests
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties
-    vortexPoints = [
+    entireVortexLocations = [
         0.42176+0.65574i
         1.8315+0.071423i
         2.3766+2.5474i
@@ -29,20 +28,30 @@ properties
 end
 
 methods(Test)
-    function pointVortex(test)
-        pv = pointVortex(test.vortexPoints, test.vortexStrengths);
-        test.checkEitherPV(pv)
+    function checkPointVortex(test)
+        dispatchTestMethod(test, 'pointVortex')
     end
     
-    function pointVortexNoNet(test)
-        pv = pointVortexNoNet(test.vortexPoints, test.vortexStrengths);
-        test.checkEitherPV(pv)
+    function checkPointVortexNoNet(test)
+        dispatchTestMethod(test, 'pointVortexNoNet')
     end
 end
 
 methods
+    function entirePointVortex(test)
+        av = test.entireVortexLocations;
+        pv = pointVortex(av, test.vortexStrengths);
+        test.checkEitherPV(pv)
+    end
+    
+    function entirePointVortexNoNet(test)
+        av = test.entireVortexLocations;
+        pv = pointVortexNoNet(av, test.vortexStrengths);
+        test.checkEitherPV(pv)
+    end
+    
     function checkEitherPV(test, pv)
-        W = potential(planeDomain, pv);
+        W = potential(test.domainObject, pv);
         N = numel(pv.location);
         ref = @(z) reshape(sum(cell2mat(...
             arrayfun(@(k) log(z(:) - pv.location(k)), ...
@@ -52,20 +61,3 @@ methods
 end
 
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
