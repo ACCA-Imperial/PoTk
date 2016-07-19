@@ -1,4 +1,4 @@
-classdef(Abstract) dipoleEntire < poUnitTest.entireTests
+classdef Dipole < poUnitTest.TestCase
 %poUnitTest.dipoleEntire checks the dipole in the entire plane domain.
 
 % Everett Kropf, 2016
@@ -19,30 +19,49 @@ classdef(Abstract) dipoleEntire < poUnitTest.entireTests
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties
-    location = 0
+    entireLocation = 0
+    simpleLocation = 0
     strength = 2
     angle = pi/4
 end
 
 methods(Test)
     function checkFinite(test)
-        loc = test.location;
-        m = test.strength;
-        chi = test.angle;
-        d = dipole(loc, m, chi);
-        W = potential(planeDomain, d);
-        ref = @(z) m./(z - loc)/2/pi*exp(1i*chi);
-        test.checkAtTestPoints(ref, W)
+        test.dispatchTestMethod('finite')
     end
     
     function checkInfinite(test)
+        test.dispatchTestMethod('infinite')
+    end
+end
+
+methods
+    function entireFinite(test)
+        loc = test.entireLocation;
+        m = test.strength;
+        chi = test.angle;
+        
+        d = dipole(loc, m, chi);
+        W = potential(test.domainObject, d);
+        ref = @(z) m./(z - loc)/2/pi*exp(1i*chi);
+        
+        test.checkAtTestPoints(ref, W);
+    end
+    
+    function entireInfinite(test)
         loc = inf;
         m = test.strength;
         chi = test.angle;
+        
         d = dipole(loc, m, chi);
-        W = potential(planeDomain, d);
+        W = potential(test.domainObject, d);
         ref = @(z) m*z/2/pi*exp(-1i*chi);
+        
         test.checkAtTestPoints(ref, W);
+    end
+    
+    function simpleInfinite(~)
+        % Do nothing.
     end
 end
 
