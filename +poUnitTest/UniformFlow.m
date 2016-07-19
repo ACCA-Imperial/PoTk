@@ -1,6 +1,5 @@
-classdef(Abstract) uniformFlowEntire < poUnitTest.entireTests
-%poUnitTest.uniformFlowEntire checks the uniformFlow in the entire plane
-%domain.
+classdef UniformFlow < poUnitTest.TestCase
+%poUnitTest.UniformFlow checks the uniform flow potential.
 
 % Everett Kropf, 2016
 % 
@@ -25,13 +24,21 @@ properties
 end
 
 methods(Test)
-    function checkUniform(test)
+    function checkFlow(test)
+        test.dispatchTestMethod('flow')
+    end
+end
+
+methods
+    function entireFlow(test)
         m = test.strength;
         chi = test.angle;
+        
         uf = uniformFlow(m, chi);
-        W = potential(planeDomain, uf);
+        W = potential(test.domainObject, uf);
         ref = @(z) m*z*exp(-1i*chi);
-        test.checkAtTestPoints(ref, W)
+        
+        test.checkAtTestPoints(ref, W);
     end
 end
 
