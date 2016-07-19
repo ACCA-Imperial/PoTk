@@ -1,4 +1,4 @@
-classdef circulationEntire < poUnitTest.entireTests
+classdef(Abstract) circulationEntire < poUnitTest.entireTests
 %poUnitTest.circulationEntire checks the circulation potentials fail in the
 %plane domain.
 

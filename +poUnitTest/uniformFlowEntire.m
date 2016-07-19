@@ -1,4 +1,4 @@
-classdef uniformFlowEntire < poUnitTest.entireTests
+classdef(Abstract) uniformFlowEntire < poUnitTest.entireTests
 %poUnitTest.uniformFlowEntire checks the uniformFlow in the entire plane
 %domain.
 

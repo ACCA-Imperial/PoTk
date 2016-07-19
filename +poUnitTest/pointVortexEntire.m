@@ -1,4 +1,4 @@
-classdef pointVortexEntire < poUnitTest.entireTests
+classdef(Abstract) pointVortexEntire < poUnitTest.entireTests
 %poUnitTest.pointVortexEntire checks the point vortex calculations in the
 %entire plane domain.
 

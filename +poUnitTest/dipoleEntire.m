@@ -1,4 +1,4 @@
-classdef dipoleEntire < poUnitTest.entireTests
+classdef(Abstract) dipoleEntire < poUnitTest.entireTests
 %poUnitTest.dipoleEntire checks the dipole in the entire plane domain.
 
 % Everett Kropf, 2016
