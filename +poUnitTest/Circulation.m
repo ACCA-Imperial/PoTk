@@ -44,6 +44,27 @@ methods
             @() potential(D, C), ...
             PoTk.ErrorIdString.InvalidArgument)
     end
+    
+    function simpleNet(test)
+        C = circulation();
+        test.verifyError(...
+            @() potential(test.domainObject, C), ...
+            PoTk.ErrorIdString.InvalidArgument, ...
+            'Bug submitted as issue #53.')
+    end
+    
+    function simpleNoNet(test)
+        D = test.domainObject;
+        beta = D.infImage;
+        G = -2;
+        C = circulation(G);
+
+        W = potential(test.domainObject, C);        
+        ref = @(z) G*(1./(z - beta) - 1./(z - 1/conj(beta)))/2i/pi;
+        
+        test.diagnosticMessage = 'Bug submitted as #54.';
+        test.checkAtTestPoints(ref, W)
+    end
 end
 
 end
