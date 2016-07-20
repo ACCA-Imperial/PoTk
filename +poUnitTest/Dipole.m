@@ -57,6 +57,7 @@ methods
         W = potential(test.domainObject, d);
         ref = @(z) m*z/2/pi*exp(-1i*chi);
         
+        test.diagnosticMessage = 'Bug submitted as issue #50.';
         test.checkAtTestPoints(ref, W);
     end
     
