@@ -23,6 +23,7 @@ properties
     simpleLocation = 0
     strength = 2
     angle = pi/4
+    scale = 2
 end
 
 methods(Test)
@@ -61,8 +62,24 @@ methods
         test.checkAtTestPoints(ref, W);
     end
     
-    function simpleInfinite(~)
-        % Do nothing.
+    function simpleFinite(test)
+        loc = test.simpleLocation;
+        m = test.strength;
+        chi = test.angle;
+        b = test.scale;
+        
+        d = dipole(loc, m, chi, b);
+        W = potential(test.domainObject, d);
+        ref = @(z) m*b*(exp(-1i*chi)*z + exp(1i*chi)./z);
+        
+        test.checkAtTestPoints(ref, W);
+    end
+    
+    function simpleInfinite(test)
+        d = dipole(inf, 1, 0);
+        test.verifyError(...
+            @() potential(test.domainObject, d), ...
+            PoTk.ErrorIdString.RuntimeError)
     end
 end
 
