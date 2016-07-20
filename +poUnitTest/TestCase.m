@@ -20,11 +20,11 @@ classdef(Abstract) TestCase < matlab.unittest.TestCase
 
 properties
     defaultTolerance = 1e-12;
-end
 
-properties
     domainTestObject
     domainObject
+    
+    diagnosticMessage
 end
 
 properties(ClassSetupParameter)
@@ -39,6 +39,12 @@ methods(TestClassSetup)
     end
 end
 
+methods(TestMethodSetup)
+    function clearDiagnosticMessage(test)
+        test.diagnosticMessage = [];
+    end
+end
+
 methods
     function checkAtTestPoints(test, ref, fun, tol)
         if nargin < 4 || isempty(tol)
@@ -47,7 +53,14 @@ methods
         
         zp = test.domainTestObject.testPoints;
         err = ref(zp) - fun(zp);
-        test.verifyLessThan(max(abs(err(:))), tol)
+        
+        msg = test.diagnosticMessage;
+        if isempty(msg)
+            args = {tol};
+        else
+            args = {tol, msg};
+        end
+        test.verifyLessThan(max(abs(err(:))), args{:})
     end
     
     function dispatchTestMethod(test, name)
