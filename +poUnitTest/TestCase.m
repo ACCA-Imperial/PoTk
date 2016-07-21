@@ -65,13 +65,11 @@ methods
     function dispatchTestMethod(test, name)
         domainLabel = test.domainTestObject.label;
         name(1) = upper(name(1));
-        funcName = [domainLabel, name];
-        callThis = @() test.(funcName);
         try
-            callThis()
+            test.([domainLabel, name])()
         catch err
             if strcmp(err.identifier, 'MATLAB:noSuchMethodOrField')
-                test.verifyFail('Test not implemented yet.')
+                test.assertFail('Test not implemented yet.')
             else
                 rethrow(err)
             end
