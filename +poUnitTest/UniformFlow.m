@@ -42,6 +42,19 @@ methods
         
         test.checkAtTestPoints(ref, W);
     end
+    
+    function simpleFlow(test)
+        m = test.strength;
+        chi = test.angle;
+        b = test.scale;
+        
+        uf = uniformFlow(m, chi, b);
+        W = potential(test.domainObject, uf);
+        
+        ref = @(z) m*b*(exp(-1i*chi)*z + exp(1i*chi)./z);
+        
+        test.checkAtTestPoints(ref, W);
+    end
 end
 
 end
