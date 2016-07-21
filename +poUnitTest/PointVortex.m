@@ -24,6 +24,13 @@ properties
         1.8315+0.071423i
         2.3766+2.5474i
         3.838+3.736i];
+    
+    simpleVortexLocations = [
+        0.67893+0.52697i
+        0.75482+0.081283i
+        0.10583+0.23208i
+        0.76115+0.45573i];
+    
     vortexStrengths = [-1, 1, -1, 1];
 end
 
@@ -39,24 +46,70 @@ end
 
 methods
     function entireNet(test)
-        av = test.entireVortexLocations;
-        pv = pointVortex(av, test.vortexStrengths);
-        test.checkEitherPV(pv)
+        test.checkEitherPV(@pointVortex)
     end
     
     function entireNoNet(test)
-        av = test.entireVortexLocations;
-        pv = pointVortexNoNet(av, test.vortexStrengths);
-        test.checkEitherPV(pv)
+        test.checkEitherPV(@pointVortexNoNet)
     end
     
-    function checkEitherPV(test, pv)
+    function simpleNet(test)
+        test.diagnosticMessage = 'Bug submitted as issue #56.';
+        test.checkEitherPV(@pointVortex)
+    end
+    
+    function simpleNoNet(test)
+        test.verifyFail('Not implemented. Submitted bug as issue #55.')
+        
+        % FIXME: Reinstate the following line, and delete the one above
+        % after fixing #55!
+%         test.checkEitherPV(@pointVortexNoNet)
+    end
+    
+    function checkEitherPV(test, pvKind)
+        pv = pvKind(test.selectVortexPoints(), test.vortexStrengths);
         W = potential(test.domainObject, pv);
-        N = numel(pv.location);
-        ref = @(z) reshape(sum(cell2mat(...
-            arrayfun(@(k) log(z(:) - pv.location(k)), ...
-            1:N, 'uniform', false)), 2), size(z))/2i/pi;
+        ref = test.generateReference(pv);
         test.checkAtTestPoints(ref, W, test.defaultTolerance)
+    end
+    
+    function av = selectVortexPoints(test)
+        label = test.domainTestObject.label;
+        av = test.([label, 'VortexLocations']);
+    end
+    
+    function ref = generateReference(test, pv)
+        label = test.domainTestObject.label;
+        switch label
+            case 'entire'
+                N = numel(pv.location);
+                ref = @(z) reshape(sum(cell2mat(...
+                    arrayfun(@(k) log(z(:) - pv.location(k)), ...
+                    1:N, 'uniform', false)), 2), size(z))/2i/pi;
+                
+            case 'simple'
+                ref = test.simpleReference(pv);
+                
+            otherwise
+                error(PoTk.ErrorIdString.UndefinedState, ...
+                    'Case %s not implemented yet!', label)
+        end
+    end
+    
+    function ref = simpleReference(test, pv)
+        function v = rfun(z)
+            g0 = @(z,a) poUnitTest.simpleG0(z, a);
+            av = pv.location;
+            sv = pv.strength;
+            v = reshape(sum(cell2mat( ...
+                arrayfun(@(k) sv(k)*g0(z(:), av(k)), find(sv(:) ~= 0)', ...
+                'uniform', false)), 2), size(z));
+            if isa(pv, 'pointVortexNoNet')
+                v = v - sum(sv)*g0(z, test.domainObject.infImage);
+            end
+        end
+        
+        ref = @rfun;
     end
 end
 
