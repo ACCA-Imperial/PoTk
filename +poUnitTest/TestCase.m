@@ -28,9 +28,7 @@ properties
 end
 
 properties(ClassSetupParameter)
-    domain = struct(...
-        'entire', poUnitTest.domainEntire(), ...
-        'simple', poUnitTest.domainSimple())
+    domain = poUnitTest.domainParameterStructure
 end
 
 methods(TestClassSetup)
