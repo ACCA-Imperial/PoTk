@@ -21,6 +21,7 @@ classdef UniformFlow < poUnitTest.TestCase
 properties
     strength = 2
     angle = pi/4
+    scale = 2
 end
 
 methods(Test)
@@ -33,10 +34,11 @@ methods
     function entireFlow(test)
         m = test.strength;
         chi = test.angle;
+        b = test.scale;
         
-        uf = uniformFlow(m, chi);
+        uf = uniformFlow(m, chi, b);
         W = potential(test.domainObject, uf);
-        ref = @(z) m*z*exp(-1i*chi);
+        ref = @(z) m*b*z*exp(-1i*chi);
         
         test.checkAtTestPoints(ref, W);
     end
