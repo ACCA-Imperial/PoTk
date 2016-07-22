@@ -20,6 +20,7 @@ classdef SourceSinkPair < poUnitTest.TestCase
 
 properties
     entireLocation = 0.95751+0.95717i
+    simpleLocation = 0.15761+0.80028i
     
     strength = 2
 end
@@ -32,16 +33,36 @@ end
 
 methods
     function entirePair(test)
-        a = test.entireLocation;
-        o = conj(a);
+        test.checkEval(test.entireLocation)
+    end
+    
+    function simplePair(test)
+        test.checkEval(test.simpleLocation)
+    end
+    
+    function checkEval(test, a)
+        o = -a;
         m = test.strength;
-        
         S = sourceSinkPair(a, o, m);
         W = potential(test.domainObject, S);
-        
-        ref = @(z) m*log((z - a)./(z - o))/2/pi;
-        
-        test.checkAtTestPoints(ref, W);
+        ref = test.generateEvalReference(a, o, m);
+        test.checkAtTestPoints(ref, W)
+    end
+    
+    function ref = generateEvalReference(test, a, o, m)
+        label = test.domainTestObject.label;
+        switch label
+            case 'entire'
+                ref = @(z) m*log((z - a)./(z - o))/2/pi;
+                
+            case 'simple'
+                pf = @(z,a) z - a;
+                ref = @(z) m*log(pf(z, a).*pf(z, 1/conj(a)) ...
+                    ./pf(z, o)./pf(z, 1/conj(o)))/2/pi;
+                
+            otherwise
+                test.assertFail('Case %s not implemented.', label)
+        end
     end
 end
 

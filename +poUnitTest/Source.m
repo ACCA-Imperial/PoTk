@@ -20,6 +20,7 @@ classdef Source < poUnitTest.TestCase
 
 properties
     entireLocation = 0.95751+0.95717i
+    simpleLocation = 0.15761+0.80028i
     
     strength = 2
 end
@@ -32,14 +33,37 @@ end
 
 methods
     function entirePoint(test)
-        a = test.entireLocation;
+        test.checkEval(test.entireLocation);
+    end
+    
+    function simplePoint(test)
+        test.diagnosticMessage = 'Bug submitted as issue #58.';
+        test.checkEval(test.simpleLocation);
+    end
+    
+    function checkEval(test, a)
         m = test.strength;
         S = source(a, m);
         W = potential(test.domainObject, S);
-        
-        ref = @(z) m*log(z - a)/2/pi;
-        
-        test.checkAtTestPoints(ref, W);
+        ref = test.generateEvalReference(a, m);
+        test.checkAtTestPoints(ref, W)
+    end
+    
+    function ref = generateEvalReference(test, a, m)
+        label = test.domainTestObject.label;
+        switch label
+            case 'entire'
+                ref = @(z) m*log(z - a)/2/pi;
+                
+            case 'simple'
+                pf = @(z,a) z - a;
+                o = test.domainObject.infImage;
+                ref = @(z) m*log(pf(z, a).*pf(z, 1/conj(a)) ...
+                    ./pf(z, o)./pf(z, 1/conj(o)))/2/pi;
+                
+            otherwise
+                test.assertFail('Case %s not implemented.', label)
+        end
     end
 end
 
