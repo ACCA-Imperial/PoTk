@@ -38,21 +38,9 @@ methods(Test)
     function checkThree(test)
         test.dispatchTestMethod('three')
     end
-    
-    function checkError(test)
-        test.dispatchTestMethod('error')
-    end
 end
 
 methods
-    function entireError(test)
-        a = test.entireThreePoints;
-        m = test.strength3;
-        
-        test.verifyError(@() sourcesAndSinks(a, m), ...
-            PoTk.ErrorIdString.RuntimeError)
-    end
-    
     function entireOne(test)
         a = test.entireOnePoint;
         m = test.strength1;
