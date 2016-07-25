@@ -23,13 +23,19 @@ properties
         0.42176+0.65574i
         1.8315+0.071423i
         2.3766+2.5474i
-        3.838+3.736i];
+        3.838+3.736i]
     
     simpleVortexLocations = [
         0.67893+0.52697i
         0.75482+0.081283i
         0.10583+0.23208i
-        0.76115+0.45573i];
+        0.76115+0.45573i]
+    
+    annulusVortexLocations = [
+        -0.25539+0.34985i
+        0.37434+0.097959i
+        0.28338-0.2309i
+        0.17843-0.54577i]
     
     vortexStrengths = [-1, 1, -1, 1];
 end
@@ -66,6 +72,14 @@ methods
 %         test.checkEitherPV(@pointVortexNoNet)
     end
     
+    function annulusNet(test)
+        test.checkEitherPV(@pointVortex)
+    end
+    
+    function annulusNoNet(test)
+        test.checkEitherPV(@pointVortexNoNet)
+    end
+    
     function checkEitherPV(test, pvKind)
         pv = pvKind(test.selectVortexPoints(), test.vortexStrengths);
         W = potential(test.domainObject, pv);
@@ -90,16 +104,39 @@ methods
             case 'simple'
                 ref = test.simpleReference(pv);
                 
+            case 'annulus'
+                ref = test.arrayReference(pv);
+                
             otherwise
                 test.assertFail('Case %s not implemented yet.', label)
         end
     end
     
     function ref = simpleReference(test, pv)
+        g0 = @(z,a) poUnitTest.simpleG0(z, a);
+        av = pv.location;
+        sv = pv.strength;
+        
         function v = rfun(z)
-            g0 = @(z,a) poUnitTest.simpleG0(z, a);
-            av = pv.location;
-            sv = pv.strength;
+            v = reshape(sum(cell2mat( ...
+                arrayfun(@(k) sv(k)*g0(z(:), av(k)), find(sv(:) ~= 0)', ...
+                'uniform', false)), 2), size(z));
+            if isa(pv, 'pointVortexNoNet')
+                v = v - sum(sv)*g0(z, test.domainObject.infImage);
+            end
+        end
+        
+        ref = @rfun;
+    end
+    
+    function ref = arrayReference(test, pv)
+        q = test.domainObject.qv;
+        P = poUnitTest.PFunction(q);
+        g0 = @(z,a) log(abs(a)*P(z/a)./P(z*conj(a)))/2i/pi;
+        av = pv.location;
+        sv = pv.strength;
+        
+        function v = rfun(z)
             v = reshape(sum(cell2mat( ...
                 arrayfun(@(k) sv(k)*g0(z(:), av(k)), find(sv(:) ~= 0)', ...
                 'uniform', false)), 2), size(z));
