@@ -21,6 +21,7 @@ classdef SourceSinkPair < poUnitTest.TestCase
 properties
     entireLocation = 0.95751+0.95717i
     simpleLocation = 0.15761+0.80028i
+    annulusLocation = -0.16443+0.49679i
     
     strength = 2
 end
@@ -40,6 +41,10 @@ methods
         test.checkEval(test.simpleLocation)
     end
     
+    function annulusPair(test)
+        test.checkEval(test.annulusLocation)
+    end
+    
     function checkEval(test, a)
         o = -a;
         m = test.strength;
@@ -57,12 +62,26 @@ methods
                 
             case 'simple'
                 pf = @(z,a) z - a;
-                ref = @(z) m*log(pf(z, a).*pf(z, 1/conj(a)) ...
-                    ./pf(z, o)./pf(z, 1/conj(o)))/2/pi;
+                ref = test.primeFormReference(pf, a, o, m);
+                
+            case 'annulus'
+                q = test.domainObject.qv;
+                [P, C] = poUnitTest.PFunction(q);
+                pf = @(z,a) a*C*P(z/a);
+                ref = test.primeFormReference(pf, a, o, m);
                 
             otherwise
                 test.assertFail('Case %s not implemented.', label)
         end
+    end
+end
+
+methods(Static)
+    function ref = primeFormReference(pf, a, o, m)
+        ref = @(z) m*log(...
+                pf(z, a).*pf(z, 1/conj(a)) ...
+                ./pf(z, o)./pf(z, 1/conj(o)) ...
+            )/2/pi;
     end
 end
 
