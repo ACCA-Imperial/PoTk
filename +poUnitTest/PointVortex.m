@@ -91,8 +91,7 @@ methods
                 ref = test.simpleReference(pv);
                 
             otherwise
-                error(PoTk.ErrorIdString.UndefinedState, ...
-                    'Case %s not implemented yet!', label)
+                test.assertFail('Case %s not implemented yet.', label)
         end
     end
     
