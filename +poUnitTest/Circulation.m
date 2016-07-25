@@ -62,8 +62,55 @@ methods
         W = potential(test.domainObject, C);        
         ref = @(z) G*(1./(z - beta) - 1./(z - 1/conj(beta)))/2i/pi;
         
-        test.diagnosticMessage = 'Bug submitted as #54.';
+        test.diagnosticMessage = 'Bug submitted as issue #54.';
         test.checkAtTestPoints(ref, W)
+    end
+    
+    function annulusNet(test)
+        G = -2;
+        C = circulation(G);
+        
+        W = potential(test.domainObject, C);
+        ref = test.annulusReference(C);
+        
+        test.diagnosticMessage = 'Bug submitted as issue #61.';
+        test.checkAtTestPoints(ref, W)
+    end
+    
+    function annulusNoNet(test)
+        G = [1, -2];
+        C = circulationNoNet(G);
+        W = potential(test.domainObject, C);
+        ref = test.annulusReference(C);
+        
+        test.diagnosticMessage = 'Bug submitted as issue #61.';
+        test.checkAtTestPoints(ref, W);
+    end
+    
+    function ref = annulusReference(test, C)
+        noNet = isa(C, 'circulationNoNet');
+        
+        D = test.domainObject;
+        q = D.qv;
+        beta = D.infImage;
+        th1 = @(z) skpDomain(D).theta(1, z);
+        
+        P = poUnitTest.PFunction(q);
+        
+        G = C.circVector;
+        g1 = @(z) log(P(z/beta)./P(z/th1(1/conj(beta)))*abs(beta)*q)/2i/pi;
+        if noNet
+            g0 = @(z) log(P(z/beta)./P(z*conj(beta))*abs(beta))/2i/pi;
+        end
+        
+        function v = refeval(z)
+            v = -G(end)*g1(z);
+            if noNet
+                v = v - sum(G)*g0(z);
+            end
+        end
+        
+        ref = @refeval;
     end
 end
 
