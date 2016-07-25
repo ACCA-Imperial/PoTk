@@ -23,6 +23,7 @@ properties
     strength1 = 2
     entireOnePoint = 0.42176+0.65574i
     simpleOnePoint = 0.67894+0.52697i
+    annulusOnePoint = 0.5+0.5i
     
     strength3 = [1; 3; -2]
     entireThreePoints = [
@@ -33,6 +34,10 @@ properties
         0.75483+0.081284i
         0.10582+0.23208i
         0.76115+0.45573i]
+    annulusThreePoints = [
+        -0.16443+0.49679i
+        0.42332-0.16793i
+        -0.02449-0.53878i]
 end
 
 methods(Test)
@@ -60,6 +65,14 @@ methods
     
     function simpleThree(test)
         test.setAndCheckThree('simple')
+    end
+    
+    function annulusOne(test)
+        test.setAndCheckOne('annulus')
+    end
+    
+    function annulusThree(test)
+        test.setAndCheckThree('annulus')
     end
     
     function setAndCheckOne(test, label)
