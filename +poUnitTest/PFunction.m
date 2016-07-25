@@ -1,15 +1,15 @@
-function P = PFunction(q, truncation)
+function [P, C] = PFunction(q, truncation)
 %poUnitTest.PFunction is the so-called "P-function" for an annular domain.
 %
-% P = PFunction(q)
-% P = PFunction(q, truncation)
+% [P, C] = PFunction(q)
+% [P, C] = PFunction(q, truncation)
 % Given a radius 0 < q < 1 the return value P is a function handle to
 % evaluate the P-function at a given truncation using the product formula.
-% Default truncation is 8.
+% Default truncation is 8. See below for the constant C.
 %
 % The connection between the P-function and the S-K prime function is
 %
-%     w(z,a) = C(q)*a*P(z/a, q)
+%     w(z,a) = -a/C(q)^2*P(z/a, q)
 %
 % where C(q) is a constant that depends only on q.
 %
@@ -41,6 +41,7 @@ if nargin < 2
 end
 
 q2k = cumprod(repmat(q^2, 1, truncation));
+C = prod(1 - q2k);
 
 function val = Peval(z)
     sz = size(z);
