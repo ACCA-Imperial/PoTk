@@ -47,25 +47,29 @@ end
 
 methods
     function entireOne(test)
-        a = test.entireOnePoint;
-        m = test.strength1;
-        test.checkEval(a, m)
+        test.setAndCheckOne('entire')
     end
     
     function entireThree(test)
-        a = test.entireThreePoints;
-        m = test.strength3;
-        test.checkEval(a, m)
+        test.setAndCheckThree('entire')
     end
     
     function simpleOne(test)
-        a = test.simpleOnePoint;
+        test.setAndCheckOne('simple')
+    end
+    
+    function simpleThree(test)
+        test.setAndCheckThree('simple')
+    end
+    
+    function setAndCheckOne(test, label)
+        a = test.([label, 'OnePoint']);
         m = test.strength1;
         test.checkEval(a, m)
     end
     
-    function simpleThree(test)
-        a = test.simpleThreePoints;
+    function setAndCheckThree(test, label)
+        a = test.([label, 'ThreePoints']);
         m = test.strength3;
         test.checkEval(a, m)
     end
