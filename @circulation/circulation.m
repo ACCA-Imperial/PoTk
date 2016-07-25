@@ -29,8 +29,11 @@ classdef circulation < potentialKind
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-properties(Access=protected)
+properties(SetAccess=protected)
     circVector
+end
+
+properties(Access=protected)
     firstKindIntegrals
     infImage
 end
