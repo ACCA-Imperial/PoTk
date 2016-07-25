@@ -21,6 +21,7 @@ classdef Source < poUnitTest.TestCase
 properties
     entireLocation = 0.95751+0.95717i
     simpleLocation = 0.15761+0.80028i
+    annulusLocation = -0.16443+0.49679i
     
     strength = 2
 end
@@ -39,6 +40,10 @@ methods
     function simplePoint(test)
         test.diagnosticMessage = 'Bug submitted as issue #58.';
         test.checkEval(test.simpleLocation);
+    end
+    
+    function annulusPoint(test)
+        test.checkEval(test.annulusLocation);
     end
     
     function checkEval(test, a)
@@ -61,10 +66,24 @@ methods
                 ref = @(z) m*log(pf(z, a).*pf(z, 1/conj(a)) ...
                     ./pf(z, o)./pf(z, 1/conj(o)))/2/pi;
                 
+            case 'annulus'
+                q = test.domainObject.qv;
+                [P, C] = poUnitTest.PFunction(q);
+                o = test.domainObject.infImage;
+                pf = @(z,a) a*C*P(z/a);
+                ref = test.primeFormReferenceFunction(pf, a, o, m);
+                
             otherwise
                 test.assertFail(...
                     sprintf('Case %s not implemented.', label))
         end
+    end
+end
+
+methods(Static)
+    function ref = primeFormReferenceFunction(pf, a, o, m)
+        ref = @(z) m*log(pf(z, a).*pf(z, 1/conj(a)) ...
+            ./pf(z, o)./pf(z, 1/conj(o)))/2/pi;
     end
 end
 
