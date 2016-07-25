@@ -113,9 +113,7 @@ methods
                 ref = test.genericReferenceFunction(pf, a, m);
                 
             case 'annulus'
-                q = test.domainObject.qv;
-                [P, C] = poUnitTest.PFunction(q);
-                pf = @(z,a) a*C*P(z/a);
+                pf = test.primeFunctionFromPFunction;
                 ref = test.genericReferenceFunction(pf, a, m);
                 
             otherwise

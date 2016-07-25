@@ -63,14 +63,11 @@ methods
             case 'simple'
                 pf = @(z,a) z - a;
                 o = test.domainObject.infImage;
-                ref = @(z) m*log(pf(z, a).*pf(z, 1/conj(a)) ...
-                    ./pf(z, o)./pf(z, 1/conj(o)))/2/pi;
+                ref = test.primeFormReferenceFunction(pf, a, o, m);
                 
             case 'annulus'
-                q = test.domainObject.qv;
-                [P, C] = poUnitTest.PFunction(q);
+                pf = test.primeFunctionFromPFunction;
                 o = test.domainObject.infImage;
-                pf = @(z,a) a*C*P(z/a);
                 ref = test.primeFormReferenceFunction(pf, a, o, m);
                 
             otherwise
