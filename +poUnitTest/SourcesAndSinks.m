@@ -115,10 +115,30 @@ methods
                     .*pf(z(:), 1/conj(a(k)))), 1:numel(a), ...
                     'uniform', false)), 2), size(z));
                 
+            case 'annulus'
+                q = test.domainObject.qv;
+                [P, C] = poUnitTest.PFunction(q);
+                pf = @(z,a) a*C*P(z/a);
+                ref = test.genericReferenceFunction(pf, a, m);
+                
             otherwise
                 test.assertFail(...
                     sprintf('Case %s not implemented yet!', label))
         end
+    end
+end
+
+methods(Static)
+    function ref = genericReferenceFunction(pf, a, m)
+        function v = refeval(z)
+            v = arrayfun(...
+                @(k) m(k)/2/pi*log( ...
+                    pf(z(:), a(k)).*pf(z(:), 1/conj(a(k)))), ...
+                1:numel(a), 'uniform', false);
+            v = reshape(sum(cell2mat(v), 2), size(z));
+        end
+        
+        ref = @refeval;
     end
 end
 
