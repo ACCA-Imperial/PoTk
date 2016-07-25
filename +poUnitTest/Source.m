@@ -62,7 +62,8 @@ methods
                     ./pf(z, o)./pf(z, 1/conj(o)))/2/pi;
                 
             otherwise
-                test.assertFail('Case %s not implemented.', label)
+                test.assertFail(...
+                    sprintf('Case %s not implemented.', label))
         end
     end
 end
