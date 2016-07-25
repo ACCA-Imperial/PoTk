@@ -116,7 +116,8 @@ methods
                     'uniform', false)), 2), size(z));
                 
             otherwise
-                test.assertFail('Case %s not implemented yet!', label)
+                test.assertFail(...
+                    sprintf('Case %s not implemented yet!', label))
         end
     end
 end
