@@ -110,10 +110,7 @@ methods
                 
             case 'simple'
                 pf = @(z,a) (z - a);
-                ref = @(z) reshape(sum(cell2mat( ...
-                    arrayfun(@(k) m(k)/2/pi*log(pf(z(:), a(k)) ...
-                    .*pf(z(:), 1/conj(a(k)))), 1:numel(a), ...
-                    'uniform', false)), 2), size(z));
+                ref = test.genericReferenceFunction(pf, a, m);
                 
             case 'annulus'
                 q = test.domainObject.qv;
