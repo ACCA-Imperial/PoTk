@@ -1,8 +1,5 @@
-function dps = domainParameterStructure()
-%poUnitTest.domainParameterStructure provides the parameter structure for
-%the unit test framework.
-%
-% See also poUnitTest.TestCase
+classdef domainAnnulus < poUnitTest.domainForTesting
+%poUnitTest.domainAnnulus is an annular domain.
 
 % Everett Kropf, 2016
 % 
@@ -21,10 +18,14 @@ function dps = domainParameterStructure()
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-domainList = {'domainEntire', 'domainSimple', 'domainArray'};
-dps = struct();
+properties
+    label = 'annulus'
+    domainObject = unitDomain(0, 0.1, -0.4)
+    testPoints = [
+        -0.017493+0.4828i
+        0.45131+0.2309i
+        0.41633-0.4828i
+        -0.43732-0.43382i]
+end
 
-for i = 1:numel(domainList)
-    object = poUnitTest.(domainList{i})();
-    dps.(object.label) = object;
 end
