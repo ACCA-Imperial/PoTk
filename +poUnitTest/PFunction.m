@@ -44,10 +44,8 @@ q2k = cumprod(repmat(q^2, 1, truncation));
 
 function val = Peval(z)
     sz = size(z);
-%     val = bsxfun(@(z,q2k) (1 - q2k.*z).*(1 - q2k./z), z(:), q2k);
-    val = cell2mat(...
-        arrayfun(@(x) (1 - x*z(:)).*(1 - x./z(:)), q2k, 'uniform', false));
-    val = reshape(prod([1 - z, val], 2), sz);
+    val = bsxfun(@(z,q2k) (1 - q2k.*z).*(1 - q2k./z), z(:), q2k);
+    val = reshape(prod([1 - z(:), val], 2), sz);
 end
 
 P = @Peval;
