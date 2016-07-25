@@ -38,7 +38,6 @@ methods(Test)
         
         w = skprime(a, 0, q);
         [P, C] = poUnitTest.PFunction(q);
-        C = -1/C^2;
         
         error = w(zp) - a*C*P(zp/a);
         test.verifyLessThan(max(abs(error)), 1e-14)

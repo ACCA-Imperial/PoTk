@@ -9,7 +9,7 @@ function [P, C] = PFunction(q, truncation)
 %
 % The connection between the P-function and the S-K prime function is
 %
-%     w(z,a) = -a/C(q)^2*P(z/a, q)
+%     w(z,a) = C(q)*a*P(z/a, q)
 %
 % where C(q) is a constant that depends only on q.
 %
@@ -41,7 +41,7 @@ if nargin < 2
 end
 
 q2k = cumprod(repmat(q^2, 1, truncation));
-C = prod(1 - q2k);
+C = -1/prod(1 - q2k)^2;
 
 function val = Peval(z)
     sz = size(z);
