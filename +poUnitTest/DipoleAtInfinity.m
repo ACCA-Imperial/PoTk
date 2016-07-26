@@ -1,5 +1,6 @@
-classdef Dipole < poUnitTest.ParameterizedTestCase
-%poUnitTest.Dipole checks the dipole potential.
+classdef DipoleAtInfinity < poUnitTest.TestCase
+%poUnitTest.DipoleAtInfinity tests the dipole at infinity in the entire
+%domain case.
 
 % Everett Kropf, 2016
 % 
@@ -19,43 +20,30 @@ classdef Dipole < poUnitTest.ParameterizedTestCase
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties
-    entireLocation = 0
-    simpleLocation = 0
+    domainTestObject = poUnitTest.domainEntire()
     strength = 2
     angle = pi/4
-    scale = 2
 end
 
 methods(Test)
-    function checkFinite(test)
-        test.dispatchTestMethod('finite')
-    end
-end
-
-methods
-    function entireFinite(test)
-        loc = test.entireLocation;
+    function checkValue(test)
+        loc = inf;
         m = test.strength;
         chi = test.angle;
         
         d = dipole(loc, m, chi);
         W = potential(test.domainObject, d);
-        ref = @(z) m./(z - loc)/2/pi*exp(1i*chi);
+        ref = @(z) m*z/2/pi*exp(-1i*chi);
         
+        test.diagnosticMessage = 'Bug submitted as issue #50.';
         test.checkAtTestPoints(ref, W);
     end
     
-    function simpleFinite(test)
-        loc = test.simpleLocation;
-        m = test.strength;
-        chi = test.angle;
-        b = test.scale;
-        
-        d = dipole(loc, m, chi, b);
-        W = potential(test.domainObject, d);
-        ref = @(z) m*b*(exp(-1i*chi)*z + exp(1i*chi)./z);
-        
-        test.checkAtTestPoints(ref, W);
+    function verifyBoundedError(test)
+        d = dipole(inf, 1, 0);
+        D = poUnitTest.domainSimple().domainObject;
+        test.verifyError(@() potential(D, d), ...
+            PoTk.ErrorIdString.RuntimeError)
     end
 end
 
