@@ -69,7 +69,7 @@ methods
                 ref = test.primeFormReference(pf, a, o, m);
                 
             otherwise
-                test.assertFail(...
+                test.assumeFail(...
                     sprintf('Case %s not implemented.', label))
         end
     end

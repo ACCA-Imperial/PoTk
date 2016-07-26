@@ -117,7 +117,7 @@ methods
                 ref = test.genericReferenceFunction(pf, a, m);
                 
             otherwise
-                test.assertFail(...
+                test.assumeFail(...
                     sprintf('Case %s not implemented yet!', label))
         end
     end

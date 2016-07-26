@@ -108,7 +108,7 @@ methods
                 ref = test.arrayReference(pv);
                 
             otherwise
-                test.assertFail('Case %s not implemented yet.', label)
+                test.assumeFail('Case %s not implemented yet.', label)
         end
     end
     

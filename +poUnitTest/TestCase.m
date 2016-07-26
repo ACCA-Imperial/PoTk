@@ -70,7 +70,7 @@ methods
         catch err
             if strcmp(err.identifier, 'MATLAB:noSuchMethodOrField') ...
                     && strcmp(err.stack(1).name, 'TestCase.dispatchTestMethod')
-                test.assertFail('Test not implemented yet.')
+                test.assumeFail('Test not implemented yet.')
             else
                 rethrow(err)
             end
