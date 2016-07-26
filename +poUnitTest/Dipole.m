@@ -34,28 +34,41 @@ end
 
 methods
     function entireFinite(test)
-        loc = test.entireLocation;
-        m = test.strength;
-        chi = test.angle;
-        
-        d = dipole(loc, m, chi);
-        W = potential(test.domainObject, d);
-        ref = @(z) m./(z - loc)/2/pi*exp(1i*chi);
-        
-        test.checkAtTestPoints(ref, W);
+        test.generalCheckFinite(test.entireLocation)
     end
     
     function simpleFinite(test)
-        loc = test.simpleLocation;
+        test.generalCheckFinite(test.simpleLocation)
+    end
+    
+    function generalCheckFinite(test, location)
         m = test.strength;
         chi = test.angle;
         b = test.scale;
         
-        d = dipole(loc, m, chi, b);
+        d = dipole(location, m, chi, b);
         W = potential(test.domainObject, d);
-        ref = @(z) m*b*(exp(-1i*chi)*z + exp(1i*chi)./z);
+        ref = test.generateReference(location, m, chi, b);
         
-        test.checkAtTestPoints(ref, W);
+        test.checkAtTestPoints(ref, W)
+    end
+    
+    function ref = generateReference(test, loc, m, chi, b)
+        label = test.domainTestObject.label;
+        switch label
+            case 'entire'
+                ref = @(z) m./(z - loc)/2/pi*exp(1i*chi);
+                
+            case 'simple'
+                ref = @(z) m*b*(exp(-1i*chi)*(z - loc) ...
+                    + exp(1i*chi)./(z - loc));
+                
+            case 'annulus'
+                
+            otherwise
+                test.assumeFail(...
+                    sprintf('Case %s not implemented yet.', label))
+        end
     end
 end
 
