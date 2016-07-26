@@ -1,4 +1,4 @@
-classdef Dipole < poUnitTest.TestCase
+classdef Dipole < poUnitTest.ParameterizedTestCase
 %poUnitTest.Dipole checks the dipole potential.
 
 % Everett Kropf, 2016

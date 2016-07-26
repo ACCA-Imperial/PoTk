@@ -1,4 +1,4 @@
-classdef SourceSinkPair < poUnitTest.TestCase
+classdef SourceSinkPair < poUnitTest.ParameterizedTestCase
 %poUnitTest.SourceSinkPair checks the source/sink pair potential.
 
 % Everett Kropf, 2016

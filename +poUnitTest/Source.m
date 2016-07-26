@@ -1,4 +1,4 @@
-classdef Source < poUnitTest.TestCase
+classdef Source < poUnitTest.ParameterizedTestCase
 %poUnitTest.Source checks the source point potential.
 
 % Everett Kropf, 2016

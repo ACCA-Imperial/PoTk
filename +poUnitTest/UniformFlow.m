@@ -1,4 +1,4 @@
-classdef UniformFlow < poUnitTest.TestCase
+classdef UniformFlow < poUnitTest.ParameterizedTestCase
 %poUnitTest.UniformFlow checks the uniform flow potential.
 
 % Everett Kropf, 2016

@@ -1,5 +1,6 @@
-classdef(Abstract) TestCase < matlab.unittest.TestCase
-%poUnitTest.TestCase is the abstract base test class for potential tests.
+classdef(Abstract) ParameterizedTestCase < matlab.unittest.TestCase
+%poUnitTest.ParameterizedTestCase is the abstract base test class for
+%parameterized potential tests.
 
 % Everett Kropf, 2016
 % 
@@ -69,7 +70,7 @@ methods
             test.([domainLabel, name])()
         catch err
             if strcmp(err.identifier, 'MATLAB:noSuchMethodOrField') ...
-                    && strcmp(err.stack(1).name, 'TestCase.dispatchTestMethod')
+                    && strcmp(err.stack(1).name, 'ParameterizedTestCase.dispatchTestMethod')
                 test.assumeFail('Test not implemented yet.')
             else
                 rethrow(err)

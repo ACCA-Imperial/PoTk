@@ -1,4 +1,4 @@
-classdef SourcesAndSinks < poUnitTest.TestCase
+classdef SourcesAndSinks < poUnitTest.ParameterizedTestCase
 %poUnitTest.SourcesAndSinks checks the potential from a collection of
 %sources and sinks.
 

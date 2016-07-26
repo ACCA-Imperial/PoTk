@@ -1,4 +1,4 @@
-classdef Circulation < poUnitTest.TestCase
+classdef Circulation < poUnitTest.ParameterizedTestCase
 %poUnitTest.Circulation tests the circulation potential.
 
 % Everett Kropf, 2016
