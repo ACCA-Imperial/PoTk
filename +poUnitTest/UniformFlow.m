@@ -40,6 +40,10 @@ methods
         test.analyticCheck()
     end
     
+    function annulusFlow(test)
+        test.analyticCheck()
+    end
+    
     function analyticCheck(test)
         m = test.strength;
         chi = test.angle;
@@ -60,6 +64,10 @@ methods
                 
             case 'simple'
                 ref = @(z) m*b*(exp(-1i*chi)*z + exp(1i*chi)./z);
+                
+            case 'annulus'
+                test.assertFail(...
+                    'Formula needed. Submitted as issue #62.')
                 
             otherwise
                 test.assumeFail(...
