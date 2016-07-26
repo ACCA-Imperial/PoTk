@@ -21,6 +21,7 @@ classdef Dipole < poUnitTest.ParameterizedTestCase
 properties
     entireLocation = 0
     simpleLocation = 0
+    annulusLocation = -0.6
     strength = 2
     angle = pi/4
     scale = 2
@@ -39,6 +40,10 @@ methods
     
     function simpleFinite(test)
         test.generalCheckFinite(test.simpleLocation)
+    end
+    
+    function annulusFinite(test)
+        test.generalCheckFinite(test.annulusLocation)
     end
     
     function generalCheckFinite(test, location)
@@ -64,6 +69,8 @@ methods
                     + exp(1i*chi)./(z - loc));
                 
             case 'annulus'
+                test.assertFail(...
+                    'Formula needed. Submitted as issue #62.')
                 
             otherwise
                 test.assumeFail(...
