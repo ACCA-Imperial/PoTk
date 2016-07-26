@@ -1,4 +1,4 @@
-classdef(Abstract) ParameterizedTestCase < matlab.unittest.TestCase
+classdef(Abstract) ParameterizedTestCase < poUnitTest.TestCase
 %poUnitTest.ParameterizedTestCase is the abstract base test class for
 %parameterized potential tests.
 
@@ -20,12 +20,7 @@ classdef(Abstract) ParameterizedTestCase < matlab.unittest.TestCase
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties
-    defaultTolerance = 1e-12;
-
     domainTestObject
-    domainObject
-    
-    diagnosticMessage
 end
 
 properties(ClassSetupParameter)
@@ -35,7 +30,6 @@ end
 methods(TestClassSetup)
     function setDomainObject(test, domain)
         test.domainTestObject = domain;
-        test.domainObject = domain.domainObject;
     end
 end
 
@@ -46,23 +40,6 @@ methods(TestMethodSetup)
 end
 
 methods
-    function checkAtTestPoints(test, ref, fun, tol)
-        if nargin < 4 || isempty(tol)
-            tol = test.defaultTolerance;
-        end
-        
-        zp = test.domainTestObject.testPoints;
-        err = ref(zp) - fun(zp);
-        
-        msg = test.diagnosticMessage;
-        if isempty(msg)
-            args = {tol};
-        else
-            args = {tol, msg};
-        end
-        test.verifyLessThan(max(abs(err(:))), args{:})
-    end
-    
     function dispatchTestMethod(test, name)
         domainLabel = test.domainTestObject.label;
         name(1) = upper(name(1));
