@@ -32,29 +32,39 @@ end
 
 methods
     function entireFlow(test)
-        m = test.strength;
-        chi = test.angle;
-        b = test.scale;
-        
-        uf = uniformFlow(m, chi, b);
-        W = potential(test.domainObject, uf);
-        ref = @(z) m*b*z*exp(-1i*chi);
-        
         test.diagnosticMessage = 'Submitted bug as issue #59.';
-        test.checkAtTestPoints(ref, W);
+        test.analyticCheck()
     end
     
     function simpleFlow(test)
+        test.analyticCheck()
+    end
+    
+    function analyticCheck(test)
         m = test.strength;
         chi = test.angle;
         b = test.scale;
         
         uf = uniformFlow(m, chi, b);
         W = potential(test.domainObject, uf);
+        ref = test.generateReference(m, chi, b);
         
-        ref = @(z) m*b*(exp(-1i*chi)*z + exp(1i*chi)./z);
-        
-        test.checkAtTestPoints(ref, W);
+        test.checkAtTestPoints(ref, W)
+    end
+    
+    function ref = generateReference(test, m, chi, b)
+        label = test.domainTestObject.label;
+        switch label
+            case 'entire'
+                ref = @(z) m*b*z*exp(-1i*chi);
+                
+            case 'simple'
+                ref = @(z) m*b*(exp(-1i*chi)*z + exp(1i*chi)./z);
+                
+            otherwise
+                test.assumeFail(...
+                    sprintf('Case %s not implemented yet.', label))
+        end
     end
 end
 
