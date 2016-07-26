@@ -21,7 +21,8 @@ function dps = domainParameterStructure()
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-domainList = {'domainEntire', 'domainSimple', 'domainAnnulus'};
+domainList = {'domainEntire', 'domainSimple', 'domainAnnulus', ...
+    'domainConn3'};
 dps = struct();
 
 for i = 1:numel(domainList)
