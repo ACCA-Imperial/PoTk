@@ -133,6 +133,12 @@ methods(Static)
                 'Circle intersection detected.')
         end
     end
+    
+    function D = fromSkpDomain(D)
+        %Create unitDomain from skpDomain.
+        
+        D = unitDomain(D.dv, D.qv);
+    end
 end
 
 methods % Setting and getting.
