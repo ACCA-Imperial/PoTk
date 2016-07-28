@@ -30,11 +30,30 @@ end
 
 properties(Dependent)
     domainObject            % Instance of potentialDomain
+    primeFunctionReferenceForDomain
 end
-
 methods % getters
     function do = get.domainObject(test)
         do = test.domainTestObject.domainObject;
+    end
+    
+    function pf = get.primeFunctionReferenceForDomain(test)
+        label = test.domainTestObject.label;
+        switch label
+            case {'entire', 'simple'}
+                pf = @(z,a) z - a;
+                
+            case 'annulus'
+                q = test.domainObject.qv;
+                [P, C] = poUnitTest.PFunction(q);
+                pf = @(z,a) a*C*P(z/a);
+                
+            otherwise
+                L = 8;
+                dv = test.domainObject.dv;
+                qv = test.domainObject.qv;
+                pf = poUnitTest.SKProd(dv, qv, L);
+        end
     end
 end
 
