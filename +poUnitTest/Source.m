@@ -22,6 +22,7 @@ properties
     entireLocation = 0.95751+0.95717i
     simpleLocation = 0.15761+0.80028i
     annulusLocation = -0.16443+0.49679i
+    conn3Location = 0.31137+0.11195i
     
     strength = 2
 end
@@ -34,16 +35,21 @@ end
 
 methods
     function entirePoint(test)
-        test.checkEval(test.entireLocation);
+        test.checkEval(test.entireLocation)
     end
     
     function simplePoint(test)
         test.diagnosticMessage = 'Bug submitted as issue #58.';
-        test.checkEval(test.simpleLocation);
+        test.checkEval(test.simpleLocation)
     end
     
     function annulusPoint(test)
-        test.checkEval(test.annulusLocation);
+        test.checkEval(test.annulusLocation)
+    end
+    
+    function conn3Point(test)
+        test.perTestTolerance = 1e-6;
+        test.checkEval(test.conn3Location)
     end
     
     function checkEval(test, a)

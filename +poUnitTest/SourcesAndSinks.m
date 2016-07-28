@@ -24,6 +24,7 @@ properties
     entireOnePoint = 0.42176+0.65574i
     simpleOnePoint = 0.67894+0.52697i
     annulusOnePoint = 0.5+0.5i
+    conn3OnePoint = 0.31137+0.11195i
     
     strength3 = [1; 3; -2]
     entireThreePoints = [
@@ -38,6 +39,10 @@ properties
         -0.16443+0.49679i
         0.42332-0.16793i
         -0.02449-0.53878i]
+    conn3ThreePoints = [
+        0.21341+0.55277i
+        -0.54227+0i
+        -0.18542-0.67172i]
 end
 
 methods(Test)
@@ -73,6 +78,16 @@ methods
     
     function annulusThree(test)
         test.setAndCheckThree('annulus')
+    end
+    
+    function conn3One(test)
+        test.perTestTolerance = 1e-6;
+        test.setAndCheckOne('conn3')
+    end
+    
+    function conn3Three(test)
+        test.perTestTolerance = 1e-6;
+        test.setAndCheckThree('conn3')
     end
     
     function setAndCheckOne(test, label)
