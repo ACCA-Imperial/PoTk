@@ -21,6 +21,10 @@ function gj = PrimeFormGreens(pf, j, domainTestObject)
 label = domainTestObject.label;
 D = domainTestObject.domainObject.skpDomain;
 if j > 0
+    if strcmp(label ,'simple')
+        error(PoTk.ErrorIdString.RuntimeError, ...
+            'In a simply connected domain j>0 makes no sense.')
+    end
     thj = @(z) D.theta(j, z);
 else
     thj = @(z) z;
