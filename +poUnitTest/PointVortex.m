@@ -101,38 +101,14 @@ methods
                     arrayfun(@(k) log(z(:) - pv.location(k)), ...
                     1:N, 'uniform', false)), 2), size(z))/2i/pi;
                 
-            case 'simple'
-                ref = test.simpleReference(pv);
-                
-            case 'annulus'
-                ref = test.arrayReference(pv);
-                
             otherwise
-                test.assumeFail('Case %s not implemented yet.', label)
+                ref = test.primeFormReferenceFuntion(pv);
         end
     end
     
-    function ref = simpleReference(test, pv)
-        g0 = @(z,a) poUnitTest.simpleG0(z, a);
-        av = pv.location;
-        sv = pv.strength;
-        
-        function v = rfun(z)
-            v = reshape(sum(cell2mat( ...
-                arrayfun(@(k) sv(k)*g0(z(:), av(k)), find(sv(:) ~= 0)', ...
-                'uniform', false)), 2), size(z));
-            if isa(pv, 'pointVortexNoNet')
-                v = v - sum(sv)*g0(z, test.domainObject.infImage);
-            end
-        end
-        
-        ref = @rfun;
-    end
-    
-    function ref = arrayReference(test, pv)
-        q = test.domainObject.qv;
-        P = poUnitTest.PFunction(q);
-        g0 = @(z,a) log(abs(a)*P(z/a)./P(z*conj(a)))/2i/pi;
+    function ref = primeFormReferenceFuntion(test, pv)
+        pf = test.primeFunctionReferenceForDomain;
+        g0 = poUnitTest.PrimeFormGreens(pf, 0, test.domainTestObject);
         av = pv.location;
         sv = pv.strength;
         
