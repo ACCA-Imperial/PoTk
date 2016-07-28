@@ -22,6 +22,7 @@ properties
     entireLocation = 0.95751+0.95717i
     simpleLocation = 0.15761+0.80028i
     annulusLocation = -0.16443+0.49679i
+    conn3Location = 0.59825+0.2379i
     
     strength = 2
 end
@@ -43,6 +44,11 @@ methods
     
     function annulusPair(test)
         test.checkEval(test.annulusLocation)
+    end
+    
+    function conn3Pair(test)
+        test.perTestTolerance = 1e-6;
+        test.checkEval(test.conn3Location)
     end
     
     function checkEval(test, a)
