@@ -20,7 +20,9 @@ classdef(Abstract) TestCase < matlab.unittest.TestCase
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties
+    perTestTolerance
     defaultTolerance = 1e-12
+    
     diagnosticMessage
 end
 
@@ -57,10 +59,20 @@ methods % getters
     end
 end
 
+methods(TestMethodSetup)
+    function resetPerTestTolerance(test)
+        test.perTestTolerance = [];
+    end
+end
+
 methods
     function checkAtTestPoints(test, ref, fun, tol)
         if nargin < 4 || isempty(tol)
-            tol = test.defaultTolerance;
+            if isempty(test.perTestTolerance)
+                tol = test.defaultTolerance;
+            else
+                tol = test.perTestTolerance;
+            end
         end
         
         zp = test.domainTestObject.testPoints;

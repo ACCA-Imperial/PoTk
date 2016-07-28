@@ -28,7 +28,7 @@ properties
 
     alpha = -0.42332-0.41283i 
     
-    tolerance = 1e-6
+    prodTolerance = 1e-6
 end
 
 methods(Test)
@@ -41,7 +41,7 @@ methods(Test)
         wp = test.primeFunctionReferenceForDomain;
         ref = @(z) wp(z, a);
         
-        test.checkAtTestPoints(w, ref, test.tolerance)
+        test.checkAtTestPoints(w, ref, test.prodTolerance)
     end
 end
 
