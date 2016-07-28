@@ -113,7 +113,7 @@ methods
                 ref = test.genericReferenceFunction(pf, a, m);
                 
             case 'annulus'
-                pf = test.primeFunctionFromPFunction;
+                pf = test.primeFunctionReferenceForDomain;
                 ref = test.genericReferenceFunction(pf, a, m);
                 
             otherwise

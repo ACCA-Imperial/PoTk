@@ -65,7 +65,7 @@ methods
                 ref = test.primeFormReference(pf, a, o, m);
                 
             case 'annulus'
-                pf = test.primeFunctionFromPFunction;
+                pf = test.primeFunctionReferenceForDomain;
                 ref = test.primeFormReference(pf, a, o, m);
                 
             otherwise

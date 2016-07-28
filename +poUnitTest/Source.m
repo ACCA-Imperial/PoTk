@@ -66,7 +66,7 @@ methods
                 ref = test.primeFormReferenceFunction(pf, a, o, m);
                 
             case 'annulus'
-                pf = test.primeFunctionFromPFunction;
+                pf = test.primeFunctionReferenceForDomain;
                 o = test.domainObject.infImage;
                 ref = test.primeFormReferenceFunction(pf, a, o, m);
                 
