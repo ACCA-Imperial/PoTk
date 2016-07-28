@@ -19,6 +19,12 @@ function gj = PrimeFormGreens(pf, j, domainTestObject)
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 label = domainTestObject.label;
+D = domainTestObject.domainObject.skpDomain;
+if j > 0
+    thj = @(z) D.theta(j, z);
+else
+    thj = @(z) z;
+end
 
 function v = g0eval(z, a)
     switch label
@@ -27,7 +33,7 @@ function v = g0eval(z, a)
             if a ~= 0
                 v = v - log((z - 1/conj(a))*abs(a))/2i/pi;
             end
-            
+
         otherwise
             v = log(pf(z, a)./pf(z, 1/conj(a)))/2i/pi;
             if a ~= 0
@@ -36,16 +42,10 @@ function v = g0eval(z, a)
     end
 end
 
-D = domainTestObject.domainObject.skpDomain;
-function v = gjeval(z, a)
-    thj = @(z) D.theta(j, z);
-    v = log(pf(z, a)./pf(z, thj(1/conj(a))))/2i/pi;
-end
-
-if j == 0
+if j == 0    
     gj = @g0eval;
 else
-    gj = @gjeval;
+    gj = @(z,a) log(pf(z, a)./pf(z, thj(1/conj(a))))/2i/pi;
 end
 
 end
