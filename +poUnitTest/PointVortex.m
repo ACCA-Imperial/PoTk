@@ -84,7 +84,7 @@ methods
         pv = pvKind(test.selectVortexPoints(), test.vortexStrengths);
         W = potential(test.domainObject, pv);
         ref = test.generateReference(pv);
-        test.checkAtTestPoints(ref, W, test.defaultTolerance)
+        test.checkAtTestPoints(ref, W)
     end
     
     function av = selectVortexPoints(test)

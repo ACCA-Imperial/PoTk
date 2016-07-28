@@ -41,7 +41,8 @@ methods(Test)
         wp = test.primeFunctionReferenceForDomain;
         ref = @(z) wp(z, a);
         
-        test.checkAtTestPoints(w, ref, test.prodTolerance)
+        test.perTestTolerance = test.prodTolerance;
+        test.checkAtTestPoints(w, ref)
     end
 end
 

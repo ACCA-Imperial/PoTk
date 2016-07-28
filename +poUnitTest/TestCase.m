@@ -66,13 +66,10 @@ methods(TestMethodSetup)
 end
 
 methods
-    function checkAtTestPoints(test, ref, fun, tol)
-        if nargin < 4 || isempty(tol)
-            if isempty(test.perTestTolerance)
-                tol = test.defaultTolerance;
-            else
-                tol = test.perTestTolerance;
-            end
+    function checkAtTestPoints(test, ref, fun)
+        tol = test.perTestTolerance;
+        if isempty(tol)
+            tol = test.defaultTolerance;
         end
         
         zp = test.domainTestObject.testPoints;
