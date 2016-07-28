@@ -37,6 +37,12 @@ properties
         0.28338-0.2309i
         0.17843-0.54577i]
     
+    conn3VortexLocations = [
+        0.12945+0.66472i
+        0.57026-0.041983i
+        -0.30437-0.31487i
+        -0.066472-0.7137i]
+    
     vortexStrengths = [-1, 1, -1, 1];
 end
 
@@ -77,6 +83,16 @@ methods
     end
     
     function annulusNoNet(test)
+        test.checkEitherPV(@pointVortexNoNet)
+    end
+    
+    function conn3Net(test)
+        test.perTestTolerance = 1e-6;
+        test.checkEitherPV(@pointVortex)
+    end
+    
+    function conn3NoNet(test)
+        test.perTestTolerance = 1e-6;
         test.checkEitherPV(@pointVortexNoNet)
     end
     
