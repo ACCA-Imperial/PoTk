@@ -60,23 +60,15 @@ methods
             case 'entire'
                 ref = @(z) m*log((z - a)./(z - o))/2/pi;
                 
-            case 'simple'
-                pf = @(z,a) z - a;
-                ref = test.primeFormReference(pf, a, o, m);
-                
-            case 'annulus'
-                pf = test.primeFunctionReferenceForDomain;
-                ref = test.primeFormReference(pf, a, o, m);
-                
             otherwise
-                test.assumeFail(...
-                    sprintf('Case %s not implemented.', label))
+                pf = test.primeFunctionReferenceForDomain;
+                ref = test.primeFormReferenceFunction(pf, a, o, m);
         end
     end
 end
 
 methods(Static)
-    function ref = primeFormReference(pf, a, o, m)
+    function ref = primeFormReferenceFunction(pf, a, o, m)
         ref = @(z) m*log(...
                 pf(z, a).*pf(z, 1/conj(a)) ...
                 ./pf(z, o)./pf(z, 1/conj(o)) ...

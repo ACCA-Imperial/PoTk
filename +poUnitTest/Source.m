@@ -60,19 +60,10 @@ methods
             case 'entire'
                 ref = @(z) m*log(z - a)/2/pi;
                 
-            case 'simple'
-                pf = @(z,a) z - a;
-                o = test.domainObject.infImage;
-                ref = test.primeFormReferenceFunction(pf, a, o, m);
-                
-            case 'annulus'
+            otherwise
                 pf = test.primeFunctionReferenceForDomain;
                 o = test.domainObject.infImage;
                 ref = test.primeFormReferenceFunction(pf, a, o, m);
-                
-            otherwise
-                test.assumeFail(...
-                    sprintf('Case %s not implemented.', label))
         end
     end
 end

@@ -108,23 +108,15 @@ methods
                     arrayfun(@(k) m(k)*log(z(:) - a(k))/2/pi, 1:N, ...
                     'uniform', false)), 2), size(z));
                 
-            case 'simple'
-                pf = @(z,a) (z - a);
-                ref = test.genericReferenceFunction(pf, a, m);
-                
-            case 'annulus'
-                pf = test.primeFunctionReferenceForDomain;
-                ref = test.genericReferenceFunction(pf, a, m);
-                
             otherwise
-                test.assumeFail(...
-                    sprintf('Case %s not implemented yet!', label))
+                pf = test.primeFunctionReferenceForDomain;
+                ref = test.primeFormReferenceFunction(pf, a, m);
         end
     end
 end
 
 methods(Static)
-    function ref = genericReferenceFunction(pf, a, m)
+    function ref = primeFormReferenceFunction(pf, a, m)
         function v = refeval(z)
             v = arrayfun(...
                 @(k) m(k)/2/pi*log( ...
