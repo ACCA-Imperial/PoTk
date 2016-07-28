@@ -70,48 +70,74 @@ methods
         G = -2;
         C = circulation(G);
         
-        W = potential(test.domainObject, C);
-        ref = test.annulusReference(C);
-        
         test.diagnosticMessage = 'Bug submitted as issue #61.';
-        test.checkAtTestPoints(ref, W)
+        test.checkCircValues(C)
     end
     
     function annulusNoNet(test)
         G = [1, -2];
         C = circulationNoNet(G);
-        W = potential(test.domainObject, C);
-        ref = test.annulusReference(C);
         
         test.diagnosticMessage = 'Bug submitted as issue #61.';
+        test.checkCircValues(C)
+    end
+    
+    function conn3Net(test)
+        G = [1, -2];
+        C = circulation(G);
+        
+        test.diagnosticMessage = 'Bug submitted as issue #61.';
+        test.checkCircValues(C)
+    end
+    
+    function conn3NoNet(test)
+        G = [1, -2, 2];
+        C = circulationNoNet(G);
+        
+        test.diagnosticMessage = 'Bug submitted as issue #61.';
+        test.checkCircValues(C)
+    end
+    
+    function checkCircValues(test, C)
+        W = potential(test.domainObject, C);
+        ref = test.primeFormReferenceFunction(C);
         test.checkAtTestPoints(ref, W);
     end
     
-    function ref = annulusReference(test, C)
-        noNet = isa(C, 'circulationNoNet');
-        
+    function ref = primeFormReferenceFunction(test, C)
         D = test.domainObject;
-        q = D.qv;
+        dv = D.dv;
+        qv = D.qv;
+        m = D.m;
         beta = D.infImage;
-        th1 = @(z) skpDomain(D).theta(1, z);
+        sv = C.circVector;
         
-        P = poUnitTest.PFunction(q);
+        pf = test.primeFunctionReferenceForDomain;
+        g = cell(m, 1);
+        for j = 1:m
+            thj = @(z) skpDomain(D).theta(j, z);
+            g{j} = @(z) log(pf(z, beta)./pf(z, thj(1/conj(beta))) ...
+                *qv(j)/abs(beta - dv(j)))/2i/pi;
+        end
         
-        G = C.circVector;
-        g1 = @(z) log(P(z/beta)./P(z/th1(1/conj(beta)))*abs(beta)*q)/2i/pi;
+        noNet = isa(C, 'circulationNoNet');
         if noNet
-            g0 = @(z) log(P(z/beta)./P(z*conj(beta))*abs(beta))/2i/pi;
+            g0 = @(z) log(pf(z, beta)./pf(z, 1/conj(beta)) ...
+                /abs(beta))/2i/pi;
+            s0 = sv(1);
+            sv = sv(2:end);
         end
         
         function v = refeval(z)
-            v = -G(end)*g1(z);
+            v = arrayfun(@(j) -sv(j)*g{j}(z(:)), 1:m, 'uniform', false);
+            v = reshape(sum(cell2mat(v), 2), size(z));
             if noNet
-                v = v - sum(G)*g0(z);
+                v = v - (s0 + sum(sv))*g0(z);
             end
         end
         
         ref = @refeval;
-    end
+    end    
 end
 
 end
