@@ -55,6 +55,15 @@ methods
         end
         test.verifyLessThan(max(abs(err(:))), args{:})
     end
+
+    function pf = primeFunctionFromPFunction(test)
+        q = test.domainObject.qv;
+        if numel(q) ~= 1
+            test.assertFail('Incorrect domain for P-Function use.')
+        end
+        [P, C] = poUnitTest.PFunction(q);
+        pf = @(z,a) a*C*P(z/a);
+    end
 end
 
 end
