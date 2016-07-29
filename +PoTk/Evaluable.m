@@ -24,7 +24,7 @@ classdef(Abstract) Evaluable
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-methods
+methods(Abstract)
     v = feval(obj, z)
 end
 
