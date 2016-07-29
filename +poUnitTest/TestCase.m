@@ -67,10 +67,7 @@ end
 
 methods
     function checkAtTestPoints(test, ref, fun)
-        tol = test.perTestTolerance;
-        if isempty(tol)
-            tol = test.defaultTolerance;
-        end
+        tol = test.determineTolerance(ref);
         
         zp = test.domainTestObject.testPoints;
         err = ref(zp) - fun(zp);
@@ -82,6 +79,17 @@ methods
             args = {tol, msg};
         end
         test.verifyLessThan(max(abs(err(:))), args{:})
+    end
+    
+    function tol = determineTolerance(test, ref)
+        tol = test.perTestTolerance;
+        if isempty(tol) && ...
+                nargin > 1 && isa(ref, 'poUnitTest.ReferenceFunction')
+            tol = ref.tolerance;
+        end
+        if isempty(tol)
+            tol = test.defaultTolerance;
+        end
     end
 end
 
