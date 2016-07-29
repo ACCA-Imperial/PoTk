@@ -135,7 +135,8 @@ methods
             end
         end
         
-        ref = @refeval;
+        ref = poUnitTest.ReferenceFunction(@refeval);
+        ref.tolerance = pf.tolerance;
     end    
 end
 
