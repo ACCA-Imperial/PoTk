@@ -87,12 +87,10 @@ methods
     end
     
     function conn3Net(test)
-        test.perTestTolerance = 1e-6;
         test.checkEitherPV(@pointVortex)
     end
     
     function conn3NoNet(test)
-        test.perTestTolerance = 1e-6;
         test.checkEitherPV(@pointVortexNoNet)
     end
     
@@ -137,7 +135,8 @@ methods
             end
         end
         
-        ref = @rfun;
+        ref = poUnitTest.ReferenceFunction(@rfun);
+        ref.tolerance = pf.tolerance;
     end
 end
 
