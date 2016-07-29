@@ -41,20 +41,27 @@ methods % getters
     
     function pf = get.primeFunctionReferenceForDomain(test)
         label = test.domainTestObject.label;
+        tol = [];
         switch label
             case {'entire', 'simple'}
-                pf = @(z,a) z - a;
+                pfun = @(z,a) z - a;
                 
             case 'annulus'
                 q = test.domainObject.qv;
                 [P, C] = poUnitTest.PFunction(q);
-                pf = @(z,a) a*C*P(z/a);
+                pfun = @(z,a) a*C*P(z/a);
                 
             otherwise
                 L = 8;
                 dv = test.domainObject.dv;
                 qv = test.domainObject.qv;
-                pf = poUnitTest.SKProd(dv, qv, L);
+                pfun = poUnitTest.SKProd(dv, qv, L);
+                tol = 1e-6;
+        end
+        
+        pf = poUnitTest.PrimeFunctionReference(pfun);
+        if ~isempty(tol)
+            pf.tolerance = tol;
         end
     end
 end
