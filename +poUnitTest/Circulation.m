@@ -30,10 +30,9 @@ end
 
 methods
     function entireNet(test)
-        D = test.domainObject;
         C = circulation(1, 2);
         test.verifyError(...
-            @() potential(D, C), ...
+            @() potential(test.domainObject, C), ...
             PoTk.ErrorIdString.InvalidArgument)
     end
     
@@ -41,7 +40,7 @@ methods
         D = test.domain;
         C = circulationNoNet(1, 2);
         test.verifyError(...
-            @() potential(D, C), ...
+            @() potential(test.domainObject, C), ...
             PoTk.ErrorIdString.InvalidArgument)
     end
     
