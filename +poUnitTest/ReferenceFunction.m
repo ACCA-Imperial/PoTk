@@ -1,6 +1,6 @@
-classdef(Abstract) ReferenceFunction < PoTk.Evaluable
-%poUniTest.ReferenceFunction describes the protocol for a reference
-%function.
+classdef ReferenceFunction < PoTk.Evaluable
+%poUniTest.ReferenceFunction describes the protocol and provides the basic
+%implementation of a reference function.
 
 % Everett Kropf, 2016
 % 
@@ -21,11 +21,29 @@ classdef(Abstract) ReferenceFunction < PoTk.Evaluable
 
 properties
     functionHandle
+end
+
+properties(Access=private)
+    tolerance_
+end
+
+properties(Dependent)
     tolerance
 end
 
+methods % setting & getting
+    function ref = set.tolerance(ref, tol)
+        % FIXME: Actually validate this.
+        ref.tolerance_ = tol;
+    end
+    
+    function tol = get.tolerance(ref)
+        tol = ref.tolerance_;
+    end
+end
+
 methods
-    function ref = ReferenceFunction(fHandle, tol)
+    function ref = ReferenceFunction(fHandle)
         if ~nargin
             return
         end
@@ -35,11 +53,6 @@ methods
                 'Expected a function handle.')
         end
         ref.functionHandle = fHandle;
-        
-        % FIXME: Validate tolerance.
-        if nargin > 1
-            ref.tolerance = tol;
-        end
     end
     
     function v = feval(ref, z)
