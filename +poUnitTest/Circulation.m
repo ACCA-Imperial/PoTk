@@ -30,18 +30,11 @@ end
 
 methods
     function entireNet(test)
-        C = circulation(1, 2);
-        test.verifyError(...
-            @() potential(test.domainObject, C), ...
-            PoTk.ErrorIdString.InvalidArgument)
+        test.entireError()
     end
     
     function entireNoNet(test)
-        D = test.domain;
-        C = circulationNoNet(1, 2);
-        test.verifyError(...
-            @() potential(test.domainObject, C), ...
-            PoTk.ErrorIdString.InvalidArgument)
+        test.entireError()
     end
     
     function simpleNet(test)
@@ -95,6 +88,13 @@ methods
         
         test.diagnosticMessage = 'Bug submitted as issue #61.';
         test.checkCircValues(C)
+    end
+    
+    function entireError(test)
+        C = circulation(2);
+        test.verifyError(...
+            @() potential(test.domainObject, C), ...
+            PoTk.ErrorIdString.InvalidArgument)
     end
     
     function checkCircValues(test, C)
