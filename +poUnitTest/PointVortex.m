@@ -51,8 +51,20 @@ methods(Test)
         dispatchTestMethod(test, 'net')
     end
     
+    function checkNetDz(test)
+        test.checkDerivative(@pointVortex)
+    end
+    
     function checkNoNet(test)
         dispatchTestMethod(test, 'noNet')
+    end
+    
+    function checkNoNetDz(test)
+        if strcmp(test.domainTestObject.label, 'simple')
+            test.verifyFail('Not implemented. Submitted bug as issue #55.')
+            return
+        end
+        test.checkDerivative(@pointVortexNoNet)
     end
 end
 
@@ -95,10 +107,21 @@ methods
     end
     
     function checkEitherPV(test, pvKind)
-        pv = pvKind(test.selectVortexPoints(), test.vortexStrengths);
+        pv = test.kindInstance(pvKind);
         W = potential(test.domainObject, pv);
         ref = test.generateReference(pv);
         test.checkAtTestPoints(ref, W)
+    end
+    
+    function checkDerivative(test, pvKind)
+        W = potential(test.domainObject, test.kindInstance(pvKind));
+        dW = diff(W);
+        ref = poUnitTest.FiniteDifference(@(z) W(z));
+        test.checkAtTestPoints(ref, dW);
+    end
+    
+    function pv = kindInstance(test, pvKind)
+        pv = pvKind(test.selectVortexPoints(), test.vortexStrengths);
     end
     
     function av = selectVortexPoints(test)
