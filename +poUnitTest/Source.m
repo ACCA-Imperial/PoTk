@@ -29,6 +29,10 @@ end
 
 methods(Test)
     function checkPoint(test)
+        switch test.label
+            case 'simple'
+                test.diagnosticMessage = 'Bug submitted as issue #58.';
+        end
         test.checkValues()
     end
 end
