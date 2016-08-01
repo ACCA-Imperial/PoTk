@@ -26,7 +26,20 @@ end
 
 methods(Test)
     function checkNet(test)
-        dispatchTestMethod(test, 'net')
+        switch test.label
+            case 'entire'
+                test.entireError()
+                return
+            case 'simple'
+                test.verifyError(...
+                    @() potential(test.domainObject, circulation()), ...
+                    PoTk.ErrorIdString.InvalidArgument, ...
+                    'Bug submitted as issue #53.')
+                return
+            case {'annulus', 'conn3'}
+                test.diagnosticMessage = 'Bug submitted as issue #61.';
+        end
+        test.checkPotential(@circulation)
     end
     
     function checkNetDz(test)
@@ -38,7 +51,17 @@ methods(Test)
     end
     
     function checkNoNet(test)
-        dispatchTestMethod(test, 'noNet')
+        switch test.label
+            case 'entire'
+                test.entireError()
+                return
+            case 'simple'
+                test.verifyFail('Bug submitted as issue #54.')
+                return
+            case {'annulus', 'conn3'}
+                test.diagnosticMessage = 'Bug submitted as issue #61.';
+        end
+        test.checkPotential(@circulationNoNet)
     end
     
     function checkNoNetDz(test)
@@ -46,7 +69,6 @@ methods(Test)
             case 'entire'
                 test.entireError()
                 return
-                
             case 'simple'
                 test.verifyFail('Bug submitted as issue #54.')
                 return
@@ -56,72 +78,19 @@ methods(Test)
 end
 
 methods
-    function entireNet(test)
-        test.entireError()
-    end
-    
-    function entireNoNet(test)
-        test.entireError()
-    end
-    
-    function simpleNet(test)
-        C = circulation();
-        test.verifyError(...
-            @() potential(test.domainObject, C), ...
-            PoTk.ErrorIdString.InvalidArgument, ...
-            'Bug submitted as issue #53.')
-    end
-    
-    function simpleNoNet(test)
-        D = test.domainObject;
-        beta = D.infImage;
-        G = -2;
-        C = circulation(G);
-
-        W = potential(test.domainObject, C);        
-        ref = @(z) G*(1./(z - beta) - 1./(z - 1/conj(beta)))/2i/pi;
-        
-        test.diagnosticMessage = 'Bug submitted as issue #54.';
-        test.checkAtTestPoints(ref, W)
-    end
-    
-    function annulusNet(test)
-        G = -2;
-        C = circulation(G);
-        
-        test.diagnosticMessage = 'Bug submitted as issue #61.';
-        test.checkCircValues(C)
-    end
-    
-    function annulusNoNet(test)
-        G = [1, -2];
-        C = circulationNoNet(G);
-        
-        test.diagnosticMessage = 'Bug submitted as issue #61.';
-        test.checkCircValues(C)
-    end
-    
-    function conn3Net(test)
-        G = [1, -2];
-        C = circulation(G);
-        
-        test.diagnosticMessage = 'Bug submitted as issue #61.';
-        test.checkCircValues(C)
-    end
-    
-    function conn3NoNet(test)
-        G = [1, -2, 2];
-        C = circulationNoNet(G);
-        
-        test.diagnosticMessage = 'Bug submitted as issue #61.';
-        test.checkCircValues(C)
-    end
-    
     function entireError(test)
         C = circulation(2);
         test.verifyError(...
             @() potential(test.domainObject, C), ...
             PoTk.ErrorIdString.InvalidArgument)
+    end
+    
+    function C = generateCirculation(test, kind)
+        sv = test.dispatchTestProperty('Circ');
+        if ~isa(kind(), 'circulationNoNet')
+            sv(end) = [];
+        end
+        C = kind(sv);
     end
     
     function checkCircValues(test, C)
@@ -130,12 +99,15 @@ methods
         test.checkAtTestPoints(ref, W);
     end
     
+    function checkPotential(test, kind)
+        C = test.generateCirculation(kind);
+        W = potential(test.domainObject, C);
+        ref = test.primeFormReferenceFunction(C);
+        test.checkAtTestPoints(ref, W);
+    end
+    
     function checkDerivative(test, kind)
-        sv = test.dispatchTestProperty('Circ');
-        if ~isa(kind(), 'circulationNoNet')
-            sv(end) = [];
-        end
-        W = potential(test.domainObject, kind(sv));
+        W = potential(test.domainObject, test.generateCirculation(kind));
         dW = diff(W);
         ref = poUnitTest.FiniteDifference(@(z) W(z));
         test.checkAtTestPoints(ref, dW);
