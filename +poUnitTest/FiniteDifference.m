@@ -20,16 +20,18 @@ classdef FiniteDifference < poUnitTest.ReferenceFunction
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties
-    deltaH
+    deltaH = 1e-6
 end
 
 methods
     function ref = FiniteDifference(fHandle)
-        sargs = {};
         if nargin
             sargs = {fHandle};
+        else
+            sargs = {};
         end
         ref = ref@poUnitTest.ReferenceFunction(sargs{:});
+        ref.tolerance = ref.deltaH;
     end
     
     function v = feval(ref, z)
