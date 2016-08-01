@@ -50,8 +50,26 @@ methods(Test)
         test.setAndCheckOne()
     end
     
+    function checkOneDz(test)
+        switch test.label
+            case 'entire'
+                test.verifyFail('Bug submitted as issue #65.')
+                return
+        end
+        test.checkDerivative('OnePoint')
+    end
+    
     function checkThree(test)
         test.setAndCheckThree()
+    end
+    
+    function checkThreeDz(test)
+        switch test.label
+            case 'entire'
+                test.verifyFail('Bug submitted as issue #65.')
+                return
+        end
+        test.checkDerivative('ThreePoints')
     end
 end
 
@@ -77,6 +95,14 @@ methods
         W = potential(test.domainObject, sourcesAndSinks(a, m));
         ref = test.generateEvalReference(a, m);
         test.checkAtTestPoints(ref, W)
+    end
+    
+    function checkDerivative(test, numString)
+        [a, m] = test.getProperties(numString);
+        W = potential(test.domainObject, sourcesAndSinks(a, m));
+        dW = diff(W);
+        ref = poUnitTest.FiniteDifference(@(z) W(z));
+        test.checkAtTestPoints(ref, dW);
     end
     
     function ref = generateEvalReference(test, a, m)
