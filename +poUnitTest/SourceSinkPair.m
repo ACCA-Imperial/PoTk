@@ -29,33 +29,20 @@ end
 
 methods(Test)
     function checkPair(test)
-        test.dispatchTestMethod('pair')
+        test.checkValues()
     end
 end
 
 methods
-    function entirePair(test)
-        test.checkEval(test.entireLocation)
-    end
-    
-    function simplePair(test)
-        test.checkEval(test.simpleLocation)
-    end
-    
-    function annulusPair(test)
-        test.checkEval(test.annulusLocation)
-    end
-    
-    function conn3Pair(test)
-        test.perTestTolerance = 1e-6;
-        test.checkEval(test.conn3Location)
-    end
-    
-    function checkEval(test, a)
+    function [a, o, m] = getProperties(test)
+        a = test.dispatchTestProperty('Location');
         o = -a;
         m = test.strength;
-        S = sourceSinkPair(a, o, m);
-        W = potential(test.domainObject, S);
+    end
+    
+    function checkValues(test)
+        [a, o, m] = getProperties(test);
+        W = potential(test.domainObject, sourceSinkPair(a, o, m));
         ref = test.generateEvalReference(a, o, m);
         test.checkAtTestPoints(ref, W)
     end
@@ -75,10 +62,14 @@ end
 
 methods(Static)
     function ref = primeFormReferenceFunction(pf, a, o, m)
-        ref = @(z) m*log(...
+        rfun = @(z) m*log(...
                 pf(z, a).*pf(z, 1/conj(a)) ...
                 ./pf(z, o)./pf(z, 1/conj(o)) ...
             )/2/pi;
+        ref = poUnitTest.ReferenceFunction(rfun);
+        if isa(pf, 'poUnitTest.PrimeFunctionReference')
+            ref.tolerance = pf.tolerance;
+        end
     end
 end
 
