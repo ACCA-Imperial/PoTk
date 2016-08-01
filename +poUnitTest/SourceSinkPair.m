@@ -31,6 +31,10 @@ methods(Test)
     function checkPair(test)
         test.checkValues()
     end
+    
+    function checkPairDz(test)
+        test.checkDerivative()
+    end
 end
 
 methods
@@ -45,6 +49,14 @@ methods
         W = potential(test.domainObject, sourceSinkPair(a, o, m));
         ref = test.generateEvalReference(a, o, m);
         test.checkAtTestPoints(ref, W)
+    end
+    
+    function checkDerivative(test)
+        [a, o, m] = getProperties(test);
+        W = potential(test.domainObject, sourceSinkPair(a, o, m));
+        dW = diff(W);
+        ref = poUnitTest.FiniteDifference(@(z) W(z));
+        test.checkAtTestPoints(ref, dW);
     end
     
     function ref = generateEvalReference(test, a, o, m)
