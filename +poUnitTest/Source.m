@@ -29,33 +29,15 @@ end
 
 methods(Test)
     function checkPoint(test)
-        test.dispatchTestMethod('point')
+        test.checkValues()
     end
 end
 
 methods
-    function entirePoint(test)
-        test.checkEval(test.entireLocation)
-    end
-    
-    function simplePoint(test)
-        test.diagnosticMessage = 'Bug submitted as issue #58.';
-        test.checkEval(test.simpleLocation)
-    end
-    
-    function annulusPoint(test)
-        test.checkEval(test.annulusLocation)
-    end
-    
-    function conn3Point(test)
-        test.perTestTolerance = 1e-6;
-        test.checkEval(test.conn3Location)
-    end
-    
-    function checkEval(test, a)
+    function checkValues(test)
+        a = test.dispatchTestProperty('Location');
         m = test.strength;
-        S = source(a, m);
-        W = potential(test.domainObject, S);
+        W = potential(test.domainObject, source(a, m));
         ref = test.generateEvalReference(a, m);
         test.checkAtTestPoints(ref, W)
     end
@@ -76,8 +58,12 @@ end
 
 methods(Static)
     function ref = primeFormReferenceFunction(pf, a, o, m)
-        ref = @(z) m*log(pf(z, a).*pf(z, 1/conj(a)) ...
+        rfun = @(z) m*log(pf(z, a).*pf(z, 1/conj(a)) ...
             ./pf(z, o)./pf(z, 1/conj(o)))/2/pi;
+        ref = poUnitTest.ReferenceFunction(rfun);
+        if isa(pf, 'poUnitTest.PrimeFunctionReference')
+            ref.tolerance = pf.tolerance;
+        end
     end
 end
 
