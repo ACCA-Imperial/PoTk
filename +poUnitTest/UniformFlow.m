@@ -26,34 +26,26 @@ end
 
 methods(Test)
     function checkFlow(test)
-        test.dispatchTestMethod('Flow')
+        switch test.label
+            case 'entire'
+                test.diagnosticMessage = 'Submitted bug as issue #59.';
+        end
+        test.checkValues()
     end
 end
 
 methods
-    function entireFlow(test)
-        test.diagnosticMessage = 'Submitted bug as issue #59.';
-        test.analyticCheck()
-    end
-    
-    function simpleFlow(test)
-        test.analyticCheck()
-    end
-    
-    function annulusFlow(test)
-        test.analyticCheck()
-    end
-    
-    function analyticCheck(test)
+    function [m, chi, b] = getParameters(test)
         m = test.strength;
         chi = test.angle;
         b = test.scale;
-        
-        uf = uniformFlow(m, chi, b);
-        W = potential(test.domainObject, uf);
+    end
+    
+    function checkValues(test)
+        [m, chi, b] = getParameters(test);
+        W = potential(test.domainObject, uniformFlow(m, chi, b));
         ref = test.generateReference(m, chi, b);
-        
-        test.checkAtTestPoints(ref, W)
+        test.checkAtTestPoints(ref, W)        
     end
     
     function ref = generateReference(test, m, chi, b)
