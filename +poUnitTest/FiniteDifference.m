@@ -31,7 +31,7 @@ methods
             sargs = {};
         end
         ref = ref@poUnitTest.ReferenceFunction(sargs{:});
-        ref.tolerance = ref.deltaH;
+        ref.tolerance = ref.deltaH*100;
     end
     
     function v = feval(ref, z)
