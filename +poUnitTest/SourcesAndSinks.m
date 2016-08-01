@@ -81,12 +81,10 @@ methods
     end
     
     function conn3One(test)
-        test.perTestTolerance = 1e-6;
         test.setAndCheckOne('conn3')
     end
     
     function conn3Three(test)
-        test.perTestTolerance = 1e-6;
         test.setAndCheckThree('conn3')
     end
     
@@ -139,8 +137,11 @@ methods(Static)
                 1:numel(a), 'uniform', false);
             v = reshape(sum(cell2mat(v), 2), size(z));
         end
-        
-        ref = @refeval;
+       
+        ref = poUnitTest.ReferenceFunction(@refeval);
+        if isa(pf, 'poUnitTest.ReferenceFunction')
+            ref.tolerance = pf.tolerance;
+        end
     end
 end
 
