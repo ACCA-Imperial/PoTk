@@ -26,7 +26,7 @@ end
 
 methods(Test)
     function checkFlow(test)
-        test.dispatchTestMethod('flow')
+        test.dispatchTestMethod('Flow')
     end
 end
 

@@ -69,10 +69,8 @@ methods
     end
     
     function dispatchTestMethod(test, name)
-        domainLabel = test.domainTestObject.label;
-        name(1) = upper(name(1));
         try
-            test.([domainLabel, name])()
+            test.([test.label, name])()
         catch err
             if strcmp(err.identifier, 'MATLAB:noSuchMethodOrField') ...
                     && strcmp(err.stack(1).name, ...
