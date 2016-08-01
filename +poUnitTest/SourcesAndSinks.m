@@ -20,13 +20,13 @@ classdef SourcesAndSinks < poUnitTest.ParameterizedTestCase
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties
-    strength1 = 2
+    strengthOnePoint = 2
     entireOnePoint = 0.42176+0.65574i
     simpleOnePoint = 0.67894+0.52697i
     annulusOnePoint = 0.5+0.5i
     conn3OnePoint = 0.31137+0.11195i
     
-    strength3 = [1; 3; -2]
+    strengthThreePoints = [1; 3; -2]
     entireThreePoints = [
         1.8315+0.071423i
         2.3766+2.5474i
@@ -56,27 +56,26 @@ methods(Test)
 end
 
 methods
+    function [a, m] = getProperties(test, numString)
+        a = test.dispatchTestProperty(numString);
+        a = [a; -a];
+        m = test.(['strength', numString]);
+        m = [m; -m];
+    end
+    
     function setAndCheckOne(test)
-        a = test.dispatchTestProperty('OnePoint');
-        m = test.strength1;
+        [a, m] = test.getProperties('OnePoint');
         test.checkEval(a, m)
     end
     
     function setAndCheckThree(test)
-        a = test.dispatchTestProperty('ThreePoints');
-        m = test.strength3;
+        [a, m] = test.getProperties('ThreePoints');
         test.checkEval(a, m)
     end
     
     function checkEval(test, a, m)
-        a = [a; -a];
-        m = [m; -m];
-        
-        S = sourcesAndSinks(a, m);
-        W = potential(test.domainObject, S);
-        
+        W = potential(test.domainObject, sourcesAndSinks(a, m));
         ref = test.generateEvalReference(a, m);
-        
         test.checkAtTestPoints(ref, W)
     end
     
