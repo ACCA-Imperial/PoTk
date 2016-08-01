@@ -35,15 +35,38 @@ methods(Test)
         end
         test.checkValues()
     end
+    
+    function checkPointDz(test)
+        switch test.label
+            case 'entire'
+                test.verifyFail('Bug submitted as issue #67.');
+                return
+            case 'simple'
+                test.diagnosticMessage = 'Bug submitted as issue #66.';
+        end
+        test.checkDerivative()
+    end
 end
 
 methods
-    function checkValues(test)
+    function [a, m] = getProperties(test)
         a = test.dispatchTestProperty('Location');
         m = test.strength;
+    end
+    
+    function checkValues(test)
+        [a, m] = test.getProperties();
         W = potential(test.domainObject, source(a, m));
         ref = test.generateEvalReference(a, m);
         test.checkAtTestPoints(ref, W)
+    end
+    
+    function checkDerivative(test)
+        [a, m] = test.getProperties();
+        W = potential(test.domainObject, source(a, m));
+        dW = diff(W);
+        ref = poUnitTest.FiniteDifference(@(z) W(z));
+        test.checkAtTestPoints(ref, dW)
     end
     
     function ref = generateEvalReference(test, a, m)
