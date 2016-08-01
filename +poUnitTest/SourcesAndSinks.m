@@ -47,7 +47,7 @@ end
 
 methods(Test)
     function checkOne(test)
-        test.setAndCheckOne()
+        test.checkValues('OnePoint')
     end
     
     function checkOneDz(test)
@@ -60,7 +60,7 @@ methods(Test)
     end
     
     function checkThree(test)
-        test.setAndCheckThree()
+        test.checkValues('ThreePoints')
     end
     
     function checkThreeDz(test)
@@ -81,17 +81,8 @@ methods
         m = [m; -m];
     end
     
-    function setAndCheckOne(test)
-        [a, m] = test.getProperties('OnePoint');
-        test.checkEval(a, m)
-    end
-    
-    function setAndCheckThree(test)
-        [a, m] = test.getProperties('ThreePoints');
-        test.checkEval(a, m)
-    end
-    
-    function checkEval(test, a, m)
+    function checkValues(test, numString)
+        [a, m] = test.getProperties(numString);
         W = potential(test.domainObject, sourcesAndSinks(a, m));
         ref = test.generateEvalReference(a, m);
         test.checkAtTestPoints(ref, W)
