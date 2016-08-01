@@ -32,6 +32,20 @@ methods(Test)
         end
         test.checkValues()
     end
+    
+    function checkFlowDz(test)
+        switch test.label
+            case 'entire'
+                test.diagnosticMessage = 'Submitted bug as issue #59.';
+            case 'annulus'
+                % FIXME: This seems problematic.
+                test.perTestTolerance = 5e-4;
+            case 'conn3'
+                test.assumeFail('Not implemented.')
+                return
+        end
+        test.checkDerivative()
+    end
 end
 
 methods
@@ -46,6 +60,14 @@ methods
         W = potential(test.domainObject, uniformFlow(m, chi, b));
         ref = test.generateReference(m, chi, b);
         test.checkAtTestPoints(ref, W)        
+    end
+    
+    function checkDerivative(test)
+        [m, chi, b] = getParameters(test);
+        W = potential(test.domainObject, uniformFlow(m, chi, b));
+        dW = diff(W);
+        ref = poUnitTest.FiniteDifference(@(z) W(z));
+        test.checkAtTestPoints(ref, dW)
     end
     
     function ref = generateReference(test, m, chi, b)

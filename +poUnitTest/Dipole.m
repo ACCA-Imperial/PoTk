@@ -31,6 +31,10 @@ methods(Test)
     function checkFinite(test)
         test.checkValues()
     end
+    
+    function checkFiniteDz(test)
+        test.checkDerivative()
+    end
 end
 
 methods
@@ -47,6 +51,14 @@ methods
         W = potential(test.domainObject, d);
         ref = test.generateReference(loc, m, chi, b);
         test.checkAtTestPoints(ref, W)        
+    end
+    
+    function checkDerivative(test)
+        [loc, m, chi, b] = test.getParameters();
+        W = potential(test.domainObject, dipole(loc, m, chi, b));
+        dW = diff(W);
+        ref = poUnitTest.FiniteDifference(@(z) W(z));
+        test.checkAtTestPoints(ref, dW);
     end
     
     function ref = generateReference(test, loc, m, chi, b)
