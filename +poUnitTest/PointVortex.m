@@ -48,7 +48,10 @@ end
 
 methods(Test)
     function checkNet(test)
-        dispatchTestMethod(test, 'net')
+        if strcmp(test.label, 'simple')
+            test.diagnosticMessage = 'Bug submitted as issue #56.';
+        end
+        test.checkPotentialValue(@pointVortex)
     end
     
     function checkNetDz(test)
@@ -56,11 +59,15 @@ methods(Test)
     end
     
     function checkNoNet(test)
-        dispatchTestMethod(test, 'noNet')
+        if strcmp(test.label, 'simple')
+            test.verifyFail('Not implemented. Submitted bug as issue #55.')
+            return
+        end
+        test.checkPotentialValue(@pointVortexNoNet)
     end
     
     function checkNoNetDz(test)
-        if strcmp(test.domainTestObject.label, 'simple')
+        if strcmp(test.label, 'simple')
             test.verifyFail('Not implemented. Submitted bug as issue #55.')
             return
         end
@@ -69,44 +76,7 @@ methods(Test)
 end
 
 methods
-    function entireNet(test)
-        test.checkEitherPV(@pointVortex)
-    end
-    
-    function entireNoNet(test)
-        test.checkEitherPV(@pointVortexNoNet)
-    end
-    
-    function simpleNet(test)
-        test.diagnosticMessage = 'Bug submitted as issue #56.';
-        test.checkEitherPV(@pointVortex)
-    end
-    
-    function simpleNoNet(test)
-        test.verifyFail('Not implemented. Submitted bug as issue #55.')
-        
-        % FIXME: Reinstate the following line, and delete the one above
-        % after fixing #55!
-%         test.checkEitherPV(@pointVortexNoNet)
-    end
-    
-    function annulusNet(test)
-        test.checkEitherPV(@pointVortex)
-    end
-    
-    function annulusNoNet(test)
-        test.checkEitherPV(@pointVortexNoNet)
-    end
-    
-    function conn3Net(test)
-        test.checkEitherPV(@pointVortex)
-    end
-    
-    function conn3NoNet(test)
-        test.checkEitherPV(@pointVortexNoNet)
-    end
-    
-    function checkEitherPV(test, pvKind)
+    function checkPotentialValue(test, pvKind)
         pv = test.kindInstance(pvKind);
         W = potential(test.domainObject, pv);
         ref = test.generateReference(pv);
