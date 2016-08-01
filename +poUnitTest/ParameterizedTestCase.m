@@ -39,6 +39,16 @@ methods(TestMethodSetup)
     end
 end
 
+properties(Dependent)
+    label
+end
+
+methods % set/get
+    function lstr = get.label(test)
+        lstr = test.domainTestObject.label;
+    end
+end
+
 methods
     function dispatchTestMethod(test, name)
         domainLabel = test.domainTestObject.label;
