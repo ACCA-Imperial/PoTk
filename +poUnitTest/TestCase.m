@@ -30,39 +30,30 @@ properties(Abstract)
     domainTestObject        % Instance of domainForTest
 end
 
+properties(Access=private)
+    primeFunctionReferenceForDomain_
+end
+
 properties(Dependent)
     domainObject            % Instance of potentialDomain
     primeFunctionReferenceForDomain
 end
-methods % getters
+methods % get/set
     function do = get.domainObject(test)
         do = test.domainTestObject.domainObject;
     end
     
     function pf = get.primeFunctionReferenceForDomain(test)
-        label = test.domainTestObject.label;
-        tol = [];
-        switch label
-            case {'entire', 'simple'}
-                pfun = @(z,a) z - a;
-                
-            case 'annulus'
-                q = test.domainObject.qv;
-                [P, C] = poUnitTest.PFunction(q);
-                pfun = @(z,a) a*C*P(z/a);
-                
-            otherwise
-                L = 8;
-                dv = test.domainObject.dv;
-                qv = test.domainObject.qv;
-                pfun = poUnitTest.SKProd(dv, qv, L);
-                tol = 1e-6;
+        if isempty(test.primeFunctionReferenceForDomain_) ...
+                && ~isempty(test.domainTestObject)
+            test.primeFunctionReferenceForDomain_ = ...
+                test.makePrimeFunctionReferenceForDomain();
         end
-        
-        pf = poUnitTest.PrimeFunctionReference(pfun);
-        if ~isempty(tol)
-            pf.tolerance = tol;
-        end
+        pf = test.primeFunctionReferenceForDomain_;
+    end
+    
+    function set.primeFunctionReferenceForDomain(test, pf)
+        test.primeFunctionReferenceForDomain_ = pf;
     end
 end
 
@@ -96,6 +87,36 @@ methods
         end
         if isempty(tol)
             tol = test.defaultTolerance;
+        end
+    end
+    
+    function pf = makePrimeFunctionReferenceForDomain(test)
+        if isempty(test.domainTestObject)
+            return
+        end
+        
+        label = test.domainTestObject.label;
+        tol = [];
+        switch label
+            case {'entire', 'simple'}
+                pfun = @(z,a) z - a;
+                
+            case 'annulus'
+                q = test.domainObject.qv;
+                [P, C] = poUnitTest.PFunction(q);
+                pfun = @(z,a) a*C*P(z/a);
+                
+            otherwise
+                L = 8;
+                dv = test.domainObject.dv;
+                qv = test.domainObject.qv;
+                pfun = poUnitTest.SKProd(dv, qv, L);
+                tol = 1e-6;
+        end
+        
+        pf = poUnitTest.PrimeFunctionReference(pfun);
+        if ~isempty(tol)
+            pf.tolerance = tol;
         end
     end
 end
