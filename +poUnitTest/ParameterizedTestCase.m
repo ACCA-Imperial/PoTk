@@ -77,7 +77,7 @@ methods
                     'ParameterizedTestCase.dispatchTestMethod')
                 test.assumeFail('Test not implemented yet.')
             else
-                throwAsCaller(err)
+                rethrow(err)
             end
         end
     end
