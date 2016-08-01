@@ -29,33 +29,24 @@ end
 
 methods(Test)
     function checkFinite(test)
-        test.dispatchTestMethod('finite')
+        test.checkValues()
     end
 end
 
 methods
-    function entireFinite(test)
-        test.generalCheckFinite(test.entireLocation)
-    end
-    
-    function simpleFinite(test)
-        test.generalCheckFinite(test.simpleLocation)
-    end
-    
-    function annulusFinite(test)
-        test.generalCheckFinite(test.annulusLocation)
-    end
-    
-    function generalCheckFinite(test, location)
+    function [loc, m, chi, b] = getParameters(test)
+        loc = test.dispatchTestProperty('Location');
         m = test.strength;
         chi = test.angle;
         b = test.scale;
-        
-        d = dipole(location, m, chi, b);
+    end
+    
+    function checkValues(test)
+        [loc, m, chi, b] = test.getParameters();
+        d = dipole(loc, m, chi, b);
         W = potential(test.domainObject, d);
-        ref = test.generateReference(location, m, chi, b);
-        
-        test.checkAtTestPoints(ref, W)
+        ref = test.generateReference(loc, m, chi, b);
+        test.checkAtTestPoints(ref, W)        
     end
     
     function ref = generateReference(test, loc, m, chi, b)
