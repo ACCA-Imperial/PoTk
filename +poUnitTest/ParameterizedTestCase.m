@@ -50,6 +50,22 @@ methods % set/get
 end
 
 methods
+    function prop = dispatchTestProperty(test, name)
+        name = [test.label, name];
+        try
+            prop = test.(name);
+        catch err
+            if strcmp(err.identifier, 'MATLAB:noSuchMethodOrField') ...
+                    && strcmp(err.stack(1).name, ...
+                    'ParameterizedTestCase.dispatchTestProperty')
+                test.assumeFail(sprintf(...
+                    'Test property "%s" not defined.', name))
+            else
+                throwAsCaller(err)
+            end
+        end
+    end
+    
     function dispatchTestMethod(test, name)
         domainLabel = test.domainTestObject.label;
         name(1) = upper(name(1));
@@ -57,10 +73,11 @@ methods
             test.([domainLabel, name])()
         catch err
             if strcmp(err.identifier, 'MATLAB:noSuchMethodOrField') ...
-                    && strcmp(err.stack(1).name, 'ParameterizedTestCase.dispatchTestMethod')
+                    && strcmp(err.stack(1).name, ...
+                    'ParameterizedTestCase.dispatchTestMethod')
                 test.assumeFail('Test not implemented yet.')
             else
-                rethrow(err)
+                throwAsCaller(err)
             end
         end
     end
