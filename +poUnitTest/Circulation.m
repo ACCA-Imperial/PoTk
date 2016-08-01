@@ -18,13 +18,40 @@ classdef Circulation < poUnitTest.ParameterizedTestCase
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
+properties
+    simpleCirc = -2
+    annulusCirc = [-2, 2];
+    conn3Circ = [-2, 3, -1];
+end
+
 methods(Test)
     function checkNet(test)
         dispatchTestMethod(test, 'net')
     end
     
+    function checkNetDz(test)
+        if strcmp(test.label, 'entire')
+            test.entireError()
+            return
+        end
+        test.checkDerivative(@circulation);
+    end
+    
     function checkNoNet(test)
         dispatchTestMethod(test, 'noNet')
+    end
+    
+    function checkNoNetDz(test)
+        switch test.label
+            case 'entire'
+                test.entireError()
+                return
+                
+            case 'simple'
+                test.verifyFail('Bug submitted as issue #54.')
+                return
+        end
+        test.checkDerivative(@circulationNoNet)
     end
 end
 
@@ -101,6 +128,17 @@ methods
         W = potential(test.domainObject, C);
         ref = test.primeFormReferenceFunction(C);
         test.checkAtTestPoints(ref, W);
+    end
+    
+    function checkDerivative(test, kind)
+        sv = test.dispatchTestProperty('Circ');
+        if ~isa(kind(), 'circulationNoNet')
+            sv(end) = [];
+        end
+        W = potential(test.domainObject, kind(sv));
+        dW = diff(W);
+        ref = poUnitTest.FiniteDifference(@(z) W(z));
+        test.checkAtTestPoints(ref, dW);
     end
     
     function ref = primeFormReferenceFunction(test, C)
