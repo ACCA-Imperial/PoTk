@@ -47,55 +47,23 @@ end
 
 methods(Test)
     function checkOne(test)
-        test.dispatchTestMethod('one')
+        test.setAndCheckOne()
     end
     
     function checkThree(test)
-        test.dispatchTestMethod('three')
+        test.setAndCheckThree()
     end
 end
 
 methods
-    function entireOne(test)
-        test.setAndCheckOne('entire')
-    end
-    
-    function entireThree(test)
-        test.setAndCheckThree('entire')
-    end
-    
-    function simpleOne(test)
-        test.setAndCheckOne('simple')
-    end
-    
-    function simpleThree(test)
-        test.setAndCheckThree('simple')
-    end
-    
-    function annulusOne(test)
-        test.setAndCheckOne('annulus')
-    end
-    
-    function annulusThree(test)
-        test.setAndCheckThree('annulus')
-    end
-    
-    function conn3One(test)
-        test.setAndCheckOne('conn3')
-    end
-    
-    function conn3Three(test)
-        test.setAndCheckThree('conn3')
-    end
-    
-    function setAndCheckOne(test, label)
-        a = test.([label, 'OnePoint']);
+    function setAndCheckOne(test)
+        a = test.dispatchTestProperty('OnePoint');
         m = test.strength1;
         test.checkEval(a, m)
     end
     
-    function setAndCheckThree(test, label)
-        a = test.([label, 'ThreePoints']);
+    function setAndCheckThree(test)
+        a = test.dispatchTestProperty('ThreePoints');
         m = test.strength3;
         test.checkEval(a, m)
     end
