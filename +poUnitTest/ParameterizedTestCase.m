@@ -30,6 +30,8 @@ end
 methods(TestClassSetup)
     function setDomainObject(test, domain)
         test.domainTestObject = domain;
+        test.primeFunctionReferenceForDomain = ...
+            test.makePrimeFunctionReferenceForDomain();
     end
 end
 
