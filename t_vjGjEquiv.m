@@ -29,15 +29,6 @@ uD = unitDomain(dv, qv, beta);
 zcn = @(c, r, tn) c + r*exp(1i*tn);
 circ = @(dw, c, r) 1i*dt*sum(dw(zcn(c, r, t)).*(zcn(c, r, t) - c));
 
-% g1 = greensCj(beta, 1, D);
-% dg1 = diff(g1);
-% 
-% circ1 = circ(dg1, dv(1), qv(1));
-% disp(circ1)
-% 
-% circb = circ(dg1, beta, 1e-6);
-% disp(circb)
-
 
 %%
 
@@ -49,12 +40,18 @@ dg{1} = diff(g{1});
 dg{2} = diff(g{2});
 dg{3} = diff(g{3});
 
-dW = @(z) reshape(sum(cell2mat( ...
-    arrayfun(@(i) sv(i)*dg{i}(z(:)), 1:3, 'uniform', false)), 2), size(z));
+% Should be "no net" circulation. (C0 circ specified, beta has non-zero
+% circulation.)
+dWno = @(z) sv(1)*dg{1}(z) - sv(2)*dg{2}(z) - sv(3)*dg{3}(z);
+
+% This should be "net" circulation. (C0 has the "extra" circulation, beta
+% has no circulation.)
+dWnet = @(z) -(sv(2)*dg{2}(z) + sv(3)*dg{3}(z)) + sum(sv(2:3))*dg{1}(z);
 
 
 %%
 
+dW = dWnet;
 [d, q, m] = domainDataB(D);
 for j = 1:m+1
     cval = real(circ(dW, d(j), q(j)));
