@@ -62,22 +62,22 @@ methods
     end
     
     function ref = generateReference(test, loc, m, chi, b)
-        label = test.domainTestObject.label;
-        switch label
-            case 'entire'
+        import poUnitTest.domainType
+        switch test.type
+            case domainType.Entire
                 ref = @(z) m./(z - loc)/2/pi*exp(1i*chi);
                 
-            case 'simple'
+            case domainType.Simple
                 ref = @(z) m*b*(exp(-1i*chi)*(z - loc) ...
                     + exp(1i*chi)./(z - loc));
                 
-            case 'annulus'
+            case domainType.Annulus
                 test.assertFail(...
                     'Formula needed. Submitted as issue #62.')
                 
             otherwise
                 test.assumeFail(...
-                    sprintf('Case %s not implemented yet.', label))
+                    sprintf('Case %s not implemented yet.', label(test.type)))
         end
     end
 end

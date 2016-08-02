@@ -18,8 +18,9 @@ classdef domainSimple < poUnitTest.domainForTesting
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
+
 properties
-    label = 'simple'
+    type = poUnitTest.domainType.Simple
     domainObject = unitDomain([], [], 0)
     testPoints = [
         0.67874+0.65548i

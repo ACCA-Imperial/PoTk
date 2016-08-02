@@ -95,13 +95,13 @@ methods
             return
         end
         
-        label = test.domainTestObject.label;
+        import poUnitTest.domainType
         tol = [];
-        switch label
-            case {'entire', 'simple'}
+        switch test.domainTestObject.type
+            case {domainType.Entire, domainType.Simple}
                 pfun = @(z,a) z - a;
                 
-            case 'annulus'
+            case domainType.Annulus
                 q = test.domainObject.qv;
                 [P, C] = poUnitTest.PFunction(q);
                 pfun = @(z,a) a*C*P(z/a);

@@ -60,9 +60,8 @@ methods
     end
     
     function ref = generateEvalReference(test, a, o, m)
-        label = test.domainTestObject.label;
-        switch label
-            case 'entire'
+        switch test.type
+            case poUnitTest.domainType.Entire
                 ref = @(z) m*log((z - a)./(z - o))/2/pi;
                 
             otherwise

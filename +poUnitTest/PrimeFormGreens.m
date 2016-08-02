@@ -18,10 +18,10 @@ function gj = PrimeFormGreens(pf, j, domainTestObject)
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-label = domainTestObject.label;
+type = domainTestObject.type;
 D = domainTestObject.domainObject.skpDomain;
 if j > 0
-    if strcmp(label ,'simple')
+    if type == poUnitTest.domainType.Simple
         error(PoTk.ErrorIdString.RuntimeError, ...
             'In a simply connected domain j>0 makes no sense.')
     end
@@ -31,8 +31,8 @@ else
 end
 
 function v = g0eval(z, a)
-    switch label
-        case 'simple'
+    switch type
+        case poUnitTest.domainType.Simple
             v = log(z - a)/2i/pi;
             if a ~= 0
                 v = v - log((z - 1/conj(a))*abs(a))/2i/pi;

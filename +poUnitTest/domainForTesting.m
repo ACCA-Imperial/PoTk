@@ -19,9 +19,18 @@ classdef(Abstract) domainForTesting
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties(Abstract)
-    label
+    type                    % poUnitTest.domainType enumeration
     domainObject
     testPoints
+end
+
+properties(Dependent)
+    label
+end
+methods % get/set
+    function s = get.label(obj)
+        s = label(obj.type); %#ok<CPROP>
+    end
 end
 
 end

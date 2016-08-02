@@ -48,7 +48,7 @@ end
 
 methods(Test)
     function checkNet(test)
-        if strcmp(test.label, 'simple')
+        if test.type == poUnitTest.domainType.Simple
             test.diagnosticMessage = 'Bug submitted as issue #56.';
         end
         test.checkPotentialValue(@pointVortex)
@@ -59,7 +59,7 @@ methods(Test)
     end
     
     function checkNoNet(test)
-        if strcmp(test.label, 'simple')
+        if test.type == poUnitTest.domainType.Simple
             test.verifyFail('Not implemented. Submitted bug as issue #55.')
             return
         end
@@ -67,7 +67,7 @@ methods(Test)
     end
     
     function checkNoNetDz(test)
-        if strcmp(test.label, 'simple')
+        if test.type == poUnitTest.domainType.Simple
             test.verifyFail('Not implemented. Submitted bug as issue #55.')
             return
         end
@@ -100,9 +100,8 @@ methods
     end
     
     function ref = generateReference(test, pv)
-        label = test.domainTestObject.label;
-        switch label
-            case 'entire'
+        switch test.type
+            case poUnitTest.domainType.Entire
                 N = numel(pv.location);
                 ref = @(z) reshape(sum(cell2mat(...
                     arrayfun(@(k) log(z(:) - pv.location(k)), ...

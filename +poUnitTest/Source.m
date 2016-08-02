@@ -29,19 +29,19 @@ end
 
 methods(Test)
     function checkPoint(test)
-        switch test.label
-            case 'simple'
+        switch test.type
+            case poUnitTest.domainType.Simple
                 test.diagnosticMessage = 'Bug submitted as issue #58.';
         end
         test.checkValues()
     end
     
     function checkPointDz(test)
-        switch test.label
-            case 'entire'
+        switch test.type
+            case poUnitTest.domainType.Entire
                 test.verifyFail('Bug submitted as issue #67.');
                 return
-            case 'simple'
+            case poUnitTest.domainType.Simple
                 test.diagnosticMessage = 'Bug submitted as issue #66.';
         end
         test.checkDerivative()
@@ -70,9 +70,8 @@ methods
     end
     
     function ref = generateEvalReference(test, a, m)
-        label = test.domainTestObject.label;
-        switch label
-            case 'entire'
+        switch test.type
+            case poUnitTest.domainType.Entire
                 ref = @(z) m*log(z - a)/2/pi;
                 
             otherwise

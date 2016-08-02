@@ -26,8 +26,8 @@ end
 
 methods(Test)
     function checkFlow(test)
-        switch test.label
-            case 'entire'
+        switch test.type
+            case poUnitTest.domainType.Entire
                 test.diagnosticMessage = 'Submitted bug as issue #59.';
         end
         test.checkValues()
@@ -71,21 +71,21 @@ methods
     end
     
     function ref = generateReference(test, m, chi, b)
-        label = test.domainTestObject.label;
-        switch label
-            case 'entire'
+        import poUnitTest.domainType
+        switch test.type
+            case domainType.Entire
                 ref = @(z) m*b*z*exp(-1i*chi);
                 
-            case 'simple'
+            case domainType.Simple
                 ref = @(z) m*b*(exp(-1i*chi)*z + exp(1i*chi)./z);
                 
-            case 'annulus'
+            case domainType.Annulus
                 test.assertFail(...
                     'Formula needed. Submitted as issue #62.')
                 
             otherwise
                 test.assumeFail(...
-                    sprintf('Case %s not implemented yet.', label))
+                    sprintf('Case %s not implemented yet.', label(test.type)))
         end
     end
 end

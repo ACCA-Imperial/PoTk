@@ -51,8 +51,8 @@ methods(Test)
     end
     
     function checkOneDz(test)
-        switch test.label
-            case 'entire'
+        switch test.type
+            case poUnitTest.domainType.Entire
                 test.verifyFail('Bug submitted as issue #65.')
                 return
         end
@@ -64,8 +64,8 @@ methods(Test)
     end
     
     function checkThreeDz(test)
-        switch test.label
-            case 'entire'
+        switch test.type
+            case poUnitTest.domainType.Entire
                 test.verifyFail('Bug submitted as issue #65.')
                 return
         end
@@ -97,9 +97,8 @@ methods
     end
     
     function ref = generateEvalReference(test, a, m)
-        label = test.domainTestObject.label;
-        switch label
-            case 'entire'
+        switch test.type
+            case poUnitTest.domainType.Entire
                 N = numel(a);
                 ref = @(z) reshape(sum( cell2mat(...
                     arrayfun(@(k) m(k)*log(z(:) - a(k))/2/pi, 1:N, ...

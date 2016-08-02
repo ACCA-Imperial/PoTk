@@ -19,7 +19,7 @@ classdef domainEntire < poUnitTest.domainForTesting
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties
-    label = 'entire'
+    type = poUnitTest.domainType.Entire
     domainObject = planeDomain
     testPoints = [
         0.95751+0.95717i

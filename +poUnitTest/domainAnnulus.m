@@ -19,7 +19,7 @@ classdef domainAnnulus < poUnitTest.domainForTesting
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties
-    label = 'annulus'
+    type = poUnitTest.domainType.Annulus
     domainObject = unitDomain(0, 0.1, -0.4)
     testPoints = [
         -0.017493+0.4828i

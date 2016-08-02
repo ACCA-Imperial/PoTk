@@ -26,24 +26,25 @@ end
 
 methods(Test)
     function checkNet(test)
-        switch test.label
-            case 'entire'
+        import poUnitTest.domainType
+        switch test.type
+            case domainType.Entire
                 test.entireError()
                 return
-            case 'simple'
+            case domainType.Simple
                 test.verifyError(...
                     @() potential(test.domainObject, circulation()), ...
                     PoTk.ErrorIdString.InvalidArgument, ...
                     'Bug submitted as issue #53.')
                 return
-            case {'annulus', 'conn3'}
+            case {domainType.Annulus, domainType.Conn3}
                 test.diagnosticMessage = 'Bug submitted as issue #61.';
         end
         test.checkPotential(@circulation)
     end
     
     function checkNetDz(test)
-        if strcmp(test.label, 'entire')
+        if test.type == poUnitTest.domainType.Entire
             test.entireError()
             return
         end
@@ -51,25 +52,26 @@ methods(Test)
     end
     
     function checkNoNet(test)
-        switch test.label
-            case 'entire'
+        import poUnitTest.domainType
+        switch test.type
+            case domainType.Entire
                 test.entireError()
                 return
-            case 'simple'
+            case domainType.Simple
                 test.verifyFail('Bug submitted as issue #54.')
                 return
-            case {'annulus', 'conn3'}
+            case {domainType.Annulus, domainType.Conn3}
                 test.diagnosticMessage = 'Bug submitted as issue #61.';
         end
         test.checkPotential(@circulationNoNet)
     end
     
     function checkNoNetDz(test)
-        switch test.label
-            case 'entire'
+        switch test.type
+            case poUnitTest.domainType.Entire
                 test.entireError()
                 return
-            case 'simple'
+            case poUnitTest.domainType.Simple
                 test.verifyFail('Bug submitted as issue #54.')
                 return
         end

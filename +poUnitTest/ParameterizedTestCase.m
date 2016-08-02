@@ -43,11 +43,16 @@ end
 
 properties(Dependent)
     label
+    type
 end
 
 methods % set/get
     function lstr = get.label(test)
         lstr = test.domainTestObject.label;
+    end
+    
+    function t = get.type(test)
+        t = test.domainTestObject.type;
     end
 end
 
