@@ -19,6 +19,11 @@ function gj = PrimeFormGreens(pf, j, domainTestObject)
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 type = domainTestObject.type;
+if type == poUnitTest.domainType.Entire
+    error(PoTk.ErrorIdString.UndefinedState, ...
+        'Not implemented. Use log formula.')
+end
+
 D = domainTestObject.domainObject.skpDomain;
 if j > 0
     if type == poUnitTest.domainType.Simple
