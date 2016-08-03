@@ -84,14 +84,12 @@ end
 methods(Hidden) % Documentation
     function str = latexExpression(C)
         if numel(C.circVector) == 1
-            str = ['\Gamma_1 \left( v_1(\zeta) - ', ...
-                'G_0(\zeta,\beta,\overline{\beta}) \right)'];
+            str = '-\Gamma_1 G_1(\zeta,\beta,\overline{\beta})';
         else
-            str = [...
-                '\sum_{j=1}^m \Gamma_j \left( v_j(\zeta) - ', ...
-                'G_0(\zeta,\beta,\overline{\beta}) \right)'];
+            str = ...
+                '-\sum_{j=0}^m \Gamma_j G_j(\zeta,\beta,\overline{\beta})';
         end
-        str = [str, ' \qquad\mathrm{(circulation)}'];
+        str = [str, ' \qquad\mathrm{(circulation, no\,net)}'];
     end
 end
 

@@ -168,14 +168,17 @@ end
 
 methods(Hidden) % Documentation
     function terms = docTerms(~)
-        terms = {'firstKindIntegral', 'circulation'};
+        terms = {'skprime', 'greensC0', 'greensCj', 'circulation'};
     end
     
     function str = latexExpression(C)
         if numel(C.circVector) == 1
-            str = '\Gamma_1 v_1(\zeta)';
+            str = ['\Gamma_1 \left(G_0(\zeta,\beta,\overline{\beta}) ' ...
+                '- G_j(\zeta,\beta,\overline{\beta})\right)'];
         else
-            str = '\sum_{j=1}^m \Gamma_j v_j(\zeta)';
+            str = ['\sum_{j=1}^m \Gamma_j ' ...
+                '\left(G_0(\zeta,\beta,\overline{\beta}) - ' ...
+                'G_j(\zeta,\beta,\overline{\beta})\right)'];
         end
         str = [str, ' \qquad\mathrm{(circulation)}'];
     end
@@ -190,8 +193,7 @@ methods(Hidden) % Documentation
             do.addln(...
                 ['the circulation strengths given by ', ...
                 do.eqInline('\Gamma_j'), ...
-                ' on each circle in ', ...
-                do.eqInline('\{ C_j : 1\le j\le m \}')])
+                ' on each circle ', do.eqInline('C_j')])
         end
     end
 end
