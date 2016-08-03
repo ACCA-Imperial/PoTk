@@ -20,8 +20,8 @@ classdef Circulation < poUnitTest.ParameterizedTestCase
 
 properties
     simpleCirc = -2
-    annulusCirc = [-2, 2];
-    conn3Circ = [-2, 3, -1];
+    annulusCirc = [-1, 3];
+    conn3Circ = [-1, -1, 3];
 end
 
 methods(Test)
@@ -90,7 +90,7 @@ methods
     function C = generateCirculation(test, kind)
         sv = test.dispatchTestProperty('Circ');
         if ~isa(kind(), 'circulationNoNet')
-            sv(end) = [];
+            sv(1) = [];
         end
         C = kind(sv);
     end
@@ -99,7 +99,9 @@ methods
         C = test.generateCirculation(kind);
         W = potential(test.domainObject, C);
         ref = test.primeFormReferenceFunction(C);
-        test.checkAtTestPoints(ref, W);
+        test.perTestTolerance = ref.tolerance;
+        test.checkAtTestPoints(@(z) imag(ref(z)), ...
+            @(z) imag(W(z)));
     end
     
     function checkDerivative(test, kind)
@@ -111,33 +113,31 @@ methods
     
     function ref = primeFormReferenceFunction(test, C)
         D = test.domainObject;
-        dv = D.dv;
-        qv = D.qv;
         m = D.m;
         beta = D.infImage;
         sv = C.circVector;
         
         pf = test.primeFunctionReferenceForDomain;
+        g0 = poUnitTest.PrimeFormGreens(pf, 0, test.domainTestObject);
         g = cell(m, 1);
         for j = 1:m
-            thj = @(z) skpDomain(D).theta(j, z);
-            g{j} = @(z) log(pf(z, beta)./pf(z, thj(1/conj(beta))) ...
-                *qv(j)/abs(beta - dv(j)))/2i/pi;
+            g{j} = poUnitTest.PrimeFormGreens(pf, j, test.domainTestObject);
         end
         
         noNet = isa(C, 'circulationNoNet');
         if noNet
-            g0 = @(z) log(pf(z, beta)./pf(z, 1/conj(beta)) ...
-                /abs(beta))/2i/pi;
             s0 = sv(1);
             sv = sv(2:end);
         end
         
         function v = refeval(z)
-            v = arrayfun(@(j) -sv(j)*g{j}(z(:)), 1:m, 'uniform', false);
+            v = arrayfun(@(j) -sv(j)*g{j}(z(:), beta), ...
+                1:m, 'uniform', false);
             v = reshape(sum(cell2mat(v), 2), size(z));
             if noNet
-                v = v - (s0 + sum(sv))*g0(z);
+                v = v - s0*g0(z, beta);
+            else
+                v = v + sum(sv)*g0(z, beta);
             end
         end
         
