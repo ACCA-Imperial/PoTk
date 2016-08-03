@@ -37,8 +37,6 @@ methods(Test)
                     PoTk.ErrorIdString.InvalidArgument, ...
                     'Bug submitted as issue #53.')
                 return
-            case {domainType.Annulus, domainType.Conn3}
-                test.diagnosticMessage = 'Bug submitted as issue #61.';
         end
         test.checkPotential(@circulation)
     end
@@ -60,8 +58,6 @@ methods(Test)
             case domainType.Simple
                 test.verifyFail('Bug submitted as issue #54.')
                 return
-            case {domainType.Annulus, domainType.Conn3}
-                test.diagnosticMessage = 'Bug submitted as issue #61.';
         end
         test.checkPotential(@circulationNoNet)
     end
