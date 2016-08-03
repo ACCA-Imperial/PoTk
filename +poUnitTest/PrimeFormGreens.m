@@ -49,7 +49,10 @@ end
 if j == 0    
     gj = @g0eval;
 else
-    gj = @(z,a) log(pf(z, a)./pf(z, thj(1/conj(a))))/2i/pi;
+    dj = D.dv(j);
+    qj = D.qv(j);
+    gj = @(z,a) log(pf(z, a)./pf(z, thj(1/conj(a))) ...
+        *qj/abs(a - dj))/2i/pi;
 end
 
 end
