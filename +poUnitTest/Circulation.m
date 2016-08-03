@@ -95,12 +95,6 @@ methods
         C = kind(sv);
     end
     
-    function checkCircValues(test, C)
-        W = potential(test.domainObject, C);
-        ref = test.primeFormReferenceFunction(C);
-        test.checkAtTestPoints(ref, W);
-    end
-    
     function checkPotential(test, kind)
         C = test.generateCirculation(kind);
         W = potential(test.domainObject, C);
