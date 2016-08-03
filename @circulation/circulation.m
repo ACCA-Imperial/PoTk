@@ -35,6 +35,7 @@ end
 
 properties(Access=protected)
     firstKindIntegrals
+    equivalenceConstants
     infImage
 end
 
@@ -91,6 +92,7 @@ methods(Hidden)
         val = complex(zeros(size(z)));
         circ = C.circVector;
         vj = C.firstKindIntegrals;
+        K = C.equivalenceConstants;
         
         if C.isSimplyConnected
             beta = C.infImage;
@@ -103,7 +105,7 @@ methods(Hidden)
         end
         
         for j = find(circ(:) ~= 0)'
-            val = val + circ(j)*vj{j}(z);
+            val = val + circ(j)*(vj{j}(z) - K{j});
         end
     end
     
@@ -145,24 +147,31 @@ methods(Hidden)
                 'must match.'])
         end
         
+        if isempty(D.infImage)
+            error(PoTk.ErrorIdString.InvalidValue, ...
+                ['The "image at infinity" must be defined in the ', ...
+                'unit domain for constant equivalence. ', ...
+                'See the "beta" argument for "unitDomain".'])
+        end
+        C.infImage = D.infImage;
+        
         if D.m == 0
-            if isempty(D.infImage)
-                error(PoTk.ErrorIdString.InvalidValue, ...
-                    ['The image at infinity must be defined in the ', ...
-                    'unit domain for this contribution to make sense. ', ...
-                    'See the ''beta'' argument for ''unitDomain''.'])
-            end
-            C.infImage = D.infImage;
             C.isSimplyConnected = true;
             return
         end
         
         D = skpDomain(D);
+        dv = domainData(D);
+        beta = C.infImage;
         vj = cell(1, numel(circ));
+        K = vj;
         for j = find(circ(:) ~= 0)'
             vj{j} = vjFirstKind(j, D);
+            K{j} = conj(vj{j}(beta)) + vj{j}.taujj/2 ...
+                + angle(beta/(beta - dv(j)))/2/pi;
         end
         C.firstKindIntegrals = vj;
+        C.equivalenceConstants = K;
     end
 end
 
