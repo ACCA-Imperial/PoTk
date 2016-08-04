@@ -22,6 +22,8 @@ properties
     simpleCirc = -2
     annulusCirc = [-1, 3];
     conn3Circ = [-1, -1, 3];
+    
+    integralCollocationPoints = 128
 end
 
 methods(Test)
@@ -52,6 +54,19 @@ methods(Test)
         end
         test.checkDerivative(@circulation)
     end
+    
+    function checkNetInt(test)
+        if test.hasTypeError()
+            return
+        end
+        if test.type == poUnitTest.domainType.Simple
+            test.verifyError(...
+                @() potential(test.domainObject, circulation()), ...
+                PoTk.ErrorIdString.InvalidArgument, ...
+                'Bug submitted as issue #53.')
+            return
+        end
+        test.checkIntegral(@circulation)
     end
     
     function checkNoNet(test)
@@ -74,6 +89,13 @@ methods(Test)
             return
         end
         test.checkDerivative(@circulationNoNet)
+    end
+    
+    function checkNoNetInt(test)
+        if test.hasTypeError()
+            return
+        end
+        test.checkIntegral(@circulationNoNet)
     end
 end
 
@@ -116,6 +138,42 @@ methods
         dW = diff(W);
         ref = poUnitTest.FiniteDifference(@(z) W(z));
         test.checkAtTestPoints(ref, dW);
+    end
+    
+    function checkIntegral(test, kind)
+        C = test.generateCirculation(kind);
+        dW = diff(potential(test.domainObject, C));
+        [dv, qv, m] = domainData(skpDomain(test.domainObject));
+        G = zeros(m+2, 1);
+        for i = 1:m+1
+            if i > 1
+                c = dv(i-1);
+                r = qv(i-1);
+            else
+                c = 0;
+                r = 1;
+            end
+            G(i) = (1 - 2*(i == 1))*real(test.integralCirculation(dW, c, r));
+        end
+        G(end) = real(test.integralCirculation(...
+            dW, test.domainObject.infImage, 1e-6));
+        
+        sv = double(C);
+        if isa(C, 'circulationNoNet')
+            sv = [sv(:); -sum(sv)];
+        else
+            sv = [-sum(sv); sv(:); 0];
+        end
+        
+        err = sv - G;
+        test.verifyLessThan(max(abs(err)), test.defaultTolerance*10);
+    end
+    
+    function I = integralCirculation(test, dW, c, r)
+        N = test.integralCollocationPoints;
+        dt = 2*pi/N;
+        reitn = r*exp(1i*(0:N-1)'*dt);
+        I = 1i*dt*sum(dW(c + reitn).*(reitn));
     end
     
     function ref = primeFormReferenceFunction(test, C)
