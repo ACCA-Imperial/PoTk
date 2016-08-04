@@ -93,7 +93,8 @@ methods
     
     function C = generateCirculation(test, kind)
         sv = test.dispatchTestProperty('Circ');
-        if ~isa(kind(), 'circulationNoNet')
+        if ~isa(kind(), 'circulationNoNet') ...
+                && test.type ~= poUnitTest.domainType.Simple
             sv(1) = [];
         end
         C = kind(sv);
@@ -159,6 +160,13 @@ methods
         
         pf = test.primeFunctionReferenceForDomain;
         g0 = poUnitTest.PrimeFormGreens(pf, 0, test.domainTestObject);
+        if test.type == poUnitTest.domainType.Simple
+            ref = poUnitTest.ReferenceFunction(...
+                @(z) -sv*g0(z, beta));
+            ref.tolerance = pf.tolerance;
+            return
+        end
+        
         g = cell(m, 1);
         for j = 1:m
             g{j} = poUnitTest.PrimeFormGreens(pf, j, test.domainTestObject);
