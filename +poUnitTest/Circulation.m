@@ -26,56 +26,67 @@ end
 
 methods(Test)
     function checkNet(test)
-        import poUnitTest.domainType
-        switch test.type
-            case domainType.Entire
-                test.entireError()
-                return
-            case domainType.Simple
-                test.verifyError(...
-                    @() potential(test.domainObject, circulation()), ...
-                    PoTk.ErrorIdString.InvalidArgument, ...
-                    'Bug submitted as issue #53.')
-                return
+        if test.hasTypeError()
+            return
+        end
+        if test.type == poUnitTest.domainType.Simple
+            test.verifyError(...
+                @() potential(test.domainObject, circulation()), ...
+                PoTk.ErrorIdString.InvalidArgument, ...
+                'Bug submitted as issue #53.')
+            return
         end
         test.checkPotential(@circulation)
     end
     
     function checkNetDz(test)
-        if test.type == poUnitTest.domainType.Entire
-            test.entireError()
+        if test.hasTypeError()
             return
         end
-        test.checkDerivative(@circulation);
+        if test.type == poUnitTest.domainType.Simple
+            test.verifyError(...
+                @() potential(test.domainObject, circulation()), ...
+                PoTk.ErrorIdString.InvalidArgument, ...
+                'Bug submitted as issue #53.')
+            return
+        end
+        test.checkDerivative(@circulation)
+    end
     end
     
     function checkNoNet(test)
-        import poUnitTest.domainType
-        switch test.type
-            case domainType.Entire
-                test.entireError()
-                return
-            case domainType.Simple
-                test.verifyFail('Bug submitted as issue #54.')
-                return
+        if test.hasTypeError()
+            return
+        end
+        if test.type == poUnitTest.domainType.Simple
+            test.verifyFail('Bug submitted as issue #54.')
+            return
         end
         test.checkPotential(@circulationNoNet)
     end
     
     function checkNoNetDz(test)
-        switch test.type
-            case poUnitTest.domainType.Entire
-                test.entireError()
-                return
-            case poUnitTest.domainType.Simple
-                test.verifyFail('Bug submitted as issue #54.')
-                return
+        if test.hasTypeError()
+            return
+        end
+        if test.type == poUnitTest.domainType.Simple
+            test.verifyFail('Bug submitted as issue #54.')
+            return
         end
         test.checkDerivative(@circulationNoNet)
     end
 end
 
 methods
+    function tf = hasTypeError(test)
+        if test.type == poUnitTest.domainType.Entire
+            test.entireError()
+            tf = true;
+            return
+        end
+        tf = false;
+    end
+    
     function entireError(test)
         C = circulation(2);
         test.verifyError(...
