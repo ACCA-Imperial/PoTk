@@ -52,10 +52,6 @@ methods(Test)
         if test.hasTypeError()
             return
         end
-        if test.type == poUnitTest.domainType.Simple
-            test.verifyFail('Bug submitted as issue #54.')
-            return
-        end
         test.checkPotential(@circulationNoNet)
     end
     
