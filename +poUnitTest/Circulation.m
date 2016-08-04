@@ -31,13 +31,6 @@ methods(Test)
         if test.hasTypeError()
             return
         end
-        if test.type == poUnitTest.domainType.Simple
-            test.verifyError(...
-                @() potential(test.domainObject, circulation()), ...
-                PoTk.ErrorIdString.InvalidArgument, ...
-                'Bug submitted as issue #53.')
-            return
-        end
         test.checkPotential(@circulation)
     end
     
@@ -45,25 +38,11 @@ methods(Test)
         if test.hasTypeError()
             return
         end
-        if test.type == poUnitTest.domainType.Simple
-            test.verifyError(...
-                @() potential(test.domainObject, circulation()), ...
-                PoTk.ErrorIdString.InvalidArgument, ...
-                'Bug submitted as issue #53.')
-            return
-        end
         test.checkDerivative(@circulation)
     end
     
     function checkNetInt(test)
         if test.hasTypeError()
-            return
-        end
-        if test.type == poUnitTest.domainType.Simple
-            test.verifyError(...
-                @() potential(test.domainObject, circulation()), ...
-                PoTk.ErrorIdString.InvalidArgument, ...
-                'Bug submitted as issue #53.')
             return
         end
         test.checkIntegral(@circulation)
