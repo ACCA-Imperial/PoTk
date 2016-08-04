@@ -1,4 +1,35 @@
 function r = boundaryPartMake(domain, f0, f1)
+%circulationNoNet removes net circulation from unit circle.
+%
+%  C = circulation(c0, c1, c2, ..., cm)
+%  C = circulation([c0, c1, c2, ..., cm])
+%    Creates a circulation object which describes the potential
+%    contribution due to circulation around m inner circles and the unit
+%    circle. For j = 0:m, each cj is a real scalar value specifying the
+%    circulation strength on the jth circle. The net circulation is then
+%    assigned to a designated point in the domain (see the beta argument
+%    in the unitDomain constructor).
+%
+%See also potential, unitDomain, circulation.
+
+% Everett Kropf, 2016
+% Rhodri Nelson, 2016
+% 
+% This file is part of the Potential Toolkit (PoTk).
+% 
+% PoTk is free software: you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+% 
+% PoTk is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+% 
+% You should have received a copy of the GNU General Public License
+% along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
+
 %boundaryPartMake makes a function to evaluate points on the boundary from
 %a list of functions.
 %
