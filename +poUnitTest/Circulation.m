@@ -135,7 +135,8 @@ methods
             dW, test.domainObject.infImage, 1e-6));
         
         sv = double(C);
-        if isa(C, 'circulationNoNet')
+        if test.type == poUnitTest.domainType.Simple ...
+                || isa(C, 'circulationNoNet')
             sv = [sv(:); -sum(sv)];
         else
             sv = [-sum(sv); sv(:); 0];
