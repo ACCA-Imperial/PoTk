@@ -64,6 +64,15 @@ methods(Hidden)
         val = evalPotential@sourceSinkPair(s, z);
     end
     
+    function ds = getDerivative(s)
+        if s.entirePotential
+            ds = @(z) s.strength./(z - s.location)/2/pi;
+            return
+        end
+        
+        ds = getDerivative@sourceSinkPair(s);
+    end
+    
     function s = setupPotential(s, W)
         D = W.unitDomain;
         if isa(W.domain, 'unitDomain')
