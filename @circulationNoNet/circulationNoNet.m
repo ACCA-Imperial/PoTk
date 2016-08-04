@@ -40,19 +40,24 @@ end
 methods
     function C = circulationNoNet(varargin)
         C = C@circulation(varargin{:});
-        
-        circ = C.circVector;
-        C.netCirculation = circulation(circ(2:end));
     end
 end
 
 methods(Hidden)
     function val = evalPotential(C, z)
+        if C.isSimplyConnected
+            val = evalPotential@circulation(C, z);
+            return
+        end
         val = C.netCirculation.evalPotential(z) ...
             - sum(C.circVector(:))*C.greensFunction(z);
     end
     
     function dc = getDerivative(C)
+        if C.isSimplyConnected
+            dc = getDerivative@circulation(C);
+            return
+        end
         dnc = getDerivative(C.netCirculation);
         dg0 = diff(C.greensFunction);
         dc = @(z) dnc(z) - sum(C.circVector(:))*dg0(z);
@@ -61,8 +66,8 @@ methods(Hidden)
     function C = setupPotential(C, W)
         D = W.unitDomain;
         if D.m == 0
-            error(PoTk.ErrorIdString.RuntimeError, ...
-                'Use only plain "circulation" for simply connected domain.')
+            C = setupPotential@circulation(C, W);
+            return
         end
         if isempty(D.infImage)
             error(PoTk.ErrorIdString.RuntimeError, ...
@@ -75,7 +80,7 @@ methods(Hidden)
                 ['Number of circulation values must be one greater ' ...
                 'than the number\nof inner boundaries.']);
         end
-        
+        C.netCirculation = circulation(circ(2:end));
         C.netCirculation = C.netCirculation.setupPotential(W);
         C.greensFunction = greensC0(D.infImage, skpDomain(D));
     end
@@ -83,6 +88,10 @@ end
 
 methods(Hidden) % Documentation
     function str = latexExpression(C)
+        if C.isSimplyConnected
+            str = latexExpression@circulation(C);
+            return
+        end
         if numel(C.circVector) == 1
             str = '-\Gamma_1 G_1(\zeta,\beta,\overline{\beta})';
         else

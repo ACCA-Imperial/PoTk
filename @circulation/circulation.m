@@ -37,9 +37,6 @@ properties(Access=protected)
     firstKindIntegrals
     equivalenceConstants
     infImage
-end
-
-properties(Access=private)
     isSimplyConnected = false
 end
 
