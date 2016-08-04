@@ -90,37 +90,37 @@ end
 methods(Hidden)
     function val = evalPotential(C, z)
         val = complex(zeros(size(z)));
-        circ = C.circVector;
+        cv = C.circVector;
         vj = C.firstKindIntegrals;
         K = C.equivalenceConstants;
         
         if C.isSimplyConnected
             beta = C.infImage;
             if beta == 0
-                val = log(z)./2i/pi;
+                val = -cv*log(z)./2i/pi;
             else
-                val = log((z - beta)./(z - 1/conj(beta)))/2i/pi;
+                val = -cv*log((z - beta)./(z - 1/conj(beta))/abs(beta))/2i/pi;
             end
             return
         end
         
-        for j = find(circ(:) ~= 0)'
-            val = val + circ(j)*(vj{j}(z) - K{j});
+        for j = find(cv(:) ~= 0)'
+            val = val + cv(j)*(vj{j}(z) - K{j});
         end
     end
     
     function dc = getDerivative(C)
+        circ = C.circVector;
         if C.isSimplyConnected
             beta = C.infImage;
             if beta == 0
-                dc = @(z) (1./(z - beta) - 1./(z - 1/conj(beta)))/2i/pi;
+                dc = @(z) -circ*(1./(z - beta) - 1./(z - 1/conj(beta)))/2i/pi;
             else
-                dc = @(z) 1./z/2i/pi;
+                dc = @(z) -circ./z/2i/pi;
             end
             return
         end
         
-        circ = C.circVector;
         cv = find(circ(:)' ~= 0);
         vj = C.firstKindIntegrals;
         dvj = cell(size(vj));
@@ -141,6 +141,11 @@ methods(Hidden)
     function C = setupPotential(C, W)
         D = W.unitDomain;
         circ = C.circVector;
+        
+        if D.m == 0 && numel(circ) ~= 1
+            error(PoTk.ErrorIdString.RuntimeError, ...
+                'Must specify a single circulation value.')
+        end
         if (D.m > 0 && numel(circ) ~= D.m) || (D.m == 1 && numel(circ) ~= 1)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 ['The number of circulation values and inner circles ' ...
