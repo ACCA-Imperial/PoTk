@@ -37,12 +37,8 @@ methods(Test)
     end
     
     function checkPointDz(test)
-        switch test.type
-            case poUnitTest.domainType.Entire
-                test.verifyFail('Bug submitted as issue #67.');
-                return
-            case poUnitTest.domainType.Simple
-                test.diagnosticMessage = 'Bug submitted as issue #66.';
+        if test.type == poUnitTest.domainType.Simple
+            test.diagnosticMessage = 'Bug submitted as issue #66.';
         end
         test.checkDerivative()
     end
