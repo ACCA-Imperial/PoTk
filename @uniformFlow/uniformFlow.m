@@ -85,7 +85,7 @@ methods(Hidden)
         if U == 0
             return
         end
-               
+        
         chi = uf.angle;
         a = uf.scale;
         
@@ -99,6 +99,7 @@ methods(Hidden)
         end
         
         if uf.forSimplyConnected
+            beta = uf.location;
             if beta == 0
                 val = U*(conj(a)*exp(1i*chi)*z + a*exp(-1i*chi)./z);
             elseif (abs(beta) > 1.0-2*eps) && (abs(beta) < 1.0+2*eps)
@@ -186,8 +187,8 @@ methods(Hidden)
 end
 
 methods(Access=protected)
-    function scaleWarning(d)
-        if d.scaleWarningGiven
+    function scaleWarning(uf)
+        if uf.scaleWarningGiven
             return
         end
         
