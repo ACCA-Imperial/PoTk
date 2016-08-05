@@ -18,6 +18,10 @@ classdef Circulation < poUnitTest.ParameterizedTestCase
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
+properties(ClassSetupParameter)
+    domain = poUnitTest.domainParameterStructure.defaults
+end
+
 properties
     simpleCirc = -2
     annulusCirc = [-1, 3];

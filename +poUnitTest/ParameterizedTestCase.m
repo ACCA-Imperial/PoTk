@@ -23,8 +23,8 @@ properties
     domainTestObject
 end
 
-properties(ClassSetupParameter)
-    domain = poUnitTest.domainParameterStructure
+properties(Abstract, ClassSetupParameter)
+    domain %= poUnitTest.domainParameterStructure
 end
 
 methods(TestClassSetup)
@@ -45,7 +45,6 @@ properties(Dependent)
     label
     type
 end
-
 methods % set/get
     function lstr = get.label(test)
         lstr = test.domainTestObject.label;

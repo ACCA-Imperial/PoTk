@@ -1,8 +1,8 @@
-function dps = domainParameterStructure()
+classdef(Abstract) domainParameterStructure
 %poUnitTest.domainParameterStructure provides the parameter structure for
 %the unit test framework.
 %
-% See also poUnitTest.TestCase
+%See also poUnitTest.ParameterizedTestCase
 
 % Everett Kropf, 2016
 % 
@@ -21,11 +21,40 @@ function dps = domainParameterStructure()
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-domainList = {'domainEntire', 'domainSimple', 'domainAnnulus', ...
-    'domainConn3'};
-dps = struct();
+properties(Constant)
+    domainList = {'domainEntire', 'domainSimple', 'domainAnnulus', ...
+        'domainConn3'};
+end
 
-for i = 1:numel(domainList)
-    object = poUnitTest.(domainList{i})();
-    dps.(object.label) = object;
+methods(Static)
+    function dps = defaults()
+        domainList = poUnitTest. ...
+            domainParameterStructure.domainList;
+        dps = poUnitTest. ...
+            domainParameterStructure.generateParameterStructure(domainList);
+    end
+    
+    function dps = simplyConnectedSubset()
+        domainList = poUnitTest. ...
+            domainParameterStructure.domainList(1:2);
+        dps = poUnitTest. ...
+            domainParameterStructure.generateParameterStructure(domainList);
+    end
+    
+    function dps = multiplyConnectedSubset()
+        domainList = poUnitTest. ...
+            domainParameterStructure.domainList(3:4);
+        dps = poUnitTest. ...
+            domainParameterStructure.generateParameterStructure(domainList);
+    end
+    
+    function dps = generateParameterStructure(domainList)
+        dps = struct();        
+        for i = 1:numel(domainList)
+            object = poUnitTest.(domainList{i})();
+            dps.(object.label) = object;
+        end
+    end
+end
+
 end
