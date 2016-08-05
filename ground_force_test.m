@@ -40,7 +40,7 @@ D = unitDomain(dv, qv, beta);
 % Create a uniform flow
 uinf=1.0; % Speed of the uniform flow.
 anorm=2.0*a*1i;
-uf = uniformFlow(beta, uinf, 0.0, anorm);
+uf = uniformFlow(uinf, 0.0, anorm);
 % Tip: look at how this changing uinf modifies the value of U(zeta) at
 % different points (U(zeta) defined below).
 % i.e. After running 'ground_force' try typing U(imap(Dc+i*Qc)) and U(imap(100i))
@@ -111,4 +111,4 @@ if max(imag(w1)-imag(w1(1))) > tpres
     error('uniform flow calculated incorrectly')
 end
 
-clear
+% clear

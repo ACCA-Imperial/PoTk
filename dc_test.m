@@ -21,11 +21,11 @@ map = @(zeta) a./(zeta-beta)+s;
 imap = @(z) a./(z-s)+beta;
 dz = @(zeta) -a./(zeta-beta).^2;
 
-D = unitDomain(dv,qv);
+D = unitDomain(dv,qv,beta);
 
 uinf = 1.0;
 kai = 0.0;
-uf = uniformFlow(beta,uinf,kai,a);
+uf = uniformFlow(uinf,kai,a);
 
 w = potential(D,uf);
 dw = diff(w);
@@ -64,4 +64,4 @@ if max(imag(w1)-imag(w1(1))) > tpres
     error('uniform flow calculated incorrectly')
 end
 
-clear
+% clear
