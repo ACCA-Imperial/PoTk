@@ -21,6 +21,7 @@ classdef UniformFlowMC < poUnitTest.UniformFlow
 
 properties(ClassSetupParameter)
     domain = poUnitTest.domainParameterStructure.multiplyConnectedSubset
+%     beta = poUnitTest.betaParameterCell.default
 end
 
 properties
@@ -31,7 +32,8 @@ properties
 end
 
 methods(TestClassSetup)
-    function prepareExternalDomain(test)
+    function prepareExternalDomain(test)%, beta)
+%         test.domainObject.infImage = beta;
         D = test.domainObject;
         beta = D.infImage;
         test.zeta = @(z) test.scale./z + beta;
