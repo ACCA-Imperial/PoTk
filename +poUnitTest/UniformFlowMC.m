@@ -23,8 +23,42 @@ properties(ClassSetupParameter)
     domain = poUnitTest.domainParameterStructure.multiplyConnectedSubset
 end
 
+properties
+    zeta
+    dz
+    
+    farAway = 1e6*[-1; 1] + 10i
+end
+
+methods(TestClassSetup)
+    function preparePotential(test)
+        D = test.domainObject;
+        beta = D.infImage;
+        test.zeta = @(z) test.scale./z + beta;
+        % z = scale/(zeta - beta);
+        test.dz = @(zeta) -test.scale./(zeta - beta).^2;
+    end
+end
+
 methods(Test)
-    function checkFlow(~)
+    function checkAngle(test)
+        U = test.unboundedFlow();
+        err = sign(test.strength)*test.angle - angle(U(test.farAway));
+        test.verifyLessThan(max(abs(err)), test.defaultTolerance)
+    end
+    
+    function checkStrength(test)
+        U = test.unboundedFlow();
+        err = abs(test.strength) - abs(U(test.farAway));
+        test.verifyLessThan(max(abs(err)), test.defaultTolerance)
+    end
+end
+
+methods
+    function U = unboundedFlow(test)
+        [m, chi, b] = test.getParameters();
+        dW = diff(potential(test.domainObject, uniformFlow(m, chi, b)));
+        U = @(z) dW(test.zeta(z))./test.dz(test.zeta(z));        
     end
 end
 
