@@ -46,7 +46,7 @@ methods(Test)
             test.assertFail('Not implemented. Bug submitted as issue #72.')
         end
         U = test.unboundedFlow();
-        err = sign(test.strength)*test.angle - angle(U(test.farAway));
+        err = test.angle - angle(conj(U(test.farAway)));
         test.verifyLessThan(max(abs(err)), test.defaultTolerance)
     end
     
