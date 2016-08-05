@@ -30,7 +30,7 @@ properties(SetAccess=protected)
     angle = 0
     scale = 1
     
-    ufbvp
+    boundaryValueProblem
 end
 
 properties(Access=private)
@@ -112,7 +112,7 @@ methods(Hidden)
             return
         end
 
-        val = uf.ufbvp(z);
+        val = uf.boundaryValueProblem(z);
 
     end
     
@@ -146,7 +146,7 @@ methods(Hidden)
             return
         end
         
-        ut = uf.ufbvp;
+        ut = uf.boundaryValueProblem;
         dufh = diffh(ut);
         function v = dEval(z)
             v = dufh(z);
@@ -182,7 +182,7 @@ methods(Hidden)
         chi = uf.angle;
         a = uf.scale;
         D = skpDomain(D);
-        uf.ufbvp = PoTk.uniformFlowBVP(beta, U, chi, a, D);
+        uf.boundaryValueProblem = PoTk.uniformFlowBVP(beta, U, chi, a, D);
     end
 end
 
