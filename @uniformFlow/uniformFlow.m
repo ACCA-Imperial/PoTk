@@ -1,16 +1,12 @@
 classdef uniformFlow < pointSingularity
-%circulationNoNet removes net circulation from unit circle.
+%uniformFlow is the uniform background flow.
 %
-%  C = circulation(c0, c1, c2, ..., cm)
-%  C = circulation([c0, c1, c2, ..., cm])
-%    Creates a circulation object which describes the potential
-%    contribution due to circulation around m inner circles and the unit
-%    circle. For j = 0:m, each cj is a real scalar value specifying the
-%    circulation strength on the jth circle. The net circulation is then
-%    assigned to a designated point in the domain (see the beta argument
-%    in the unitDomain constructor).
-%
-%See also potential, unitDomain, circulation.
+%  uf = uniformFlow(position, strength, angle, scale)
+%    Constructs a uniform flow object in a potential domain.  The flow
+%    strength is a real scalar value and the angle is in [0, 2*pi). The
+%    angle defaults to 0. The position variable is the point that is mapped
+%    to infinity in the physical domain and scale is the scaling coefficient
+%    such that the complex potential goes like ~Uexp(-i*chi)z as |z|-> infinity.
 
 % Everett Kropf, 2016
 % Rhodri Nelson, 2016

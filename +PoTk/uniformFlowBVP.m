@@ -1,16 +1,5 @@
 classdef uniformFlowBVP < bvpFun
-%circulationNoNet removes net circulation from unit circle.
-%
-%  C = circulation(c0, c1, c2, ..., cm)
-%  C = circulation([c0, c1, c2, ..., cm])
-%    Creates a circulation object which describes the potential
-%    contribution due to circulation around m inner circles and the unit
-%    circle. For j = 0:m, each cj is a real scalar value specifying the
-%    circulation strength on the jth circle. The net circulation is then
-%    assigned to a designated point in the domain (see the beta argument
-%    in the unitDomain constructor).
-%
-%See also potential, unitDomain, circulation.
+% Boundary value problem for a uniform flow.
 
 % Everett Kropf, 2016
 % Rhodri Nelson, 2016
