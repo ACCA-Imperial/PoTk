@@ -31,7 +31,7 @@ properties
 end
 
 methods(TestClassSetup)
-    function preparePotential(test)
+    function prepareExternalDomain(test)
         D = test.domainObject;
         beta = D.infImage;
         test.zeta = @(z) test.scale./z + beta;
