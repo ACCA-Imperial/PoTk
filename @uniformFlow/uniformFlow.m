@@ -4,9 +4,10 @@ classdef uniformFlow < pointSingularity
 %  uf = uniformFlow(position, strength, angle, scale)
 %    Constructs a uniform flow object in a potential domain.  The flow
 %    strength is a real scalar value and the angle is in [0, 2*pi). The
-%    angle defaults to 0. The position variable is the point that is mapped
-%    to infinity in the physical domain and scale is the scaling coefficient
-%    such that the complex potential goes like ~Uexp(-i*chi)z as |z|-> infinity.
+%    angle defaults to 0. The scale is the scaling coefficient such that 
+%    the complex potential goes like ~Uexp(-1i*chi)*z as |z| -> infinity.
+%
+%See also potential, unitDomain.
 
 % Everett Kropf, 2016
 % Rhodri Nelson, 2016
