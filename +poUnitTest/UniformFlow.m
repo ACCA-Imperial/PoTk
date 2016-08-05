@@ -24,30 +24,6 @@ properties
     scale = 2
 end
 
-% methods(Test)
-%     function checkFlow(test)
-%         switch test.type
-%             case poUnitTest.domainType.Entire
-%                 test.diagnosticMessage = 'Submitted bug as issue #59.';
-%         end
-%         test.checkValues()
-%     end
-%     
-%     function checkFlowDz(test)
-%         switch test.label
-%             case 'entire'
-%                 test.diagnosticMessage = 'Submitted bug as issue #59.';
-%             case 'annulus'
-%                 % FIXME: This seems problematic.
-%                 test.perTestTolerance = 5e-4;
-%             case 'conn3'
-%                 test.assumeFail('Not implemented.')
-%                 return
-%         end
-%         test.checkDerivative()
-%     end
-% end
-
 methods
     function [m, chi, b] = getParameters(test)
         m = test.strength;
