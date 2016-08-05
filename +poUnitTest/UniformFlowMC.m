@@ -42,12 +42,18 @@ end
 
 methods(Test)
     function checkAngle(test)
+        if test.type == poUnitTest.domainType.Conn3
+            test.assertFail('Not implemented. Bug submitted as issue #72.')
+        end
         U = test.unboundedFlow();
         err = sign(test.strength)*test.angle - angle(U(test.farAway));
         test.verifyLessThan(max(abs(err)), test.defaultTolerance)
     end
     
     function checkStrength(test)
+        if test.type == poUnitTest.domainType.Conn3
+            test.assertFail('Not implemented. Bug submitted as issue #72.')
+        end
         U = test.unboundedFlow();
         err = abs(test.strength) - abs(U(test.farAway));
         test.verifyLessThan(max(abs(err)), test.defaultTolerance)
