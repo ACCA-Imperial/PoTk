@@ -19,9 +19,9 @@ classdef UniformFlow < poUnitTest.ParameterizedTestCase
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties
-    strength = 2
+    strength = -2
     angle = pi/4
-    scale = 2
+    scale = 1/2
 end
 
 methods
