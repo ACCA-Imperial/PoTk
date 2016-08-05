@@ -74,10 +74,10 @@ methods
         import poUnitTest.domainType
         switch test.type
             case domainType.Entire
-                ref = @(z) m*b*z*exp(-1i*chi);
+                ref = @(z) m*z*exp(-1i*chi);
                 
             case domainType.Simple
-                ref = @(z) m*b*(exp(-1i*chi)*z + exp(1i*chi)./z);
+                ref = @(z) m*b*(exp(1i*chi)*z + exp(-1i*chi)./z);
                 
             case domainType.Annulus
                 test.assertFail(...
