@@ -90,8 +90,7 @@ methods
             return
         end
         
-        m = numel(D.dv);
-        for j = 1:m
+        for j = 1:D.m
             if any(abs(z(:) - D.dv(j)) <= D.qv(j) - eps(2))
                 tf = false;
                 return
