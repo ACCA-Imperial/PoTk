@@ -173,7 +173,7 @@ methods(Hidden)
             return
         end
         if D.m == 0
-            d.forSimplyConnected = true;
+            uf.forSimplyConnected = true;
             return
         end
         U = uf.strength;
