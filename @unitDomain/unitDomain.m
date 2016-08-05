@@ -35,6 +35,7 @@ properties(Dependent)
     dv                  % Alias to centers.
     qv                  % Alias to radii.
     m                   % Shortcut for numel(centers).
+    beta                % Image of infinity under a map.
 end
 
 methods
@@ -53,15 +54,7 @@ methods
         D.radii = qv;
         
         if nargin > 2
-            if numel(beta) ~= 1
-                error(PoTk.ErrorIdString.InvalidArgument, ...
-                    'Argument beta must be a scalar value.')
-            end
-            if ~isin(D, beta)
-                error(PoTk.ErrorIdString.InvalidArgument, ...
-                    'Point beta must be in the bounded domain.')
-            end
-            D.infImage = beta;        
+            D.beta = beta;
         end
     end
     
@@ -150,7 +143,23 @@ methods % Setting and getting.
     end
     
     function m = get.m(D)
-        m = numel(D.centers);
+        m = numel(D.dv);
+    end
+    
+    function b = get.beta(D)
+        b = D.infImage;
+    end
+    
+    function D = set.beta(D, b)
+        if numel(b) ~= 1
+            error(PoTk.ErrorIdString.InvalidArgument, ...
+                'Argument beta must be a scalar value.')
+        end
+        if ~isin(D, b)
+            error(PoTk.ErrorIdString.InvalidArgument, ...
+                'Point beta must be in the bounded domain.')
+        end
+        D.infImage = b;
     end
 end
 
