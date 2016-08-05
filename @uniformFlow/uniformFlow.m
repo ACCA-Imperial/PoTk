@@ -119,7 +119,7 @@ methods(Hidden)
         a = uf.scale;
         
         if uf.entirePotential
-            duf = U*exp(-1i*chi);
+            duf = @(z) repmat(U*exp(-1i*chi), size(z));
             return
         end
         
