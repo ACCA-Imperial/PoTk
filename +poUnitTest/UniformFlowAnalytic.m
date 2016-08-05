@@ -23,7 +23,12 @@ properties(ClassSetupParameter)
 end
 
 methods(Test)
-    function checkFlow(~)
+    function checkFlow(test)
+        test.checkValues()
+    end
+    
+    function checkFlowDz(test)
+        test.checkDerivative()
     end
 end
 
