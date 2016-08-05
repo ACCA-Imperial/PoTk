@@ -40,21 +40,15 @@ properties(Access=private)
 end
 
 methods
-    function uf = uniformFlow(location, strength, angle, scale)
+    function uf = uniformFlow(strength, angle, scale)
         if ~nargin
             return
         end
         
-        if nargin > 3
+        if nargin > 2
             uf.scaleWasGiven = true;
             uf.scale = scale;
         end
-        
-        if numel(location) ~= 1
-            error(PoTk.ErrorIdString.RuntimeError, ...
-                'Location must be a single point.')
-        end
-        uf.location = location;
         
         if ~(numel(strength) == 1 && imag(strength) == 0)
             error(PoTk.ErrorIdString.RuntimeError, ...
@@ -62,7 +56,7 @@ methods
         end
         uf.strength = strength;
         
-        if nargin > 2
+        if nargin > 1
             uf.angle = angle;
         end
     end
@@ -165,11 +159,14 @@ methods(Hidden)
     
     function uf = setupPotential(uf, W)
         D = W.unitDomain;
-        beta = uf.location;
-        if ~isin(D, beta)
-            error(PoTk.ErrorIdString.RuntimeError, ...
-                'The dipole must be located inside the bounded circle domain.')
+        if isempty(D.infImage)
+            error(PoTk.ErrorIdString.InvalidValue, ...
+                ['The "image at infinity" must be defined in the ', ...
+                'unit domain for constant equivalence. ', ...
+                'See the "beta" argument for "unitDomain".'])
         end
+        beta = D.infImage;
+        uf.location = beta;
         
         if uf.strength == 0
             return
