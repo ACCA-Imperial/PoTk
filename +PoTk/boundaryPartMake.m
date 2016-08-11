@@ -33,19 +33,15 @@ if ~isa(domain, 'skpDomain')
     error('First argument must be an "skpDomain" object.')
 end
 
-m = domain.m;
-if nargin - 1 ~= m + 1
-    error('Number of functions given must match the number of boundaries.')
+if ~all(cellfun(@(x) isa(x, 'function_handle'), {f0, f1}))
+    error('Expected a list of function handles following the domain.')
 end
-% if ~all(cellfun(@(x) isa(x, 'function_handle'), varargin))
-%     error('Expected a list of function handles following the domain.')
-% end
 
 function v = reval(z)
     v = nan(size(z));
     [~, onj] = ison(domain, z);
     v(onj==0)=f0(z(onj==0));
-    for j = 1:m
+    for j = 1:domain.m
         ix = onj == j;
         v(ix) = f1(z(ix));
     end
