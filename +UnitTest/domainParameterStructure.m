@@ -2,7 +2,7 @@ classdef(Abstract) domainParameterStructure
 %UnitTest.domainParameterStructure provides the parameter structure for
 %the unit test framework.
 %
-%See also UnitTest.ParameterizedTestCase
+%See also UnitTest.TestCaseParamDomain
 
 % Everett Kropf, 2016
 % 

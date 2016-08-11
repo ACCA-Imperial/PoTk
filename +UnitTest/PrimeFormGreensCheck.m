@@ -1,4 +1,4 @@
-classdef PrimeFormGreensCheck < UnitTest.ParameterizedTestCase
+classdef PrimeFormGreensCheck < UnitTest.TestCaseParamDomain
 %UnitTest.PrimeFormGreensCheck verifies the prime form Green's functions
 %are proper.
 

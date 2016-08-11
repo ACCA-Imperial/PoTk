@@ -1,4 +1,4 @@
-classdef Dipole < UnitTest.ParameterizedTestCase
+classdef Dipole < UnitTest.TestCaseParamDomain
 %UnitTest.Dipole checks the dipole potential.
 
 % Everett Kropf, 2016

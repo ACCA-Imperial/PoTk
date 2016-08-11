@@ -1,4 +1,4 @@
-classdef UniformFlow < UnitTest.ParameterizedTestCase
+classdef UniformFlow < UnitTest.TestCaseParamDomain
 %UnitTest.UniformFlow checks the uniform flow potential.
 
 % Everett Kropf, 2016

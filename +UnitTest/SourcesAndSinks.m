@@ -1,4 +1,4 @@
-classdef SourcesAndSinks < UnitTest.ParameterizedTestCase
+classdef SourcesAndSinks < UnitTest.TestCaseParamDomain
 %UnitTest.SourcesAndSinks checks the potential from a collection of
 %sources and sinks.
 

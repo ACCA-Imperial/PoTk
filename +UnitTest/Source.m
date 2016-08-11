@@ -1,4 +1,4 @@
-classdef Source < UnitTest.ParameterizedTestCase
+classdef Source < UnitTest.TestCaseParamDomain
 %UnitTest.Source checks the source point potential.
 
 % Everett Kropf, 2016

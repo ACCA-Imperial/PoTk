@@ -1,4 +1,4 @@
-classdef Circulation < UnitTest.ParameterizedTestCase
+classdef Circulation < UnitTest.TestCaseParamDomain
 %UnitTest.Circulation tests the circulation potential.
 
 % Everett Kropf, 2016

@@ -1,4 +1,4 @@
-classdef SourceSinkPair < UnitTest.ParameterizedTestCase
+classdef SourceSinkPair < UnitTest.TestCaseParamDomain
 %UnitTest.SourceSinkPair checks the source/sink pair potential.
 
 % Everett Kropf, 2016

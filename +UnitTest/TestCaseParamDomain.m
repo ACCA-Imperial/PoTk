@@ -1,5 +1,5 @@
-classdef(Abstract) ParameterizedTestCase < UnitTest.TestCase
-%UnitTest.ParameterizedTestCase is the abstract base test class for
+classdef(Abstract) TestCaseParamDomain < UnitTest.TestCase
+%UnitTest.TestCaseParamDomain is the abstract base test class for
 %parameterized potential tests.
 
 % Everett Kropf, 2016
@@ -63,7 +63,7 @@ methods
         catch err
             if strcmp(err.identifier, 'MATLAB:noSuchMethodOrField') ...
                     && strcmp(err.stack(1).name, ...
-                    'ParameterizedTestCase.dispatchTestProperty')
+                    'TestCaseParamDomain.dispatchTestProperty')
                 test.assumeFail(sprintf(...
                     'Test property "%s" not defined.', name))
             else
@@ -78,7 +78,7 @@ methods
         catch err
             if strcmp(err.identifier, 'MATLAB:noSuchMethodOrField') ...
                     && strcmp(err.stack(1).name, ...
-                    'ParameterizedTestCase.dispatchTestMethod')
+                    'TestCaseParamDomain.dispatchTestMethod')
                 test.assumeFail('Test not implemented yet.')
             else
                 rethrow(err)

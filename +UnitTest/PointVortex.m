@@ -1,4 +1,4 @@
-classdef PointVortex < UnitTest.ParameterizedTestCase
+classdef PointVortex < UnitTest.TestCaseParamDomain
 %UnitTest.PointVortex tests the point vortex potential.
 
 % Everett Kropf, 2016
