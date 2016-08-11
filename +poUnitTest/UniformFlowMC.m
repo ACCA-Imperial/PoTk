@@ -21,41 +21,59 @@ classdef UniformFlowMC < poUnitTest.UniformFlow
 
 properties(ClassSetupParameter)
     domain = poUnitTest.domainParameterStructure.multiplyConnectedSubset
-%     beta = poUnitTest.betaParameterCell.default
+end
+
+properties(MethodSetupParameter)
+    beta = poUnitTest.betaParameter.default
 end
 
 properties
+    betaParam
+    betaValue
+    
     zeta
     dz
     
     farAway = 1e6*[-1; 1] + 10i
 end
 
-methods(TestClassSetup)
-    function prepareExternalDomain(test)%, beta)
-%         test.domainObject.infImage = beta;
-        D = test.domainObject;
-        beta = D.infImage;
-        test.zeta = @(z) test.scale./z + beta;
+methods(TestMethodSetup)
+    function setBetaParameter(test, beta)
+        test.betaParam = beta;
+    end
+    
+    function prepareExternalDomain(test, beta)
+        try
+            betap = test.domainTestObject.beta(beta);
+        catch err
+            if strcmp(err.identifier, 'MATLAB:noSuchMethodOrField') ...
+                    && isa(test.domainTestObject, 'poUnitTest.domainForTesting')
+                test.assumeFail('Parameter not implemented for domain.')
+            else
+                rethrow(err)
+            end
+        end
+        test.betaValue = betap;
+        test.zeta = @(z) test.scale./z + betap;
         % z = scale/(zeta - beta);
-        test.dz = @(zeta) -test.scale./(zeta - beta).^2;
+        test.dz = @(zeta) -test.scale./(zeta - betap).^2;
+    end
+    
+    function assumeFailKnownCases(test, beta)
+        if beta == poUnitTest.betaParameter.origin
+            test.assumeFail('Not implemented. Bug submitted as issue #72.')
+        end
     end
 end
 
 methods(Test)
     function checkAngle(test)
-        if test.type == poUnitTest.domainType.Conn3
-            test.assertFail('Not implemented. Bug submitted as issue #72.')
-        end
         U = test.unboundedFlow();
         err = test.angle - angle(conj(U(test.farAway)));
         test.verifyLessThan(max(abs(err)), test.defaultTolerance)
     end
     
     function checkStrength(test)
-        if test.type == poUnitTest.domainType.Conn3
-            test.assertFail('Not implemented. Bug submitted as issue #72.')
-        end
         U = test.unboundedFlow();
         err = abs(test.strength) - abs(U(test.farAway));
         test.verifyLessThan(max(abs(err)), test.defaultTolerance)
@@ -65,7 +83,9 @@ end
 methods
     function U = unboundedFlow(test)
         [m, chi, b] = test.getParameters();
-        dW = diff(potential(test.domainObject, uniformFlow(m, chi, b)));
+        D = test.domainObject;
+        D.beta = test.betaValue;
+        dW = diff(potential(D, uniformFlow(m, chi, b)));
         U = @(z) dW(test.zeta(z))./test.dz(test.zeta(z));        
     end
 end

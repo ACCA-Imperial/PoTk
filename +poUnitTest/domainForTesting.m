@@ -33,4 +33,20 @@ methods % get/set
     end
 end
 
+methods
+    function b = beta(obj, benum)
+        if ~isprop(obj, 'betaLocations')
+            throwAsCaller(MException('MATLAB:noSuchMethodOrField', ...
+                ['No appropriate method, property, or field ''beta'' ', ...
+                'for class ''%s''.'], class(obj)))
+        end
+        if ~isa(benum, 'poUnitTest.betaParameter')
+            throwAsCaller(MException(PoTk.ErrorIdString.InvalidArgument, ...
+                ['Field ''beta'' selector must be of type ', ...
+                '''poUnitTest.betaParameter''.']))
+        end
+        b = obj.betaLocations.(benum.label);
+    end
+end
+
 end

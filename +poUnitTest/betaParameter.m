@@ -1,4 +1,4 @@
-classdef(Abstract) betaParameter
+classdef betaParameter
 %poUnitTest.betaParameter represents possible locations for the beta
 %parameter in unit tests.
 
@@ -19,13 +19,22 @@ classdef(Abstract) betaParameter
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-properties(Constant)
-    defaultList = {'origin', 'inside', 'circle0'}
+enumeration
+    origin
+    inside
+    circle0
+end
+
+methods
+    function s = label(obj)
+        s = lower(char(obj));
+    end
 end
 
 methods(Static)
-    function list = default()
-        list = poUnitTest.betaParameter.defaultList;
+    function c = default
+        [m, s] = enumeration('poUnitTest.betaParameter');
+        c = cell2struct(num2cell(m), s);
     end
 end
 

@@ -26,6 +26,28 @@ properties
         0.45131+0.2309i
         0.41633-0.4828i
         -0.43732-0.43382i]
+    betaLocations = struct(...
+        'origin', 0, ...
+        'inside', -0.4, ...
+        'circle0', -1);
+end
+
+methods
+    function [zeta, dz] = externalMaps(dom, benum)
+        betav = dom.beta(benum);
+        switch benum
+            case benum == poUnitTest.betaParameter.circle0
+                % z = @(zeta) a*1i*(1-zeta)./(1+zeta);
+                zeta = @(z) (1i - z)./(1i + z);
+                % Its derivative dz/dzeta
+                dz = @(zeta) -2i./(1 + zeta).^2;
+                
+            otherwise
+                zeta = @(z) 1./z + betav;
+                % z = 1/(zeta - beta);
+                dz = @(zeta) -1./(zeta - betav).^2;
+        end
+    end
 end
 
 end
