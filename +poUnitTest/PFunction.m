@@ -1,5 +1,5 @@
 function [P, C] = PFunction(q, truncation)
-%UnitTest.PFunction is the so-called "P-function" for an annular domain.
+%poUnitTest.PFunction is the so-called "P-function" for an annular domain.
 %
 % [P, C] = PFunction(q)
 % [P, C] = PFunction(q, truncation)

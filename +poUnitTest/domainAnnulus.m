@@ -1,6 +1,5 @@
-classdef PrimeFunctionReference < UnitTest.ReferenceFunction
-%UnitTest.PrimeFunctionReference encapsulates a prime function for
-%building potential reference functions.
+classdef domainAnnulus < poUnitTest.domainForTesting
+%poUnitTest.domainAnnulus is an annular domain.
 
 % Everett Kropf, 2016
 % 
@@ -19,18 +18,14 @@ classdef PrimeFunctionReference < UnitTest.ReferenceFunction
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-methods
-    function ref = PrimeFunctionReference(fHandle)
-        sargs = {};
-        if nargin
-            sargs = {fHandle};
-        end
-        ref = ref@UnitTest.ReferenceFunction(sargs{:});
-    end
-    
-    function v = feval(ref, z, a)
-        v = ref.functionHandle(z, a);
-    end
+properties
+    type = poUnitTest.domainType.Annulus
+    domainObject = unitDomain(0, 0.1, -0.4)
+    testPoints = [
+        -0.017493+0.4828i
+        0.45131+0.2309i
+        0.41633-0.4828i
+        -0.43732-0.43382i]
 end
 
 end

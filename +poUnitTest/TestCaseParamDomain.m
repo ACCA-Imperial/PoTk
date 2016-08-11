@@ -1,5 +1,5 @@
-classdef(Abstract) TestCaseParamDomain < UnitTest.TestCase
-%UnitTest.TestCaseParamDomain is the abstract base test class for
+classdef(Abstract) TestCaseParamDomain < poUnitTest.TestCase
+%poUnitTest.TestCaseParamDomain is the abstract base test class for
 %parameterized potential tests.
 
 % Everett Kropf, 2016
@@ -24,7 +24,7 @@ properties
 end
 
 properties(Abstract, ClassSetupParameter)
-    domain %= UnitTest.domainParameterStructure
+    domain %= poUnitTest.domainParameterStructure
 end
 
 methods(TestClassSetup)

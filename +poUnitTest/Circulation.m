@@ -1,5 +1,5 @@
-classdef Circulation < UnitTest.TestCaseParamDomain
-%UnitTest.Circulation tests the circulation potential.
+classdef Circulation < poUnitTest.TestCaseParamDomain
+%poUnitTest.Circulation tests the circulation potential.
 
 % Everett Kropf, 2016
 % 
@@ -19,7 +19,7 @@ classdef Circulation < UnitTest.TestCaseParamDomain
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties(ClassSetupParameter)
-    domain = UnitTest.domainParameterStructure.defaults
+    domain = poUnitTest.domainParameterStructure.defaults
 end
 
 properties
@@ -76,7 +76,7 @@ end
 
 methods
     function tf = hasTypeError(test)
-        if test.type == UnitTest.domainType.Entire
+        if test.type == poUnitTest.domainType.Entire
             test.entireError()
             tf = true;
             return
@@ -94,7 +94,7 @@ methods
     function C = generateCirculation(test, kind)
         sv = test.dispatchTestProperty('Circ');
         if ~isa(kind(), 'circulationNoNet') ...
-                && test.type ~= UnitTest.domainType.Simple
+                && test.type ~= poUnitTest.domainType.Simple
             sv(1) = [];
         end
         C = kind(sv);
@@ -112,7 +112,7 @@ methods
     function checkDerivative(test, kind)
         W = potential(test.domainObject, test.generateCirculation(kind));
         dW = diff(W);
-        ref = UnitTest.FiniteDifference(@(z) W(z));
+        ref = poUnitTest.FiniteDifference(@(z) W(z));
         test.checkAtTestPoints(ref, dW);
     end
     
@@ -135,7 +135,7 @@ methods
             dW, test.domainObject.infImage, 1e-6));
         
         sv = double(C);
-        if test.type == UnitTest.domainType.Simple ...
+        if test.type == poUnitTest.domainType.Simple ...
                 || isa(C, 'circulationNoNet')
             sv = [sv(:); -sum(sv)];
         else
@@ -160,9 +160,9 @@ methods
         sv = C.circVector;
         
         pf = test.primeFunctionReferenceForDomain;
-        g0 = UnitTest.PrimeFormGreens(pf, 0, test.domainTestObject);
-        if test.type == UnitTest.domainType.Simple
-            ref = UnitTest.ReferenceFunction(...
+        g0 = poUnitTest.PrimeFormGreens(pf, 0, test.domainTestObject);
+        if test.type == poUnitTest.domainType.Simple
+            ref = poUnitTest.ReferenceFunction(...
                 @(z) -sv*g0(z, beta));
             ref.tolerance = pf.tolerance;
             return
@@ -170,7 +170,7 @@ methods
         
         g = cell(m, 1);
         for j = 1:m
-            g{j} = UnitTest.PrimeFormGreens(pf, j, test.domainTestObject);
+            g{j} = poUnitTest.PrimeFormGreens(pf, j, test.domainTestObject);
         end
         
         noNet = isa(C, 'circulationNoNet');
@@ -190,7 +190,7 @@ methods
             end
         end
         
-        ref = UnitTest.ReferenceFunction(@refeval);
+        ref = poUnitTest.ReferenceFunction(@refeval);
         ref.tolerance = pf.tolerance;
     end    
 end

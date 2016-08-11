@@ -1,5 +1,5 @@
-classdef Source < UnitTest.TestCaseParamDomain
-%UnitTest.Source checks the source point potential.
+classdef Source < poUnitTest.TestCaseParamDomain
+%poUnitTest.Source checks the source point potential.
 
 % Everett Kropf, 2016
 % 
@@ -19,7 +19,7 @@ classdef Source < UnitTest.TestCaseParamDomain
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties(ClassSetupParameter)
-    domain = UnitTest.domainParameterStructure.defaults
+    domain = poUnitTest.domainParameterStructure.defaults
 end
 
 properties
@@ -34,14 +34,14 @@ end
 methods(Test)
     function checkPoint(test)
         switch test.type
-            case UnitTest.domainType.Simple
+            case poUnitTest.domainType.Simple
                 test.diagnosticMessage = 'Bug submitted as issue #58.';
         end
         test.checkValues()
     end
     
     function checkPointDz(test)
-        if test.type == UnitTest.domainType.Simple
+        if test.type == poUnitTest.domainType.Simple
             test.diagnosticMessage = 'Bug submitted as issue #66.';
         end
         test.checkDerivative()
@@ -65,13 +65,13 @@ methods
         [a, m] = test.getProperties();
         W = potential(test.domainObject, source(a, m));
         dW = diff(W);
-        ref = UnitTest.FiniteDifference(@(z) W(z));
+        ref = poUnitTest.FiniteDifference(@(z) W(z));
         test.checkAtTestPoints(ref, dW)
     end
     
     function ref = generateEvalReference(test, a, m)
         switch test.type
-            case UnitTest.domainType.Entire
+            case poUnitTest.domainType.Entire
                 ref = @(z) m*log(z - a)/2/pi;
                 
             otherwise
@@ -86,8 +86,8 @@ methods(Static)
     function ref = primeFormReferenceFunction(pf, a, o, m)
         rfun = @(z) m*log(pf(z, a).*pf(z, 1/conj(a)) ...
             ./pf(z, o)./pf(z, 1/conj(o)))/2/pi;
-        ref = UnitTest.ReferenceFunction(rfun);
-        if isa(pf, 'UnitTest.PrimeFunctionReference')
+        ref = poUnitTest.ReferenceFunction(rfun);
+        if isa(pf, 'poUnitTest.PrimeFunctionReference')
             ref.tolerance = pf.tolerance;
         end
     end

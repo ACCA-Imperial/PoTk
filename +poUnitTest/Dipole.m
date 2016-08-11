@@ -1,5 +1,5 @@
-classdef UniformFlow < UnitTest.TestCaseParamDomain
-%UnitTest.UniformFlow checks the uniform flow potential.
+classdef Dipole < poUnitTest.TestCaseParamDomain
+%poUnitTest.Dipole checks the dipole potential.
 
 % Everett Kropf, 2016
 % 
@@ -18,42 +18,62 @@ classdef UniformFlow < UnitTest.TestCaseParamDomain
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
+properties(ClassSetupParameter)
+    domain = poUnitTest.domainParameterStructure.defaults
+end
+
 properties
+    entireLocation = 0
+    simpleLocation = 0
+    annulusLocation = -0.6
     strength = 2
     angle = pi/4
-    scale = 1/2
+    scale = 2
+end
+
+methods(Test)
+    function checkFinite(test)
+        test.checkValues()
+    end
+    
+    function checkFiniteDz(test)
+        test.checkDerivative()
+    end
 end
 
 methods
-    function [m, chi, b] = getParameters(test)
+    function [loc, m, chi, b] = getParameters(test)
+        loc = test.dispatchTestProperty('Location');
         m = test.strength;
         chi = test.angle;
         b = test.scale;
     end
     
     function checkValues(test)
-        [m, chi, b] = getParameters(test);
-        W = potential(test.domainObject, uniformFlow(m, chi, b));
-        ref = test.generateReference(m, chi, b);
+        [loc, m, chi, b] = test.getParameters();
+        d = dipole(loc, m, chi, b);
+        W = potential(test.domainObject, d);
+        ref = test.generateReference(loc, m, chi, b);
         test.checkAtTestPoints(ref, W)        
     end
     
     function checkDerivative(test)
-        [m, chi, b] = getParameters(test);
-        W = potential(test.domainObject, uniformFlow(m, chi, b));
+        [loc, m, chi, b] = test.getParameters();
+        W = potential(test.domainObject, dipole(loc, m, chi, b));
         dW = diff(W);
-        ref = UnitTest.FiniteDifference(@(z) W(z));
-        test.checkAtTestPoints(ref, dW)
+        ref = poUnitTest.FiniteDifference(@(z) W(z));
+        test.checkAtTestPoints(ref, dW);
     end
     
-    function ref = generateReference(test, m, chi, b)
-        import UnitTest.domainType
+    function ref = generateReference(test, loc, m, chi, b)
+        import poUnitTest.domainType
         switch test.type
             case domainType.Entire
-                ref = @(z) m*z*exp(-1i*chi);
+                ref = @(z) m./(z - loc)/2/pi*exp(1i*chi);
                 
             case domainType.Simple
-                ref = @(z) m*b*(exp(1i*chi)*z + exp(-1i*chi)./z);
+                ref = @(z) m*b*(exp(-1i*chi)*(z - loc) ...
+                    + exp(1i*chi)./(z - loc));
                 
             case domainType.Annulus
                 test.assertFail(...

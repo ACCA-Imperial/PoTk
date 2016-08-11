@@ -46,7 +46,7 @@ if nargin > 0
             % This is the default.
             
         otherwise
-            suiteArgs = {'Name', ['UnitTest.', subset]};
+            suiteArgs = {'Name', ['poUnitTest.', subset]};
     end
 end
 
@@ -55,7 +55,7 @@ if nargin > 1
     suiteArgs = [{s}, suiteArgs];
 end
 
-tests = TestSuite.fromPackage('UnitTest', suiteArgs{:});
+tests = TestSuite.fromPackage('poUnitTest', suiteArgs{:});
 
 result = run(runner, tests);
 

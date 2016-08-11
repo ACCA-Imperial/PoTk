@@ -1,5 +1,5 @@
-classdef SourceSinkPair < UnitTest.TestCaseParamDomain
-%UnitTest.SourceSinkPair checks the source/sink pair potential.
+classdef SourceSinkPair < poUnitTest.TestCaseParamDomain
+%poUnitTest.SourceSinkPair checks the source/sink pair potential.
 
 % Everett Kropf, 2016
 % 
@@ -19,7 +19,7 @@ classdef SourceSinkPair < UnitTest.TestCaseParamDomain
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties(ClassSetupParameter)
-    domain = UnitTest.domainParameterStructure.defaults
+    domain = poUnitTest.domainParameterStructure.defaults
 end
 
 properties
@@ -59,13 +59,13 @@ methods
         [a, o, m] = getProperties(test);
         W = potential(test.domainObject, sourceSinkPair(a, o, m));
         dW = diff(W);
-        ref = UnitTest.FiniteDifference(@(z) W(z));
+        ref = poUnitTest.FiniteDifference(@(z) W(z));
         test.checkAtTestPoints(ref, dW);
     end
     
     function ref = generateEvalReference(test, a, o, m)
         switch test.type
-            case UnitTest.domainType.Entire
+            case poUnitTest.domainType.Entire
                 ref = @(z) m*log((z - a)./(z - o))/2/pi;
                 
             otherwise
@@ -81,8 +81,8 @@ methods(Static)
                 pf(z, a).*pf(z, 1/conj(a)) ...
                 ./pf(z, o)./pf(z, 1/conj(o)) ...
             )/2/pi;
-        ref = UnitTest.ReferenceFunction(rfun);
-        if isa(pf, 'UnitTest.PrimeFunctionReference')
+        ref = poUnitTest.ReferenceFunction(rfun);
+        if isa(pf, 'poUnitTest.PrimeFunctionReference')
             ref.tolerance = pf.tolerance;
         end
     end

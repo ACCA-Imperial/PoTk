@@ -1,5 +1,5 @@
-classdef UniformFlowAnalytic < UnitTest.UniformFlow
-%UnitTest.UniformFlowAnalytic checks the analytic flow formulations.
+classdef UniformFlowAnalytic < poUnitTest.UniformFlow
+%poUnitTest.UniformFlowAnalytic checks the analytic flow formulations.
 
 % Everett Kropf, 2016
 % 
@@ -19,7 +19,7 @@ classdef UniformFlowAnalytic < UnitTest.UniformFlow
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties(ClassSetupParameter)
-    domain = UnitTest.domainParameterStructure.simplyConnectedSubset
+    domain = poUnitTest.domainParameterStructure.simplyConnectedSubset
 end
 
 methods(Test)

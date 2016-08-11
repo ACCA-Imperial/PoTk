@@ -1,5 +1,6 @@
-classdef domainSimple < UnitTest.domainForTesting
-%UnitTest.domainSimple represents a simply connected domain (unit disk).
+classdef PrimeFunctionReference < poUnitTest.ReferenceFunction
+%poUnitTest.PrimeFunctionReference encapsulates a prime function for
+%building potential reference functions.
 
 % Everett Kropf, 2016
 % 
@@ -18,15 +19,18 @@ classdef domainSimple < UnitTest.domainForTesting
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-
-properties
-    type = UnitTest.domainType.Simple
-    domainObject = unitDomain([], [], 0)
-    testPoints = [
-        0.67874+0.65548i
-        0.75774+0.17119i
-        0.74313+0.70605i
-        0.39223+0.031833i];
+methods
+    function ref = PrimeFunctionReference(fHandle)
+        sargs = {};
+        if nargin
+            sargs = {fHandle};
+        end
+        ref = ref@poUnitTest.ReferenceFunction(sargs{:});
+    end
+    
+    function v = feval(ref, z, a)
+        v = ref.functionHandle(z, a);
+    end
 end
 
 end

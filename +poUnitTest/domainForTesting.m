@@ -1,6 +1,5 @@
-classdef FiniteDifference < UnitTest.ReferenceFunction
-%UnitTest.FiniteDifference is a reference function for testing
-%derivatives.
+classdef(Abstract) domainForTesting
+%poUnitTest.domainForTesting is the abstract base class for test domains.
 
 % Everett Kropf, 2016
 % 
@@ -19,25 +18,18 @@ classdef FiniteDifference < UnitTest.ReferenceFunction
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-properties
-    deltaH = 1e-6
+properties(Abstract)
+    type                    % poUnitTest.domainType enumeration
+    domainObject
+    testPoints
 end
 
-methods
-    function ref = FiniteDifference(fHandle)
-        if nargin
-            sargs = {fHandle};
-        else
-            sargs = {};
-        end
-        ref = ref@UnitTest.ReferenceFunction(sargs{:});
-        ref.tolerance = ref.deltaH*100;
-    end
-    
-    function v = feval(ref, z)
-        h = ref.deltaH;
-        fun = ref.functionHandle;
-        v = (fun(z + h) - fun(z))/h;
+properties(Dependent)
+    label
+end
+methods % get/set
+    function s = get.label(obj)
+        s = label(obj.type); %#ok<CPROP>
     end
 end
 

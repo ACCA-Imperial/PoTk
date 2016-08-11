@@ -1,6 +1,5 @@
-classdef SourcesAndSinksDI < matlab.unittest.TestCase
-%UnitTest.SourcesAndSinksDI checks the domain independent bits of the
-%sourcesAndSinks potential kind.
+classdef domainEntire < poUnitTest.domainForTesting
+%poUnitTest.domainEntire represents the entire complex plane domain.
 
 % Everett Kropf, 2016
 % 
@@ -19,15 +18,14 @@ classdef SourcesAndSinksDI < matlab.unittest.TestCase
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-methods(Test)
-    function checkBadSum(test)
-        a = [-1, 1];
-        m = [1, 1];
-        
-        % sum(m) ~= 0 should produce error.
-        test.verifyError(@() sourcesAndSinks(a, m), ...
-            PoTk.ErrorIdString.RuntimeError)
-    end
+properties
+    type = poUnitTest.domainType.Entire
+    domainObject = planeDomain
+    testPoints = [
+        0.95751+0.95717i
+        1.9298+0.97075i
+        0.47284+2.4008i
+        3.8824+0.56755i];
 end
 
 end
