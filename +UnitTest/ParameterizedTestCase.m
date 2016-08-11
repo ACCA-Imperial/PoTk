@@ -1,5 +1,5 @@
-classdef(Abstract) ParameterizedTestCase < poUnitTest.TestCase
-%poUnitTest.ParameterizedTestCase is the abstract base test class for
+classdef(Abstract) ParameterizedTestCase < UnitTest.TestCase
+%UnitTest.ParameterizedTestCase is the abstract base test class for
 %parameterized potential tests.
 
 % Everett Kropf, 2016
@@ -24,7 +24,7 @@ properties
 end
 
 properties(Abstract, ClassSetupParameter)
-    domain %= poUnitTest.domainParameterStructure
+    domain %= UnitTest.domainParameterStructure
 end
 
 methods(TestClassSetup)

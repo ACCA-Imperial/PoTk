@@ -1,5 +1,5 @@
-classdef domainSimple < poUnitTest.domainForTesting
-%poUnitTest.domainSimple represents a simply connected domain (unit disk).
+classdef domainType
+%UnitTest.domainTypes supplied domain type enumeration.
 
 % Everett Kropf, 2016
 % 
@@ -18,15 +18,17 @@ classdef domainSimple < poUnitTest.domainForTesting
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
+enumeration
+    Entire
+    Simple
+    Annulus
+    Conn3
+end
 
-properties
-    type = poUnitTest.domainType.Simple
-    domainObject = unitDomain([], [], 0)
-    testPoints = [
-        0.67874+0.65548i
-        0.75774+0.17119i
-        0.74313+0.70605i
-        0.39223+0.031833i];
+methods
+    function s = label(obj)
+        s = lower(char(obj));
+    end
 end
 
 end

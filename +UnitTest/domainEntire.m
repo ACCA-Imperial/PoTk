@@ -1,5 +1,5 @@
-classdef domainType
-%poUnitTest.domainTypes supplied domain type enumeration.
+classdef domainEntire < UnitTest.domainForTesting
+%UnitTest.domainEntire represents the entire complex plane domain.
 
 % Everett Kropf, 2016
 % 
@@ -18,17 +18,14 @@ classdef domainType
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-enumeration
-    Entire
-    Simple
-    Annulus
-    Conn3
-end
-
-methods
-    function s = label(obj)
-        s = lower(char(obj));
-    end
+properties
+    type = UnitTest.domainType.Entire
+    domainObject = planeDomain
+    testPoints = [
+        0.95751+0.95717i
+        1.9298+0.97075i
+        0.47284+2.4008i
+        3.8824+0.56755i];
 end
 
 end

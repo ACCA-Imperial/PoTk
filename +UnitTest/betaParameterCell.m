@@ -1,6 +1,6 @@
-classdef FiniteDifference < poUnitTest.ReferenceFunction
-%poUnitTest.FiniteDifference is a reference function for testing
-%derivatives.
+classdef(Abstract) betaParameterCell
+%UnitTest.betaParameterCell represents possible locations for the beta
+%parameter in unit tests.
 
 % Everett Kropf, 2016
 % 
@@ -19,25 +19,13 @@ classdef FiniteDifference < poUnitTest.ReferenceFunction
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-properties
-    deltaH = 1e-6
+properties(Constant)
+    defaultList = {'origin', 'inside', 'circle0'}
 end
 
-methods
-    function ref = FiniteDifference(fHandle)
-        if nargin
-            sargs = {fHandle};
-        else
-            sargs = {};
-        end
-        ref = ref@poUnitTest.ReferenceFunction(sargs{:});
-        ref.tolerance = ref.deltaH*100;
-    end
-    
-    function v = feval(ref, z)
-        h = ref.deltaH;
-        fun = ref.functionHandle;
-        v = (fun(z + h) - fun(z))/h;
+methods(Static)
+    function list = default()
+        list = UnitTest.betaParameterCell.defaultList;
     end
 end
 

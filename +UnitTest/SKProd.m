@@ -1,5 +1,5 @@
 function wf = SKProd(dv, qv, L)
-%poUnitTest.SKPROD is the product formula for the S-K prime function.
+%UnitTest.SKPROD is the product formula for the S-K prime function.
 %
 %   wf = skprod(dv, qv);
 %   w = wf(z, alpha);

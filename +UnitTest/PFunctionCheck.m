@@ -1,6 +1,5 @@
-classdef(Abstract) betaParameterCell
-%poUnitTest.betaParameterCell represents possible locations for the beta
-%parameter in unit tests.
+classdef PFunctionCheck < matlab.unittest.TestCase
+%UnitTest.PFunctionCheck checks the P-function accuracy.
 
 % Everett Kropf, 2016
 % 
@@ -19,13 +18,29 @@ classdef(Abstract) betaParameterCell
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-properties(Constant)
-    defaultList = {'origin', 'inside', 'circle0'}
+properties
+    radius = 0.1
+    alpha = -0.6
+    testPoints = [
+        -0.017493+0.4828i
+        0.45131+0.2309i
+        0.41633-0.4828i
+        -0.43732-0.43382i]
+    
+    tolerance = 1e-15
 end
 
-methods(Static)
-    function list = default()
-        list = poUnitTest.betaParameterCell.defaultList;
+methods(Test)
+    function valueVsPrime(test)
+        q = test.radius;
+        a = test.alpha;
+        zp = test.testPoints;
+        
+        w = skprime(a, 0, q);
+        [P, C] = UnitTest.PFunction(q);
+        
+        error = w(zp) - a*C*P(zp/a);
+        test.verifyLessThan(max(abs(error)), 1e-14)
     end
 end
 

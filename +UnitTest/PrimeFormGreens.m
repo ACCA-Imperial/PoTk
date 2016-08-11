@@ -1,5 +1,5 @@
 function gj = PrimeFormGreens(pf, j, domainTestObject)
-%poUnitTest.PrimeFormGreens generates the Green's function wrt Cj.
+%UnitTest.PrimeFormGreens generates the Green's function wrt Cj.
 
 % Everett Kropf, 2016
 % 
@@ -19,14 +19,14 @@ function gj = PrimeFormGreens(pf, j, domainTestObject)
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 type = domainTestObject.type;
-if type == poUnitTest.domainType.Entire
+if type == UnitTest.domainType.Entire
     error(PoTk.ErrorIdString.UndefinedState, ...
         'Not implemented. Use log formula.')
 end
 
 D = domainTestObject.domainObject.skpDomain;
 if j > 0
-    if type == poUnitTest.domainType.Simple
+    if type == UnitTest.domainType.Simple
         error(PoTk.ErrorIdString.RuntimeError, ...
             'In a simply connected domain j>0 makes no sense.')
     end
@@ -37,7 +37,7 @@ end
 
 function v = g0eval(z, a)
     switch type
-        case poUnitTest.domainType.Simple
+        case UnitTest.domainType.Simple
             v = log(z - a)/2i/pi;
             if a ~= 0
                 v = v - log((z - 1/conj(a))*abs(a))/2i/pi;

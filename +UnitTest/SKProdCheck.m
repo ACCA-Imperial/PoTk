@@ -1,5 +1,5 @@
-classdef SKProdCheck < poUnitTest.TestCase
-%poUnitTest.SKProdCheck verification tests for the prime product forumla.
+classdef SKProdCheck < UnitTest.TestCase
+%UnitTest.SKProdCheck verification tests for the prime product forumla.
 
 % Everett Kropf, 2016
 % 
@@ -19,7 +19,7 @@ classdef SKProdCheck < poUnitTest.TestCase
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties
-    domainTestObject = poUnitTest.domainConn3
+    domainTestObject = UnitTest.domainConn3
     testPoints = [
         -0.63324-0.013994i
         0.33236+0.10496i

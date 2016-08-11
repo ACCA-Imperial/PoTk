@@ -1,5 +1,5 @@
-classdef Source < poUnitTest.ParameterizedTestCase
-%poUnitTest.Source checks the source point potential.
+classdef SourceSinkPair < UnitTest.ParameterizedTestCase
+%UnitTest.SourceSinkPair checks the source/sink pair potential.
 
 % Everett Kropf, 2016
 % 
@@ -19,64 +19,57 @@ classdef Source < poUnitTest.ParameterizedTestCase
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties(ClassSetupParameter)
-    domain = poUnitTest.domainParameterStructure.defaults
+    domain = UnitTest.domainParameterStructure.defaults
 end
 
 properties
     entireLocation = 0.95751+0.95717i
     simpleLocation = 0.15761+0.80028i
     annulusLocation = -0.16443+0.49679i
-    conn3Location = 0.31137+0.11195i
+    conn3Location = 0.59825+0.2379i
     
     strength = 2
 end
 
 methods(Test)
-    function checkPoint(test)
-        switch test.type
-            case poUnitTest.domainType.Simple
-                test.diagnosticMessage = 'Bug submitted as issue #58.';
-        end
+    function checkPair(test)
         test.checkValues()
     end
     
-    function checkPointDz(test)
-        if test.type == poUnitTest.domainType.Simple
-            test.diagnosticMessage = 'Bug submitted as issue #66.';
-        end
+    function checkPairDz(test)
         test.checkDerivative()
     end
 end
 
 methods
-    function [a, m] = getProperties(test)
+    function [a, o, m] = getProperties(test)
         a = test.dispatchTestProperty('Location');
+        o = -a;
         m = test.strength;
     end
     
     function checkValues(test)
-        [a, m] = test.getProperties();
-        W = potential(test.domainObject, source(a, m));
-        ref = test.generateEvalReference(a, m);
+        [a, o, m] = getProperties(test);
+        W = potential(test.domainObject, sourceSinkPair(a, o, m));
+        ref = test.generateEvalReference(a, o, m);
         test.checkAtTestPoints(ref, W)
     end
     
     function checkDerivative(test)
-        [a, m] = test.getProperties();
-        W = potential(test.domainObject, source(a, m));
+        [a, o, m] = getProperties(test);
+        W = potential(test.domainObject, sourceSinkPair(a, o, m));
         dW = diff(W);
-        ref = poUnitTest.FiniteDifference(@(z) W(z));
-        test.checkAtTestPoints(ref, dW)
+        ref = UnitTest.FiniteDifference(@(z) W(z));
+        test.checkAtTestPoints(ref, dW);
     end
     
-    function ref = generateEvalReference(test, a, m)
+    function ref = generateEvalReference(test, a, o, m)
         switch test.type
-            case poUnitTest.domainType.Entire
-                ref = @(z) m*log(z - a)/2/pi;
+            case UnitTest.domainType.Entire
+                ref = @(z) m*log((z - a)./(z - o))/2/pi;
                 
             otherwise
                 pf = test.primeFunctionReferenceForDomain;
-                o = test.domainObject.infImage;
                 ref = test.primeFormReferenceFunction(pf, a, o, m);
         end
     end
@@ -84,10 +77,12 @@ end
 
 methods(Static)
     function ref = primeFormReferenceFunction(pf, a, o, m)
-        rfun = @(z) m*log(pf(z, a).*pf(z, 1/conj(a)) ...
-            ./pf(z, o)./pf(z, 1/conj(o)))/2/pi;
-        ref = poUnitTest.ReferenceFunction(rfun);
-        if isa(pf, 'poUnitTest.PrimeFunctionReference')
+        rfun = @(z) m*log(...
+                pf(z, a).*pf(z, 1/conj(a)) ...
+                ./pf(z, o)./pf(z, 1/conj(o)) ...
+            )/2/pi;
+        ref = UnitTest.ReferenceFunction(rfun);
+        if isa(pf, 'UnitTest.PrimeFunctionReference')
             ref.tolerance = pf.tolerance;
         end
     end

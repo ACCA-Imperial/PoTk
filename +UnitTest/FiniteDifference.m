@@ -1,5 +1,6 @@
-classdef(Abstract) domainForTesting
-%poUnitTest.domainForTesting is the abstract base class for test domains.
+classdef FiniteDifference < UnitTest.ReferenceFunction
+%UnitTest.FiniteDifference is a reference function for testing
+%derivatives.
 
 % Everett Kropf, 2016
 % 
@@ -18,18 +19,25 @@ classdef(Abstract) domainForTesting
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-properties(Abstract)
-    type                    % poUnitTest.domainType enumeration
-    domainObject
-    testPoints
+properties
+    deltaH = 1e-6
 end
 
-properties(Dependent)
-    label
-end
-methods % get/set
-    function s = get.label(obj)
-        s = label(obj.type); %#ok<CPROP>
+methods
+    function ref = FiniteDifference(fHandle)
+        if nargin
+            sargs = {fHandle};
+        else
+            sargs = {};
+        end
+        ref = ref@UnitTest.ReferenceFunction(sargs{:});
+        ref.tolerance = ref.deltaH*100;
+    end
+    
+    function v = feval(ref, z)
+        h = ref.deltaH;
+        fun = ref.functionHandle;
+        v = (fun(z + h) - fun(z))/h;
     end
 end
 

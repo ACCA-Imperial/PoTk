@@ -1,5 +1,5 @@
-classdef SourcesAndSinks < poUnitTest.ParameterizedTestCase
-%poUnitTest.SourcesAndSinks checks the potential from a collection of
+classdef SourcesAndSinks < UnitTest.ParameterizedTestCase
+%UnitTest.SourcesAndSinks checks the potential from a collection of
 %sources and sinks.
 
 % Everett Kropf, 2016
@@ -20,7 +20,7 @@ classdef SourcesAndSinks < poUnitTest.ParameterizedTestCase
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties(ClassSetupParameter)
-    domain = poUnitTest.domainParameterStructure.defaults
+    domain = UnitTest.domainParameterStructure.defaults
 end
 
 properties
@@ -56,7 +56,7 @@ methods(Test)
     
     function checkOneDz(test)
         switch test.type
-            case poUnitTest.domainType.Entire
+            case UnitTest.domainType.Entire
                 test.verifyFail('Bug submitted as issue #65.')
                 return
         end
@@ -69,7 +69,7 @@ methods(Test)
     
     function checkThreeDz(test)
         switch test.type
-            case poUnitTest.domainType.Entire
+            case UnitTest.domainType.Entire
                 test.verifyFail('Bug submitted as issue #65.')
                 return
         end
@@ -96,13 +96,13 @@ methods
         [a, m] = test.getProperties(numString);
         W = potential(test.domainObject, sourcesAndSinks(a, m));
         dW = diff(W);
-        ref = poUnitTest.FiniteDifference(@(z) W(z));
+        ref = UnitTest.FiniteDifference(@(z) W(z));
         test.checkAtTestPoints(ref, dW);
     end
     
     function ref = generateEvalReference(test, a, m)
         switch test.type
-            case poUnitTest.domainType.Entire
+            case UnitTest.domainType.Entire
                 N = numel(a);
                 ref = @(z) reshape(sum( cell2mat(...
                     arrayfun(@(k) m(k)*log(z(:) - a(k))/2/pi, 1:N, ...
@@ -125,8 +125,8 @@ methods(Static)
             v = reshape(sum(cell2mat(v), 2), size(z));
         end
        
-        ref = poUnitTest.ReferenceFunction(@refeval);
-        if isa(pf, 'poUnitTest.ReferenceFunction')
+        ref = UnitTest.ReferenceFunction(@refeval);
+        if isa(pf, 'UnitTest.ReferenceFunction')
             ref.tolerance = pf.tolerance;
         end
     end

@@ -1,5 +1,5 @@
 classdef(Abstract) TestCase < matlab.unittest.TestCase
-%poUnitTest.TestCase is the abstract subclass of the matlab TestCase for
+%UnitTest.TestCase is the abstract subclass of the matlab TestCase for
 %the PoTk.
 
 % Everett Kropf, 2016
@@ -82,7 +82,7 @@ methods
     function tol = determineTolerance(test, ref)
         tol = test.perTestTolerance;
         if isempty(tol) && ...
-                nargin > 1 && isa(ref, 'poUnitTest.ReferenceFunction')
+                nargin > 1 && isa(ref, 'UnitTest.ReferenceFunction')
             tol = ref.tolerance;
         end
         if isempty(tol)
@@ -95,7 +95,7 @@ methods
             return
         end
         
-        import poUnitTest.domainType
+        import UnitTest.domainType
         tol = [];
         switch test.domainTestObject.type
             case {domainType.Entire, domainType.Simple}
@@ -103,18 +103,18 @@ methods
                 
             case domainType.Annulus
                 q = test.domainObject.qv;
-                [P, C] = poUnitTest.PFunction(q);
+                [P, C] = UnitTest.PFunction(q);
                 pfun = @(z,a) a*C*P(z/a);
                 
             otherwise
                 L = 8;
                 dv = test.domainObject.dv;
                 qv = test.domainObject.qv;
-                pfun = poUnitTest.SKProd(dv, qv, L);
+                pfun = UnitTest.SKProd(dv, qv, L);
                 tol = 1e-6;
         end
         
-        pf = poUnitTest.PrimeFunctionReference(pfun);
+        pf = UnitTest.PrimeFunctionReference(pfun);
         if ~isempty(tol)
             pf.tolerance = tol;
         end

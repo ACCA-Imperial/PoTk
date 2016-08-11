@@ -1,5 +1,5 @@
-classdef Dipole < poUnitTest.ParameterizedTestCase
-%poUnitTest.Dipole checks the dipole potential.
+classdef Dipole < UnitTest.ParameterizedTestCase
+%UnitTest.Dipole checks the dipole potential.
 
 % Everett Kropf, 2016
 % 
@@ -19,7 +19,7 @@ classdef Dipole < poUnitTest.ParameterizedTestCase
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties(ClassSetupParameter)
-    domain = poUnitTest.domainParameterStructure.defaults
+    domain = UnitTest.domainParameterStructure.defaults
 end
 
 properties
@@ -61,12 +61,12 @@ methods
         [loc, m, chi, b] = test.getParameters();
         W = potential(test.domainObject, dipole(loc, m, chi, b));
         dW = diff(W);
-        ref = poUnitTest.FiniteDifference(@(z) W(z));
+        ref = UnitTest.FiniteDifference(@(z) W(z));
         test.checkAtTestPoints(ref, dW);
     end
     
     function ref = generateReference(test, loc, m, chi, b)
-        import poUnitTest.domainType
+        import UnitTest.domainType
         switch test.type
             case domainType.Entire
                 ref = @(z) m./(z - loc)/2/pi*exp(1i*chi);

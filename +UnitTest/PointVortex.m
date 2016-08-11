@@ -1,5 +1,5 @@
-classdef PointVortex < poUnitTest.ParameterizedTestCase
-%poUnitTest.PointVortex tests the point vortex potential.
+classdef PointVortex < UnitTest.ParameterizedTestCase
+%UnitTest.PointVortex tests the point vortex potential.
 
 % Everett Kropf, 2016
 % 
@@ -19,7 +19,7 @@ classdef PointVortex < poUnitTest.ParameterizedTestCase
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties(ClassSetupParameter)
-    domain = poUnitTest.domainParameterStructure.defaults
+    domain = UnitTest.domainParameterStructure.defaults
 end
 
 properties
@@ -52,7 +52,7 @@ end
 
 methods(Test)
     function checkNet(test)
-        if test.type == poUnitTest.domainType.Simple
+        if test.type == UnitTest.domainType.Simple
             test.diagnosticMessage = 'Bug submitted as issue #56.';
         end
         test.checkPotentialValue(@pointVortex)
@@ -63,7 +63,7 @@ methods(Test)
     end
     
     function checkNoNet(test)
-        if test.type == poUnitTest.domainType.Simple
+        if test.type == UnitTest.domainType.Simple
             test.verifyFail('Not implemented. Submitted bug as issue #55.')
             return
         end
@@ -71,7 +71,7 @@ methods(Test)
     end
     
     function checkNoNetDz(test)
-        if test.type == poUnitTest.domainType.Simple
+        if test.type == UnitTest.domainType.Simple
             test.verifyFail('Not implemented. Submitted bug as issue #55.')
             return
         end
@@ -90,7 +90,7 @@ methods
     function checkDerivative(test, pvKind)
         W = potential(test.domainObject, test.kindInstance(pvKind));
         dW = diff(W);
-        ref = poUnitTest.FiniteDifference(@(z) W(z));
+        ref = UnitTest.FiniteDifference(@(z) W(z));
         test.checkAtTestPoints(ref, dW);
     end
     
@@ -105,7 +105,7 @@ methods
     
     function ref = generateReference(test, pv)
         switch test.type
-            case poUnitTest.domainType.Entire
+            case UnitTest.domainType.Entire
                 N = numel(pv.location);
                 ref = @(z) reshape(sum(cell2mat(...
                     arrayfun(@(k) log(z(:) - pv.location(k)), ...
@@ -118,7 +118,7 @@ methods
     
     function ref = primeFormReferenceFuntion(test, pv)
         pf = test.primeFunctionReferenceForDomain;
-        g0 = poUnitTest.PrimeFormGreens(pf, 0, test.domainTestObject);
+        g0 = UnitTest.PrimeFormGreens(pf, 0, test.domainTestObject);
         av = pv.location;
         sv = pv.strength;
         
@@ -131,7 +131,7 @@ methods
             end
         end
         
-        ref = poUnitTest.ReferenceFunction(@rfun);
+        ref = UnitTest.ReferenceFunction(@rfun);
         ref.tolerance = pf.tolerance;
     end
 end

@@ -1,5 +1,5 @@
-classdef UniformFlow < poUnitTest.ParameterizedTestCase
-%poUnitTest.UniformFlow checks the uniform flow potential.
+classdef UniformFlow < UnitTest.ParameterizedTestCase
+%UnitTest.UniformFlow checks the uniform flow potential.
 
 % Everett Kropf, 2016
 % 
@@ -42,12 +42,12 @@ methods
         [m, chi, b] = getParameters(test);
         W = potential(test.domainObject, uniformFlow(m, chi, b));
         dW = diff(W);
-        ref = poUnitTest.FiniteDifference(@(z) W(z));
+        ref = UnitTest.FiniteDifference(@(z) W(z));
         test.checkAtTestPoints(ref, dW)
     end
     
     function ref = generateReference(test, m, chi, b)
-        import poUnitTest.domainType
+        import UnitTest.domainType
         switch test.type
             case domainType.Entire
                 ref = @(z) m*z*exp(-1i*chi);

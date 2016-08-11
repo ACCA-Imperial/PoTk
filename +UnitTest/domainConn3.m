@@ -1,5 +1,5 @@
-function v = simpleG0(z, a)
-%poUnitTest provides the simple Green's function G0 for unit tests.
+classdef domainConn3 < UnitTest.domainForTesting
+%UnitTest.domainConn3 represents a 3-connected circle domain.
 
 % Everett Kropf, 2016
 % 
@@ -18,8 +18,21 @@ function v = simpleG0(z, a)
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-if a == 0
-    v = log(z)/2i/pi;
-else
-    v = log((z - a)./(z - 1/conj(a))/abs(a))/2i/pi;
+properties
+    type = UnitTest.domainType.Conn3
+    domainObject = unitDomain(...
+        [-0.2517+0.3129i, 0.2307-0.4667i], ...
+        [0.2377, 0.1557], ...
+        0)
+    testPoints = [
+        -0.46531-0.44082i
+        0.15044-0.062974i
+        0.44431+0.55277i
+        -0.031487+0.79067i]
+    betaLocations = struct(...
+        'origin', 0, ...
+        'inside', 0.52128+0.069971i, ...
+        'circle0', -1)
+end
+
 end

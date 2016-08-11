@@ -1,5 +1,5 @@
-classdef PFunctionCheck < matlab.unittest.TestCase
-%poUnitTest.PFunctionCheck checks the P-function accuracy.
+classdef domainAnnulus < UnitTest.domainForTesting
+%UnitTest.domainAnnulus is an annular domain.
 
 % Everett Kropf, 2016
 % 
@@ -19,29 +19,13 @@ classdef PFunctionCheck < matlab.unittest.TestCase
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties
-    radius = 0.1
-    alpha = -0.6
+    type = UnitTest.domainType.Annulus
+    domainObject = unitDomain(0, 0.1, -0.4)
     testPoints = [
         -0.017493+0.4828i
         0.45131+0.2309i
         0.41633-0.4828i
         -0.43732-0.43382i]
-    
-    tolerance = 1e-15
-end
-
-methods(Test)
-    function valueVsPrime(test)
-        q = test.radius;
-        a = test.alpha;
-        zp = test.testPoints;
-        
-        w = skprime(a, 0, q);
-        [P, C] = poUnitTest.PFunction(q);
-        
-        error = w(zp) - a*C*P(zp/a);
-        test.verifyLessThan(max(abs(error)), 1e-14)
-    end
 end
 
 end

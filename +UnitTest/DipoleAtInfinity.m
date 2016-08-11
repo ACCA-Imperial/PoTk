@@ -1,5 +1,5 @@
-classdef DipoleAtInfinity < poUnitTest.TestCase
-%poUnitTest.DipoleAtInfinity tests the dipole at infinity in the entire
+classdef DipoleAtInfinity < UnitTest.TestCase
+%UnitTest.DipoleAtInfinity tests the dipole at infinity in the entire
 %domain case.
 
 % Everett Kropf, 2016
@@ -20,7 +20,7 @@ classdef DipoleAtInfinity < poUnitTest.TestCase
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties
-    domainTestObject = poUnitTest.domainEntire()
+    domainTestObject = UnitTest.domainEntire()
     strength = 2
     angle = pi/4
 end
@@ -41,7 +41,7 @@ methods(Test)
     
     function verifyBoundedError(test)
         d = dipole(inf, 1, 0);
-        D = poUnitTest.domainSimple().domainObject;
+        D = UnitTest.domainSimple().domainObject;
         test.verifyError(@() potential(D, d), ...
             PoTk.ErrorIdString.RuntimeError)
     end

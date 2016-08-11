@@ -1,5 +1,5 @@
-classdef UniformFlowMC < poUnitTest.UniformFlow
-%poUnitTest.UniformFlowMC runs tests for uniform flow in multiply connected
+classdef UniformFlowMC < UnitTest.UniformFlow
+%UnitTest.UniformFlowMC runs tests for uniform flow in multiply connected
 %domains.
 
 % Everett Kropf, 2016
@@ -20,8 +20,8 @@ classdef UniformFlowMC < poUnitTest.UniformFlow
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
 properties(ClassSetupParameter)
-    domain = poUnitTest.domainParameterStructure.multiplyConnectedSubset
-%     beta = poUnitTest.betaParameterCell.default
+    domain = UnitTest.domainParameterStructure.multiplyConnectedSubset
+%     beta = UnitTest.betaParameterCell.default
 end
 
 properties
@@ -44,7 +44,7 @@ end
 
 methods(Test)
     function checkAngle(test)
-        if test.type == poUnitTest.domainType.Conn3
+        if test.type == UnitTest.domainType.Conn3
             test.assertFail('Not implemented. Bug submitted as issue #72.')
         end
         U = test.unboundedFlow();
@@ -53,7 +53,7 @@ methods(Test)
     end
     
     function checkStrength(test)
-        if test.type == poUnitTest.domainType.Conn3
+        if test.type == UnitTest.domainType.Conn3
             test.assertFail('Not implemented. Bug submitted as issue #72.')
         end
         U = test.unboundedFlow();

@@ -1,8 +1,8 @@
 classdef(Abstract) domainParameterStructure
-%poUnitTest.domainParameterStructure provides the parameter structure for
+%UnitTest.domainParameterStructure provides the parameter structure for
 %the unit test framework.
 %
-%See also poUnitTest.ParameterizedTestCase
+%See also UnitTest.ParameterizedTestCase
 
 % Everett Kropf, 2016
 % 
@@ -28,30 +28,30 @@ end
 
 methods(Static)
     function dps = defaults()
-        domainList = poUnitTest. ...
+        domainList = UnitTest. ...
             domainParameterStructure.domainList;
-        dps = poUnitTest. ...
+        dps = UnitTest. ...
             domainParameterStructure.generateParameterStructure(domainList);
     end
     
     function dps = simplyConnectedSubset()
-        domainList = poUnitTest. ...
+        domainList = UnitTest. ...
             domainParameterStructure.domainList(1:2);
-        dps = poUnitTest. ...
+        dps = UnitTest. ...
             domainParameterStructure.generateParameterStructure(domainList);
     end
     
     function dps = multiplyConnectedSubset()
-        domainList = poUnitTest. ...
+        domainList = UnitTest. ...
             domainParameterStructure.domainList(3:4);
-        dps = poUnitTest. ...
+        dps = UnitTest. ...
             domainParameterStructure.generateParameterStructure(domainList);
     end
     
     function dps = generateParameterStructure(domainList)
         dps = struct();        
         for i = 1:numel(domainList)
-            object = poUnitTest.(domainList{i})();
+            object = UnitTest.(domainList{i})();
             dps.(object.label) = object;
         end
     end

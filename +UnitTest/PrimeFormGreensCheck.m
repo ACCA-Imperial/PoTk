@@ -1,5 +1,5 @@
-classdef PrimeFormGreensCheck < poUnitTest.ParameterizedTestCase
-%poUnitTest.PrimeFormGreensCheck verifies the prime form Green's functions
+classdef PrimeFormGreensCheck < UnitTest.ParameterizedTestCase
+%UnitTest.PrimeFormGreensCheck verifies the prime form Green's functions
 %are proper.
 
 % Everett Kropf, 2016
@@ -21,7 +21,7 @@ classdef PrimeFormGreensCheck < poUnitTest.ParameterizedTestCase
 
 methods(Test)
     function checkValues(test)
-        if test.type == poUnitTest.domainType.Entire
+        if test.type == UnitTest.domainType.Entire
             test.checkEntireError()
             return
         end
@@ -32,7 +32,7 @@ end
 methods
     function checkEntireError(test)
         test.verifyError(...
-            @() poUnitTest.PrimeFormGreens([], [], test.domainTestObject), ...
+            @() UnitTest.PrimeFormGreens([], [], test.domainTestObject), ...
             PoTk.ErrorIdString.UndefinedState)
     end
     
@@ -46,7 +46,7 @@ methods
             else
                 ref = greensCj(beta, j-1, skpD);
             end
-            gj = poUnitTest.PrimeFormGreens(pf, j-1, test.domainTestObject);
+            gj = UnitTest.PrimeFormGreens(pf, j-1, test.domainTestObject);
             
             test.perTestTolerance = pf.tolerance;
             test.diagnosticMessage = ...
