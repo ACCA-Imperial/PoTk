@@ -1,5 +1,5 @@
-classdef(Abstract) betaParameterCell
-%poUnitTest.betaParameterCell represents possible locations for the beta
+classdef(Abstract) betaParameter
+%poUnitTest.betaParameter represents possible locations for the beta
 %parameter in unit tests.
 
 % Everett Kropf, 2016
@@ -25,7 +25,7 @@ end
 
 methods(Static)
     function list = default()
-        list = poUnitTest.betaParameterCell.defaultList;
+        list = poUnitTest.betaParameter.defaultList;
     end
 end
 
