@@ -65,26 +65,29 @@ end
 
 methods(Test)
     function checkAngle(test)
-        U = test.unboundedFlow();
+        [~, U] = test.unboundedFlow();
         err = test.angle - angle(conj(U(test.farAway)));
         test.verifyLessThan(max(abs(err)), test.defaultTolerance)
     end
     
     function checkStrength(test)
-        U = test.unboundedFlow();
+        [~, U] = test.unboundedFlow();
         err = abs(test.strength) - abs(U(test.farAway));
         test.verifyLessThan(max(abs(err)), test.defaultTolerance)
     end
 end
 
 methods
-    function U = unboundedFlow(test)
+    function [W, U] = unboundedFlow(test)
         [m, chi] = test.getParameters();
         D = test.domainObject;
         D.beta = test.betaValue;
         maps = test.domainTestObject.mapsExternal(test.betaParam);
-        dW = diff(potential(D, uniformFlow(m, chi, maps.residue)));
-        U = @(z) dW(maps.zeta(z))./maps.dz(maps.zeta(z));        
+        W = potential(D, uniformFlow(m, chi, maps.residue));
+        if nargout > 1
+            dW = diff(W);
+            U = @(z) dW(maps.zeta(z))./maps.dz(maps.zeta(z));
+        end
     end
 end
 
