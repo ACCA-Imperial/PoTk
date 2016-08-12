@@ -47,7 +47,7 @@ methods
                 dzeta = @(z) -2i./(1i + z).^2;
                 
             otherwise
-                z = @(zeta) 1/(zeta - beta);
+                z = @(zeta) 1./(zeta - beta);
                 residue = 1;
                 zeta = @(z) 1./z + beta;
                 dz = @(zeta) -1./(zeta - beta).^2;
