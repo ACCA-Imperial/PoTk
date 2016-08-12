@@ -48,11 +48,13 @@ methods(TestMethodSetup)
                 rethrow(err)
             end
         end
+        
         test.betaValue = betap;
         test.betaParam = beta;
         if beta == poUnitTest.betaParameter.circle0
             test.angle = 0;
         end
+        test.domainTestObject.domainObject.beta = test.betaValue;
     end
     
     function assumeFailKnownCases(test, beta)
@@ -81,7 +83,6 @@ methods
     function [W, U] = unboundedFlow(test)
         [m, chi] = test.getParameters();
         D = test.domainObject;
-        D.beta = test.betaValue;
         maps = test.domainTestObject.mapsExternal(test.betaParam);
         W = potential(D, uniformFlow(m, chi, maps.residue));
         if nargout > 1
