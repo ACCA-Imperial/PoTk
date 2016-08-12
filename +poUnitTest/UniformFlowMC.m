@@ -30,19 +30,11 @@ end
 properties
     betaParam
     betaValue
-    
-    zeta
-    dz
-    
     farAway = 1e6*[-1; 1] + 10i
 end
 
 methods(TestMethodSetup)
-    function setBetaParameter(test, beta)
-        test.betaParam = beta;
-    end
-    
-    function prepareExternalDomain(test, beta)
+    function setupBeta(test, beta)
         try
             betap = test.domainTestObject.beta(beta);
         catch err
@@ -54,9 +46,10 @@ methods(TestMethodSetup)
             end
         end
         test.betaValue = betap;
-        test.zeta = @(z) test.scale./z + betap;
-        % z = scale/(zeta - beta);
-        test.dz = @(zeta) -test.scale./(zeta - betap).^2;
+        test.betaParam = beta;
+        if beta == poUnitTest.betaParameter.circle0
+            test.angle = 0;
+        end
     end
     
     function assumeFailKnownCases(test, beta)
@@ -82,11 +75,12 @@ end
 
 methods
     function U = unboundedFlow(test)
-        [m, chi, b] = test.getParameters();
+        [m, chi] = test.getParameters();
         D = test.domainObject;
         D.beta = test.betaValue;
-        dW = diff(potential(D, uniformFlow(m, chi, b)));
-        U = @(z) dW(test.zeta(z))./test.dz(test.zeta(z));        
+        maps = test.domainTestObject.mapsExternal(test.betaParam);
+        dW = diff(potential(D, uniformFlow(m, chi, maps.residue)));
+        U = @(z) dW(maps.zeta(z))./maps.dz(maps.zeta(z));        
     end
 end
 
