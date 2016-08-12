@@ -41,6 +41,9 @@ methods(TestMethodSetup)
             if strcmp(err.identifier, 'MATLAB:noSuchMethodOrField') ...
                     && isa(test.domainTestObject, 'poUnitTest.domainForTesting')
                 test.assumeFail('Parameter not implemented for domain.')
+            elseif strcmp(err.identifier, 'MATLAB:nonExistentField')
+                test.assumeFail(sprintf(...
+                    'Parameter ''%s'' not valid for domain.', beta.label))
             else
                 rethrow(err)
             end
@@ -53,7 +56,8 @@ methods(TestMethodSetup)
     end
     
     function assumeFailKnownCases(test, beta)
-        if beta == poUnitTest.betaParameter.origin
+        if beta == poUnitTest.betaParameter.origin ...
+                && test.type ~= poUnitTest.domainType.Annulus
             test.assumeFail('Not implemented. Bug submitted as issue #72.')
         end
     end
