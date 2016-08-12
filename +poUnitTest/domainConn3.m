@@ -35,4 +35,27 @@ properties
         'circle0', -1)
 end
 
+methods
+    function maps = mapsExternal(dom, benum)
+        beta = dom.beta(benum);
+        switch benum
+            case poUnitTest.betaParameter.circle0
+                z = @(zeta) 1i*(1-zeta)./(1+zeta);
+                residue = 2i; % parameter on boundary
+                zeta = @(z) (1i - z)./(1i + z);
+                dz = @(zeta) -2i./(1 + zeta).^2;
+                dzeta = @(z) -2i./(1i + z).^2;
+                
+            otherwise
+                z = @(zeta) 1/(zeta - beta);
+                residue = 1;
+                zeta = @(z) 1./z + beta;
+                dz = @(zeta) -1./(zeta - beta).^2;
+                dzeta = @(z) -1./z.^2;
+        end
+        
+        maps = poUnitTest.mapsExternal(z, dz, residue, zeta, dzeta);
+    end
+end
+
 end
