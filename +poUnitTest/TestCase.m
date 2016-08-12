@@ -21,7 +21,7 @@ classdef(Abstract) TestCase < matlab.unittest.TestCase
 
 properties
     perTestTolerance
-    defaultTolerance = 1e-12
+    defaultTolerance = 1e-11
     
     diagnosticMessage
 end
