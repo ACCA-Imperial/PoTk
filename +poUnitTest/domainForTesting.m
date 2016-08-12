@@ -35,6 +35,12 @@ end
 
 methods
     function b = beta(obj, benum)
+        %returns value based on betaParameter enumeration given.
+        %
+        %Values defined by betaLocations structure in subclasses.
+        %Non-existent betaLocations structure results in ''no such method''
+        %error.
+        
         if ~isprop(obj, 'betaLocations')
             throwAsCaller(MException('MATLAB:noSuchMethodOrField', ...
                 ['No appropriate method, property, or field ''beta'' ', ...
