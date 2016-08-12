@@ -77,6 +77,13 @@ methods(Test)
         err = abs(test.strength) - abs(U(test.farAway));
         test.verifyLessThan(max(abs(err)), test.defaultTolerance)
     end
+    
+    function boundaryStream(test)
+        W = test.unboundedFlow();
+        zb = boundaryPts(skpDomain(test.domainObject), 5);
+        bconst = sum(abs(diff(imag(W(zb)))) > test.defaultTolerance);
+        test.verifyEqual(bconst, zeros(1, test.domainObject.m+1))
+    end
 end
 
 methods
