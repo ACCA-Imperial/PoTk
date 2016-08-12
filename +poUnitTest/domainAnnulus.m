@@ -33,20 +33,25 @@ properties
 end
 
 methods
-    function [zeta, dz] = externalMaps(dom, benum)
-        betav = dom.beta(benum);
+    function maps = mapsExternal(dom, benum)
+        beta = dom.beta(benum);
         switch benum
-            case benum == poUnitTest.betaParameter.circle0
-                % z = @(zeta) a*1i*(1-zeta)./(1+zeta);
+            case poUnitTest.betaParameter.circle0
+                z = @(zeta) 1i*(1-zeta)./(1+zeta);
+                residue = 2i; % parameter on boundary
                 zeta = @(z) (1i - z)./(1i + z);
-                % Its derivative dz/dzeta
                 dz = @(zeta) -2i./(1 + zeta).^2;
+                dzeta = @(z) -2i./(1i + z).^2;
                 
             otherwise
-                zeta = @(z) 1./z + betav;
-                % z = 1/(zeta - beta);
-                dz = @(zeta) -1./(zeta - betav).^2;
+                z = @(zeta) 1/(zeta - beta);
+                residue = 1;
+                zeta = @(z) 1./z + beta;
+                dz = @(zeta) -1./(zeta - beta).^2;
+                dzeta = @(z) -1./z.^2;
         end
+        
+        maps = poUnitTest.mapsExternal(z, dz, residue, zeta, dzeta);
     end
 end
 
