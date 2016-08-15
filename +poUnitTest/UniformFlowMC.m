@@ -54,7 +54,10 @@ methods(TestMethodSetup)
         if beta == poUnitTest.betaParameter.circle0
             test.angle = 0;
         end
-        test.domainTestObject.domainObject.beta = test.betaValue;
+        
+        test.assumeTrue(isin(test.domainTestObject.domainObject, betap), ...
+            'Parameter is not inside domain.')
+        test.domainTestObject.domainObject.beta = betap;
     end
     
     function assumeFailKnownCases(test, beta)
