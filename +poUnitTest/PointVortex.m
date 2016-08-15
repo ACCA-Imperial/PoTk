@@ -109,10 +109,10 @@ methods
         cv = nan(size(pv.strength));
         for k = 1:numel(cv)
             cv(k) = real(poUnitTest.circleIntegral. ...
-                forDifferential(dW, pv.location(k), 1e-8));
+                forDifferential(dW, pv.location(k), 1e-6));
         end
         err = pv.strength - cv;
-        test.verifyLessThan(max(abs(err)), 1e-6);
+        test.verifyLessThan(max(abs(err)), 1e-10);
     end
     
     function pv = kindInstance(test, pvKind)
