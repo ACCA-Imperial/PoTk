@@ -40,7 +40,11 @@ properties(Dependent)
 end
 methods % get/set
     function do = get.domainObject(test)
-        do = test.domainTestObject.domainObject;
+        if isempty(test.domainTestObject)
+            do = [];
+        else
+            do = test.domainTestObject.domainObject;
+        end
     end
     
     function pf = get.primeFunctionReferenceForDomain(test)
