@@ -72,17 +72,12 @@ methods(Test)
     
     function checkNoNet(test)
         if test.type == poUnitTest.domainType.Simple
-            test.verifyFail('Not implemented. Submitted bug as issue #55.')
-            return
+            test.diagnosticMessage = 'Bug submitted as issue #56.';
         end
         test.checkPotentialValue(@pointVortexNoNet)
     end
     
     function checkNoNetDz(test)
-        if test.type == poUnitTest.domainType.Simple
-            test.verifyFail('Not implemented. Submitted bug as issue #55.')
-            return
-        end
         test.checkDerivative(@pointVortexNoNet)
     end
 end
@@ -147,7 +142,8 @@ methods
             v = reshape(sum(cell2mat( ...
                 arrayfun(@(k) sv(k)*g0(z(:), av(k)), find(sv(:) ~= 0)', ...
                 'uniform', false)), 2), size(z));
-            if isa(pv, 'pointVortexNoNet')
+            if isa(pv, 'pointVortexNoNet') ...
+                    && test.type ~= poUnitTest.domainType.Simple
                 v = v - sum(sv)*g0(z, test.domainObject.infImage);
             end
         end
