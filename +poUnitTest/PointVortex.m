@@ -51,6 +51,14 @@ properties
 end
 
 methods(Test)
+    function checkNetVortex(test)
+        test.checkCirculation(@pointVortex)
+    end
+    
+    function checkNoNetVortex(test)
+        test.checkCirculation(@pointVortexNoNet)
+    end
+    
     function checkNet(test)
         if test.type == poUnitTest.domainType.Simple
             test.diagnosticMessage = 'Bug submitted as issue #56.';
@@ -92,6 +100,19 @@ methods
         dW = diff(W);
         ref = poUnitTest.FiniteDifference(@(z) W(z));
         test.checkAtTestPoints(ref, dW);
+    end
+    
+    function checkCirculation(test, pvKind)
+        pv = test.kindInstance(pvKind);
+        dW = diff(potential(test.domainObject, pv));
+        
+        cv = nan(size(pv.strength));
+        for k = 1:numel(cv)
+            cv(k) = real(poUnitTest.circleIntegral. ...
+                forDifferential(dW, pv.location(k), 1e-8));
+        end
+        err = pv.strength - cv;
+        test.verifyLessThan(max(abs(err)), 1e-6);
     end
     
     function pv = kindInstance(test, pvKind)
