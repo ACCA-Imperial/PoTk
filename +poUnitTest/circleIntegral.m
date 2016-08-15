@@ -29,7 +29,7 @@ methods(Static)
         end
         
         dt = 2*pi/N;
-        reit = r*exp(2i*pi*(0:N-1)'*dt);
+        reit = r*exp(1i*(0:N-1)'*dt);
         I = 1i*dt*sum(df(c + reit).*reit);
     end
 end
