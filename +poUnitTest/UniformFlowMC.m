@@ -38,14 +38,22 @@ methods(TestMethodSetup)
         try
             betap = test.domainTestObject.beta(beta);
         catch err
-            if strcmp(err.identifier, 'MATLAB:noSuchMethodOrField') ...
-                    && isa(test.domainTestObject, 'poUnitTest.domainForTesting')
-                test.assumeFail('Parameter not implemented for domain.')
-            elseif strcmp(err.identifier, 'MATLAB:nonExistentField')
-                test.assumeFail(sprintf(...
-                    'Parameter ''%s'' not valid for domain.', beta.label))
-            else
-                rethrow(err)
+            switch err.identifier
+                case 'MATLAB:noSuchMethodOrField'
+                    if isa(test.domainTestObject, ...
+                            'poUnitTest.domainForTesting')
+                        test.assumeFail(...
+                            'Parameter not implemented for domain.')
+                    else
+                        rethrow(err)
+                    end
+                    
+                case 'MATLAB:nonExistentField'
+                    test.assumeFail(sprintf(...
+                        'Parameter ''%s'' not defined for domain.', beta.label))
+                    
+                otherwise
+                    rethrow(err)
             end
         end
         
