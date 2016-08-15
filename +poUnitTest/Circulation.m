@@ -129,10 +129,11 @@ methods
                 c = 0;
                 r = 1;
             end
-            G(i) = (1 - 2*(i == 1))*real(test.integralCirculation(dW, c, r));
+            G(i) = (1 - 2*(i == 1))*real(poUnitTest. ...
+                circleIntegral.forDifferential(dW, c, r));                
         end
-        G(end) = real(test.integralCirculation(...
-            dW, test.domainObject.infImage, 1e-6));
+        G(end) = real(poUnitTest.circleIntegral. ...
+            forDifferential(dW, test.domainObject.infImage, 1e-6));
         
         sv = double(C);
         if test.type == poUnitTest.domainType.Simple ...
@@ -144,13 +145,6 @@ methods
         
         err = sv - G;
         test.verifyLessThan(max(abs(err)), test.defaultTolerance*10);
-    end
-    
-    function I = integralCirculation(test, dW, c, r)
-        N = test.integralCollocationPoints;
-        dt = 2*pi/N;
-        reitn = r*exp(1i*(0:N-1)'*dt);
-        I = 1i*dt*sum(dW(c + reitn).*(reitn));
     end
     
     function ref = primeFormReferenceFunction(test, C)
