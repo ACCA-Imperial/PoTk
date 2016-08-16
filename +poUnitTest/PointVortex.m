@@ -60,9 +60,6 @@ methods(Test)
     end
     
     function checkNet(test)
-        if test.type == poUnitTest.domainType.Simple
-            test.diagnosticMessage = 'Bug submitted as issue #56.';
-        end
         test.checkPotentialValue(@pointVortex)
     end
     
@@ -71,9 +68,6 @@ methods(Test)
     end
     
     function checkNoNet(test)
-        if test.type == poUnitTest.domainType.Simple
-            test.diagnosticMessage = 'Bug submitted as issue #56.';
-        end
         test.checkPotentialValue(@pointVortexNoNet)
     end
     
