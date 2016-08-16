@@ -52,11 +52,11 @@ end
 
 methods(Test)
     function checkNetVortex(test)
-        test.checkCirculation(@pointVortex)
+        test.checkVortexCirc(@pointVortex)
     end
     
     function checkNoNetVortex(test)
-        test.checkCirculation(@pointVortexNoNet)
+        test.checkVortexCirc(@pointVortexNoNet)
     end
     
     function checkNet(test)
@@ -97,7 +97,7 @@ methods
         test.checkAtTestPoints(ref, dW);
     end
     
-    function checkCirculation(test, pvKind)
+    function checkVortexCirc(test, pvKind)
         pv = test.kindInstance(pvKind);
         dW = diff(potential(test.domainObject, pv));
         
