@@ -59,38 +59,16 @@ methods(Test)
         test.checkVortexCirc(@pointVortexNoNet)
     end
     
-    function checkNet(test)
-        test.checkPotentialValue(@pointVortex)
+    function checkNetBdryCirc(test)
+        test.checkBdryCirc(@pointVortex)
     end
     
-    function checkNetDz(test)
-        test.checkDerivative(@pointVortex)
-    end
-    
-    function checkNoNet(test)
-        test.checkPotentialValue(@pointVortexNoNet)
-    end
-    
-    function checkNoNetDz(test)
-        test.checkDerivative(@pointVortexNoNet)
+    function checkNoNetBdryCirc(test)
+        test.checkBdryCirc(@pointVortexNoNet)
     end
 end
 
 methods
-    function checkPotentialValue(test, pvKind)
-        pv = test.kindInstance(pvKind);
-        W = potential(test.domainObject, pv);
-        ref = test.generateReference(pv);
-        test.checkAtTestPoints(ref, W)
-    end
-    
-    function checkDerivative(test, pvKind)
-        W = potential(test.domainObject, test.kindInstance(pvKind));
-        dW = diff(W);
-        ref = poUnitTest.FiniteDifference(@(z) W(z));
-        test.checkAtTestPoints(ref, dW);
-    end
-    
     function checkVortexCirc(test, pvKind)
         pv = test.kindInstance(pvKind);
         dW = diff(potential(test.domainObject, pv));
@@ -102,6 +80,35 @@ methods
         end
         err = pv.strength - cv;
         test.verifyLessThan(max(abs(err)), 1e-10);
+    end
+    
+    function checkBdryCirc(test, pvKind)
+        if test.type == poUnitTest.domainType.Entire
+            % Nothing to test.
+            return
+        end
+        
+        pv = test.kindInstance(pvKind);
+        dW = diff(potential(test.domainObject, pv));
+        
+        [dv, qv, m] = domainData(skpDomain(test.domainObject));
+        bv = nan(m+1, 1);
+        bv(1) = real(poUnitTest.circleIntegral.forDifferential(dW, 0, 1));
+        for j = 1:m
+            bv(j+1) = real(poUnitTest.circleIntegral. ...
+                forDifferential(dW, dv(j), qv(j)));
+        end
+        if isa(pv, 'pointVortexNoNet')
+            checkval = 0;
+        else
+            checkval = sum(pv.strength);
+        end
+        test.verifyLessThan(abs(checkval - bv(1)), test.defaultTolerance, ...
+            'Outer boundary circulation is incorrect.')
+        if numel(bv > 1)
+            test.verifyTrue(all(bv(2:end) < test.defaultTolerance), ...
+                'Non zero circulation on inner boundary.')
+        end
     end
     
     function pv = kindInstance(test, pvKind)
