@@ -47,7 +47,7 @@ properties
         -0.30437-0.31487i
         -0.066472-0.7137i]
     
-    vortexStrengths = [-1, 1, -1, 1];
+    vortexStrengths = [-1, 1, -1, 2];
 end
 
 methods(Test)
