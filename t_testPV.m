@@ -5,11 +5,11 @@ clear
 %%
 
 test = poUnitTest.PointVortex;
-test.domainTestObject = poUnitTest.domainEntire;
+test.domainTestObject = poUnitTest.domainSimple;
 
 D = test.domainObject;
 tp = test.domainTestObject.testPoints;
-pvKind = @pointVortex;
+pvKind = @pointVortexNoNet;
 pv = test.kindInstance(pvKind);
 
 
@@ -38,12 +38,27 @@ for k = 1:numel(pv.location)
     cv(k) = real(Icirc(dW, pv.location(k), dr));
 end
 
-err = pv.strength - cv;
-disp(max(abs(err)))
+% err = pv.strength - cv;
+% disp(max(abs(err)))
 
 
 %%
 % Check circulation around boundaries.
+
+if isa(D, 'poUnitTest.domainEntire')
+    return
+end
+
+bv = nan(D.m + 1, 1);
+bv(1) = -real(Icirc(dW, 0, 1));
+for j = 1:D.m
+    bv(j+1) = real(Icirc(dW, D.dv(j), D.qv(j)));
+end
+
+disp(bv)
+
+
+
 
 
 
