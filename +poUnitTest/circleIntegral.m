@@ -24,6 +24,10 @@ end
 
 methods(Static)
     function I = forDifferential(df, c, r, N)
+        %I = forDifferential(df, c, r)
+        %Trapezoidal rule integration of differential df around circle
+        %centered at c with radius r. Integration is counter-clockwise.
+        
         if nargin < 4
             N = poUnitTest.circleIntegral.defaultCollocationPoints;
         end
