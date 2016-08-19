@@ -8,14 +8,14 @@ test = poUnitTest.Dipole;
 test.domainTestObject = poUnitTest.domainEntire;
 
 D = test.domainObject;
-% alpha = test.dispatchTestProperty('Location');
-alpha = 0.3 + 0.3i;
+alpha = test.dispatchTestProperty('Location');
+% alpha = 0.3 + 0.3i;
 
 
 %%
 
 U = 2;
-chi = 0;
+chi = pi/8;
 mu = U*exp(1i*chi);
 
 if alpha == 0
@@ -40,8 +40,33 @@ disp(['Unit circulation: ', num2str(Ic)])
 
 % Point "near" dipole in the flow.
 zp = alpha + 1e-6*exp(1i*chi);
+zp2 = alpha + 1e-6*exp(1i*(chi + pi/2));
 
-disp(['Strength: ', num2str(abs(dW(zp)))])
+disp(chi - angle(conj(dW(zp))))
 
 
-plotfd(W, skpDomain(), 1.1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
