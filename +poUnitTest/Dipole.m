@@ -18,27 +18,14 @@ classdef Dipole < poUnitTest.TestCaseParamDomain
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-properties(ClassSetupParameter)
-    domain = poUnitTest.domainParameterStructure.defaults
-end
-
 properties
     entireLocation = 0
     simpleLocation = 0
     annulusLocation = -0.6
+    conn3Location = 0.42332+0.41983i;
     strength = 2
     angle = pi/4
     scale = 2
-end
-
-methods(Test)
-    function checkFinite(test)
-        test.checkValues()
-    end
-    
-    function checkFiniteDz(test)
-        test.checkDerivative()
-    end
 end
 
 methods

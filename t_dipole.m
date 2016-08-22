@@ -4,36 +4,35 @@ clear
 
 %%
 
-test = poUnitTest.Dipole;
-test.domainTestObject = poUnitTest.domainEntire;
+test = poUnitTest.DipoleMC;
+test.domainTestObject = poUnitTest.domainConn3;
 
 D = test.domainObject;
-alpha = test.dispatchTestProperty('Location');
-% alpha = 0.3 + 0.3i;
+% alpha = test.dispatchTestProperty('Location');
+alpha = 0.42332+0.41983i;
 
 
 %%
 
-U = 2;
-chi = pi/8;
-mu = U*exp(1i*chi);
+U = test.strength;
+chi = test.angle;
+a = test.scale;
 
-if alpha == 0
-    W = @(zeta) (-mu./zeta + conj(mu)*zeta)/2/pi;
-    dW = @(zeta) (mu./zeta.^2 + conj(mu))/2/pi;
-else
-    W = @(zeta) (-mu./(zeta - alpha) ...
-        + conj(mu)/conj(alpha)^2./(zeta - 1/conj(alpha)))/2/pi;
-    dW = @(zeta) (mu./(zeta - alpha).^2 ...
-        - conj(mu)/conj(alpha)^2./(zeta - 1/conj(alpha)).^2)/2/pi;
-end
+d = dipole(alpha, U, chi, a);
+W = potential(test.domainObject, d);
+dW = diff(W);
 
 
 %%
 % Circulation around unit circle.
 
-Ic = real(poUnitTest.circleIntegral.forDifferential(dW, 0, 1));
-disp(['Unit circulation: ', num2str(Ic)])
+dv = [0; D.dv(:)];
+qv = [1; D.qv(:)];
+for j = 1:numel(dv)
+    Ic = real(poUnitTest. ...
+        circleIntegral.forDifferential(dW, dv(j), qv(j)));
+    fprintf('circle %d circulation: %s\n', j-1, num2str(abs(Ic)))
+end
 
 
 %%
