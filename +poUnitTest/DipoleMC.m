@@ -44,8 +44,8 @@ methods(Test)
         W = potential(test.domainObject, dipole(loc, m, chi, b));
         dW = diff(W);
         zp = loc + 1e-6*exp(1i*chi);
-        test.verifyLessThan(abs(chi - angle(conj(dW(zp)))), ...
-            test.defaultTolerance)
+        test.verifyLessThan(abs(chi - angle(dW(zp))), ...
+            test.defaultTolerance*10)
     end
 end
 
