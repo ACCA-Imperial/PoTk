@@ -33,17 +33,10 @@ end
 
 methods(Test)
     function checkPoint(test)
-        switch test.type
-            case poUnitTest.domainType.Simple
-                test.diagnosticMessage = 'Bug submitted as issue #58.';
-        end
         test.checkValues()
     end
     
     function checkPointDz(test)
-        if test.type == poUnitTest.domainType.Simple
-            test.diagnosticMessage = 'Bug submitted as issue #66.';
-        end
         test.checkDerivative()
     end
 end
@@ -74,6 +67,9 @@ methods
             case poUnitTest.domainType.Entire
                 ref = @(z) m*log(z - a)/2/pi;
                 
+            case poUnitTest.domainType.Simple
+                ref = @(z) m*log((z - a).*(z - 1/conj(a))./z)/2/pi;
+                                
             otherwise
                 pf = test.primeFunctionReferenceForDomain;
                 o = test.domainObject.infImage;

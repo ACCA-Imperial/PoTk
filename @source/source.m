@@ -54,25 +54,7 @@ methods
     end
 end
    
-methods(Hidden)
-    function val = evalPotential(s, z)
-        if s.entirePotential
-            val = s.strength*log(z - s.location)/2/pi;
-            return
-        end
-        
-        val = evalPotential@sourceSinkPair(s, z);
-    end
-    
-    function ds = getDerivative(s)
-        if s.entirePotential
-            ds = @(z) s.strength./(z - s.location)/2/pi;
-            return
-        end
-        
-        ds = getDerivative@sourceSinkPair(s);
-    end
-    
+methods(Hidden)    
     function s = setupPotential(s, W)
         D = W.unitDomain;
         if isa(W.domain, 'unitDomain')
