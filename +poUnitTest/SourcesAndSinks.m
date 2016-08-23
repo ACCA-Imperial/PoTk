@@ -55,11 +55,6 @@ methods(Test)
     end
     
     function checkOneDz(test)
-        switch test.type
-            case poUnitTest.domainType.Entire
-                test.verifyFail('Bug submitted as issue #65.')
-                return
-        end
         test.checkDerivative('OnePoint')
     end
     
@@ -68,11 +63,6 @@ methods(Test)
     end
     
     function checkThreeDz(test)
-        switch test.type
-            case poUnitTest.domainType.Entire
-                test.verifyFail('Bug submitted as issue #65.')
-                return
-        end
         test.checkDerivative('ThreePoints')
     end
 end
