@@ -1,11 +1,5 @@
-classdef(Abstract) Evaluable
-%Evaluable provides function like evaluation protocol.
-%
-%Subclasses of this abstract class must implement a "function evaluation"
-%method with the signature
-%  v = feval(obj, z)
-%
-%See also subsref.
+classdef PFunctionCheck < matlab.unittest.TestCase
+%poUnitTest.PFunctionCheck checks the P-function accuracy.
 
 % Everett Kropf, 2016
 % 
@@ -24,22 +18,29 @@ classdef(Abstract) Evaluable
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-methods(Abstract)
-    v = feval(obj, z)
+properties
+    radius = 0.1
+    alpha = -0.6
+    testPoints = [
+        -0.017493+0.4828i
+        0.45131+0.2309i
+        0.41633-0.4828i
+        -0.43732-0.43382i]
+    
+    tolerance = 1e-15
 end
 
-methods(Hidden)
-    function out = subsref(obj, S)
-        % Provide function-like behaviour.
-        %
-        %   obj = classInstance(...);
-        %   v = obj(z);
+methods(Test)
+    function valueVsPrime(test)
+        q = test.radius;
+        a = test.alpha;
+        zp = test.testPoints;
         
-        if numel(S) == 1 && strcmp(S.type, '()')
-            out = feval(obj, S.subs{:});
-        else
-            out = builtin('subsref', obj, S);
-        end
+        w = skprime(a, 0, q);
+        [P, C] = poUnitTest.PFunction(q);
+        
+        error = w(zp) - a*C*P(zp/a);
+        test.verifyLessThan(max(abs(error)), 1e-14)
     end
 end
 

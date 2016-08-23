@@ -1,11 +1,5 @@
-classdef(Abstract) Evaluable
-%Evaluable provides function like evaluation protocol.
-%
-%Subclasses of this abstract class must implement a "function evaluation"
-%method with the signature
-%  v = feval(obj, z)
-%
-%See also subsref.
+classdef SKProdCheck < poUnitTest.TestCase
+%poUnitTest.SKProdCheck verification tests for the prime product forumla.
 
 % Everett Kropf, 2016
 % 
@@ -24,22 +18,31 @@ classdef(Abstract) Evaluable
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-methods(Abstract)
-    v = feval(obj, z)
+properties
+    domainTestObject = poUnitTest.domainConn3
+    testPoints = [
+        -0.63324-0.013994i
+        0.33236+0.10496i
+        0.066472+0.67872i
+        0.78017-0.16793i]
+
+    alpha = -0.42332-0.41283i 
+    
+    prodTolerance = 1e-6
 end
 
-methods(Hidden)
-    function out = subsref(obj, S)
-        % Provide function-like behaviour.
-        %
-        %   obj = classInstance(...);
-        %   v = obj(z);
+methods(Test)
+    function valueVsBVP(test)
+        dv = test.domainObject.dv;
+        qv = test.domainObject.qv;
+        a = test.alpha;
         
-        if numel(S) == 1 && strcmp(S.type, '()')
-            out = feval(obj, S.subs{:});
-        else
-            out = builtin('subsref', obj, S);
-        end
+        w = skprime(a, dv, qv);
+        wp = test.primeFunctionReferenceForDomain;
+        ref = @(z) wp(z, a);
+        
+        test.perTestTolerance = test.prodTolerance;
+        test.checkAtTestPoints(w, ref)
     end
 end
 

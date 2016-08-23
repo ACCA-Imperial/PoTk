@@ -33,6 +33,7 @@ end
 
 properties(Access=protected)
     primeFunctions
+    isSimplyConnected
 end
 
 methods
@@ -71,7 +72,30 @@ end
 methods(Hidden)
     function val = evalPotential(s, z)
         if s.entirePotential
-            val = s.strength*log((z - s.location)./(z - s.opposite))/2/pi;
+            if isfinite(s.location)
+                val = log(z - s.location);
+                if isfinite(s.opposite)
+                    val = val - log(z - s.opposite);
+                end
+            else
+                val = -log(z - s.opposite);
+            end
+            val = s.strength*val/2/pi;
+            return
+        end
+        
+        if s.isSimplyConnected
+            a = s.location;
+            b = s.opposite;
+            if a == 0
+                val = log(z./(z - b)./(z - 1/conj(b)));
+            elseif b == 0
+                val = log((z - a).*(z - 1/conj(a))./z);
+            else
+                val = log((z - a).*(z - 1/conj(a)) ...
+                    ./(z - b)./(z - 1/conj(b)));
+            end
+            val = s.strength*val/2/pi;
             return
         end
         
@@ -82,8 +106,32 @@ methods(Hidden)
     
     function ds = getDerivative(s)
         if s.entirePotential
-            ds = @(z) s.strength ...
-                *(1./(z - s.location) - 1./(z - s.opposite))/2/pi;
+            a = s.location;
+            b = s.opposite;
+            if isfinite(a)
+                singular = @(z) 1./(z - a);
+                if isfinite(b)
+                    singular = @(z) singular(z) - 1./(z - b);
+                end
+            else
+                singular = @(z) -1./(z - b);
+            end
+            ds = @(z) s.strength/2/pi*singular(z);
+            return
+        end
+        
+        if s.isSimplyConnected
+            a = s.location;
+            b = s.opposite;
+            if a == 0
+                singular = @(z) 1./z - 1./(z - b) - 1./(z - 1/conj(b));
+            elseif b == 0
+                singular = @(z) 1./(z - a) + 1./(z - 1/conj(a)) - 1./z;
+            else
+                singular = @(z) 1./(z - a) + 1./(z - 1/conj(a)) ...
+                    - 1./(z - b) - 1./(z - 1/conj(b));
+            end
+            ds = @(z) s.strength/2/pi*singular(z);
             return
         end
         
@@ -112,6 +160,11 @@ methods(Hidden)
         if ~isin(D, beta)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 'The sink point must be in the bounded unit domain.')
+        end
+        
+        if D.m == 0
+            s.isSimplyConnected = true;
+            return
         end
         
         om = skprime(alpha, skpDomain(D));

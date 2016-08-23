@@ -1,11 +1,5 @@
-classdef(Abstract) Evaluable
-%Evaluable provides function like evaluation protocol.
-%
-%Subclasses of this abstract class must implement a "function evaluation"
-%method with the signature
-%  v = feval(obj, z)
-%
-%See also subsref.
+function v = simpleG0(z, a)
+%poUnitTest provides the simple Green's function G0 for unit tests.
 
 % Everett Kropf, 2016
 % 
@@ -24,23 +18,8 @@ classdef(Abstract) Evaluable
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-methods(Abstract)
-    v = feval(obj, z)
-end
-
-methods(Hidden)
-    function out = subsref(obj, S)
-        % Provide function-like behaviour.
-        %
-        %   obj = classInstance(...);
-        %   v = obj(z);
-        
-        if numel(S) == 1 && strcmp(S.type, '()')
-            out = feval(obj, S.subs{:});
-        else
-            out = builtin('subsref', obj, S);
-        end
-    end
-end
-
+if a == 0
+    v = log(z)/2i/pi;
+else
+    v = log((z - a)./(z - 1/conj(a))/abs(a))/2i/pi;
 end

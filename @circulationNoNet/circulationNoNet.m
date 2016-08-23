@@ -29,27 +29,35 @@ classdef circulationNoNet < circulation
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-properties(Access=protected)
+properties(SetAccess=protected)
     netCirculation
+end
+
+properties(Access=protected)
     greensFunction
 end
 
 methods
     function C = circulationNoNet(varargin)
         C = C@circulation(varargin{:});
-        
-        circ = C.circVector;
-        C.netCirculation = circulation(circ(2:end));
     end
 end
 
 methods(Hidden)
     function val = evalPotential(C, z)
+        if C.isSimplyConnected
+            val = evalPotential@circulation(C, z);
+            return
+        end
         val = C.netCirculation.evalPotential(z) ...
             - sum(C.circVector(:))*C.greensFunction(z);
     end
     
     function dc = getDerivative(C)
+        if C.isSimplyConnected
+            dc = getDerivative@circulation(C);
+            return
+        end
         dnc = getDerivative(C.netCirculation);
         dg0 = diff(C.greensFunction);
         dc = @(z) dnc(z) - sum(C.circVector(:))*dg0(z);
@@ -58,8 +66,8 @@ methods(Hidden)
     function C = setupPotential(C, W)
         D = W.unitDomain;
         if D.m == 0
-            error(PoTk.ErrorIdString.RuntimeError, ...
-                'Use only plain "circulation" for simply connected domain.')
+            C = setupPotential@circulation(C, W);
+            return
         end
         if isempty(D.infImage)
             error(PoTk.ErrorIdString.RuntimeError, ...
@@ -72,7 +80,7 @@ methods(Hidden)
                 ['Number of circulation values must be one greater ' ...
                 'than the number\nof inner boundaries.']);
         end
-        
+        C.netCirculation = circulation(circ(2:end));
         C.netCirculation = C.netCirculation.setupPotential(W);
         C.greensFunction = greensC0(D.infImage, skpDomain(D));
     end
@@ -80,15 +88,17 @@ end
 
 methods(Hidden) % Documentation
     function str = latexExpression(C)
-        if numel(C.circVector) == 1
-            str = ['\Gamma_1 \left( v_1(\zeta) - ', ...
-                'G_0(\zeta,\beta,\overline{\beta}) \right)'];
-        else
-            str = [...
-                '\sum_{j=1}^m \Gamma_j \left( v_j(\zeta) - ', ...
-                'G_0(\zeta,\beta,\overline{\beta}) \right)'];
+        if C.isSimplyConnected
+            str = latexExpression@circulation(C);
+            return
         end
-        str = [str, ' \qquad\mathrm{(circulation)}'];
+        if numel(C.circVector) == 1
+            str = '-\Gamma_1 G_1(\zeta,\beta,\overline{\beta})';
+        else
+            str = ...
+                '-\sum_{j=0}^m \Gamma_j G_j(\zeta,\beta,\overline{\beta})';
+        end
+        str = [str, ' \qquad\mathrm{(circulation, no\,net)}'];
     end
 end
 

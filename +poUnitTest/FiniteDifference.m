@@ -1,11 +1,6 @@
-classdef(Abstract) Evaluable
-%Evaluable provides function like evaluation protocol.
-%
-%Subclasses of this abstract class must implement a "function evaluation"
-%method with the signature
-%  v = feval(obj, z)
-%
-%See also subsref.
+classdef FiniteDifference < poUnitTest.ReferenceFunction
+%poUnitTest.FiniteDifference is a reference function for testing
+%derivatives.
 
 % Everett Kropf, 2016
 % 
@@ -24,22 +19,25 @@ classdef(Abstract) Evaluable
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-methods(Abstract)
-    v = feval(obj, z)
+properties
+    deltaH = 1e-6
 end
 
-methods(Hidden)
-    function out = subsref(obj, S)
-        % Provide function-like behaviour.
-        %
-        %   obj = classInstance(...);
-        %   v = obj(z);
-        
-        if numel(S) == 1 && strcmp(S.type, '()')
-            out = feval(obj, S.subs{:});
+methods
+    function ref = FiniteDifference(fHandle)
+        if nargin
+            sargs = {fHandle};
         else
-            out = builtin('subsref', obj, S);
+            sargs = {};
         end
+        ref = ref@poUnitTest.ReferenceFunction(sargs{:});
+        ref.tolerance = ref.deltaH*100;
+    end
+    
+    function v = feval(ref, z)
+        h = ref.deltaH;
+        fun = ref.functionHandle;
+        v = (fun(z + h) - fun(z))/h;
     end
 end
 

@@ -1,11 +1,6 @@
-classdef(Abstract) Evaluable
-%Evaluable provides function like evaluation protocol.
-%
-%Subclasses of this abstract class must implement a "function evaluation"
-%method with the signature
-%  v = feval(obj, z)
-%
-%See also subsref.
+classdef betaParameter
+%poUnitTest.betaParameter represents possible locations for the beta
+%parameter in unit tests.
 
 % Everett Kropf, 2016
 % 
@@ -24,22 +19,22 @@ classdef(Abstract) Evaluable
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-methods(Abstract)
-    v = feval(obj, z)
+enumeration
+    origin
+    inside
+    circle0
 end
 
-methods(Hidden)
-    function out = subsref(obj, S)
-        % Provide function-like behaviour.
-        %
-        %   obj = classInstance(...);
-        %   v = obj(z);
-        
-        if numel(S) == 1 && strcmp(S.type, '()')
-            out = feval(obj, S.subs{:});
-        else
-            out = builtin('subsref', obj, S);
-        end
+methods
+    function s = label(obj)
+        s = lower(char(obj));
+    end
+end
+
+methods(Static)
+    function c = default
+        [m, s] = enumeration('poUnitTest.betaParameter');
+        c = cell2struct(num2cell(m), s);
     end
 end
 

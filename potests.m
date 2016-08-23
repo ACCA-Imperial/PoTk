@@ -1,5 +1,20 @@
-function result = potests
-%potests runs unit tests for PoTk.
+function result = potests(subset, selector)
+%POTESTS runs validation tests for PoTk.
+%
+% potests
+% potests all
+%   Runs all the available tests in the test suite.
+%
+% potests <string>
+%   Runs a subset of the tests in the suite specified by <string>. For
+%   example,
+%
+%     potests Circulation*
+%
+%   runs only the circulation tests. See the documentation for the
+%   TestSuite class for valid strings.
+%
+% See also: matlab.unittest.
 
 % Everett Kropf, 2016
 % 
@@ -20,9 +35,27 @@ function result = potests
 
 import matlab.unittest.TestRunner
 import matlab.unittest.TestSuite
+import matlab.unittest.selectors.HasParameter
 
 runner = TestRunner.withTextOutput('Verbosity', 2);
-tests = TestSuite.fromPackage('poUnitTest');
+
+suiteArgs = {};
+if nargin > 0
+    switch subset
+        case 'all'
+            % This is the default.
+            
+        otherwise
+            suiteArgs = {'Name', ['poUnitTest.', subset]};
+    end
+end
+
+if nargin > 1
+    s = HasParameter('Property', 'domain', 'Name', selector);
+    suiteArgs = [{s}, suiteArgs];
+end
+
+tests = TestSuite.fromPackage('poUnitTest', suiteArgs{:});
 
 result = run(runner, tests);
 

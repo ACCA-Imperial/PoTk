@@ -97,7 +97,14 @@ methods(Hidden)
     end
     
     function ds = getDerivative(s)
+        mv = s.strength;
         if s.entirePotential
+            sv = s.location;
+            ds = @(z) 0;
+            for i = 1:numel(mv)
+                ds = @(z) ds(z) + mv(i)/2/pi./(z - sv(i));
+            end
+            return
         end
                 
         pfv = s.primeFunctions;
@@ -107,7 +114,6 @@ methods(Hidden)
         function dv = deval(z)
             dv = complex(zeros(size(z)));
             
-            mv = s.strength;
             for k = 1:numel(mv)
                 dv = dv + mv(k)/2/pi ...
                     *(dfv{k,1}(z)./pfv{k,1}(z) + dfv{k,2}(z)./pfv{k,2}(z));

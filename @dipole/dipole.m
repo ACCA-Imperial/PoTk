@@ -89,7 +89,11 @@ end
 methods(Hidden)
     function val = evalPotential(d, z)
         if d.entirePotential
-            val = d.strength./(z - d.location)/2/pi*exp(1i*d.angle);
+            if isfinite(d.location)
+                val = d.strength./(z - d.location)/2/pi*exp(1i*d.angle);
+            else
+                val = d.strength*exp(-1i*d.angle)/2/pi*z;
+            end
             return
         end
         
@@ -125,7 +129,11 @@ methods(Hidden)
     
     function dw = getDerivative(d)
         if d.entirePotential
-            dw = @(z) -d.strength./(z - d.location).^2/2/pi*exp(1i*d.angle);
+            if isfinite(d.location)
+                dw = @(z) -d.strength./(z - d.location).^2/2/pi*exp(1i*d.angle);
+            else
+                dw = @(z) d.strength*exp(-1i*d.angle)/2/pi;
+            end
             return
         end
         

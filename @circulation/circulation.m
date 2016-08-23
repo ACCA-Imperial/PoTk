@@ -29,13 +29,14 @@ classdef circulation < potentialKind
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-properties(Access=protected)
+properties(SetAccess=protected)
     circVector
-    firstKindIntegrals
-    infImage
 end
 
-properties(Access=private)
+properties(Access=protected)
+    firstKindIntegrals
+    equivalenceConstants
+    infImage
     isSimplyConnected = false
 end
 
@@ -86,36 +87,37 @@ end
 methods(Hidden)
     function val = evalPotential(C, z)
         val = complex(zeros(size(z)));
-        circ = C.circVector;
+        cv = C.circVector;
         vj = C.firstKindIntegrals;
+        K = C.equivalenceConstants;
         
         if C.isSimplyConnected
             beta = C.infImage;
             if beta == 0
-                val = log(z)./2i/pi;
+                val = -cv*log(z)./2i/pi;
             else
-                val = log((z - beta)./(z - 1/conj(beta)))/2i/pi;
+                val = -cv*log((z - beta)./(z - 1/conj(beta))/abs(beta))/2i/pi;
             end
             return
         end
         
-        for j = find(circ(:) ~= 0)'
-            val = val + circ(j)*vj{j}(z);
+        for j = find(cv(:) ~= 0)'
+            val = val + cv(j)*(vj{j}(z) - K{j});
         end
     end
     
     function dc = getDerivative(C)
+        circ = C.circVector;
         if C.isSimplyConnected
             beta = C.infImage;
             if beta == 0
-                dc = @(z) (1./(z - beta) - 1./(z - 1/conj(beta)))/2i/pi;
+                dc = @(z) -circ*(1./(z - beta) - 1./(z - 1/conj(beta)))/2i/pi;
             else
-                dc = @(z) 1./z/2i/pi;
+                dc = @(z) -circ./z/2i/pi;
             end
             return
         end
         
-        circ = C.circVector;
         cv = find(circ(:)' ~= 0);
         vj = C.firstKindIntegrals;
         dvj = cell(size(vj));
@@ -136,43 +138,58 @@ methods(Hidden)
     function C = setupPotential(C, W)
         D = W.unitDomain;
         circ = C.circVector;
+        
+        if D.m == 0 && numel(circ) ~= 1
+            error(PoTk.ErrorIdString.RuntimeError, ...
+                'Must specify a single circulation value.')
+        end
         if (D.m > 0 && numel(circ) ~= D.m) || (D.m == 1 && numel(circ) ~= 1)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 ['The number of circulation values and inner circles ' ...
                 'must match.'])
         end
         
+        if isempty(D.infImage)
+            error(PoTk.ErrorIdString.InvalidValue, ...
+                ['The "image at infinity" must be defined in the ', ...
+                'unit domain for constant equivalence. ', ...
+                'See the "beta" argument for "unitDomain".'])
+        end
+        C.infImage = D.infImage;
+        
         if D.m == 0
-            if isempty(D.infImage)
-                error(PoTk.ErrorIdString.InvalidValue, ...
-                    ['The image at infinity must be defined in the ', ...
-                    'unit domain for this contribution to make sense. ', ...
-                    'See the ''beta'' argument for ''unitDomain''.'])
-            end
-            C.infImage = D.infImage;
             C.isSimplyConnected = true;
             return
         end
         
         D = skpDomain(D);
+        dv = domainData(D);
+        beta = C.infImage;
         vj = cell(1, numel(circ));
+        K = vj;
         for j = find(circ(:) ~= 0)'
             vj{j} = vjFirstKind(j, D);
+            K{j} = conj(vj{j}(beta)) + vj{j}.taujj/2 ...
+                + angle(beta/(beta - dv(j)))/2/pi;
         end
         C.firstKindIntegrals = vj;
+        C.equivalenceConstants = K;
     end
 end
 
 methods(Hidden) % Documentation
     function terms = docTerms(~)
-        terms = {'firstKindIntegral', 'circulation'};
+        terms = {'skprime', 'greensC0', 'greensCj', 'circulation'};
     end
     
     function str = latexExpression(C)
         if numel(C.circVector) == 1
-            str = '\Gamma_1 v_1(\zeta)';
+            str = ['\Gamma_1 \left(G_0(\zeta,\beta,\overline{\beta}) ' ...
+                '- G_j(\zeta,\beta,\overline{\beta})\right)'];
         else
-            str = '\sum_{j=1}^m \Gamma_j v_j(\zeta)';
+            str = ['\sum_{j=1}^m \Gamma_j ' ...
+                '\left(G_0(\zeta,\beta,\overline{\beta}) - ' ...
+                'G_j(\zeta,\beta,\overline{\beta})\right)'];
         end
         str = [str, ' \qquad\mathrm{(circulation)}'];
     end
@@ -187,8 +204,7 @@ methods(Hidden) % Documentation
             do.addln(...
                 ['the circulation strengths given by ', ...
                 do.eqInline('\Gamma_j'), ...
-                ' on each circle in ', ...
-                do.eqInline('\{ C_j : 1\le j\le m \}')])
+                ' on each circle ', do.eqInline('C_j')])
         end
     end
 end

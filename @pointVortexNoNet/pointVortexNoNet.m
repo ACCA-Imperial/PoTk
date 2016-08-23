@@ -71,10 +71,6 @@ methods(Hidden)
     
     function pv = setupPotential(pv, W)
         Du = W.unitDomain;
-        if Du.m == 0
-            error(PoTk.ErrorIdString.RuntimeError, ...
-                'Use only plain "pointVortex" for simply connected domain.')
-        end
         if isempty(Du.infImage)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 'No image of infinity from the physical domain specified.')

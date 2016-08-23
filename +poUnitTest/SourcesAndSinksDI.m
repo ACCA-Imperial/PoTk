@@ -1,11 +1,6 @@
-classdef(Abstract) Evaluable
-%Evaluable provides function like evaluation protocol.
-%
-%Subclasses of this abstract class must implement a "function evaluation"
-%method with the signature
-%  v = feval(obj, z)
-%
-%See also subsref.
+classdef SourcesAndSinksDI < matlab.unittest.TestCase
+%poUnitTest.SourcesAndSinksDI checks the domain independent bits of the
+%sourcesAndSinks potential kind.
 
 % Everett Kropf, 2016
 % 
@@ -24,22 +19,14 @@ classdef(Abstract) Evaluable
 % You should have received a copy of the GNU General Public License
 % along with PoTk.  If not, see <http://www.gnu.org/licenses/>.
 
-methods(Abstract)
-    v = feval(obj, z)
-end
-
-methods(Hidden)
-    function out = subsref(obj, S)
-        % Provide function-like behaviour.
-        %
-        %   obj = classInstance(...);
-        %   v = obj(z);
+methods(Test)
+    function checkBadSum(test)
+        a = [-1, 1];
+        m = [1, 1];
         
-        if numel(S) == 1 && strcmp(S.type, '()')
-            out = feval(obj, S.subs{:});
-        else
-            out = builtin('subsref', obj, S);
-        end
+        % sum(m) ~= 0 should produce error.
+        test.verifyError(@() sourcesAndSinks(a, m), ...
+            PoTk.ErrorIdString.RuntimeError)
     end
 end
 
