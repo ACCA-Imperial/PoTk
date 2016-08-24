@@ -64,7 +64,7 @@ methods(Hidden)
     end
     
     function C = setupPotential(C, W)
-        D = W.unitDomain;
+        D = W.domain;
         if D.m == 0
             C = setupPotential@circulation(C, W);
             return

@@ -124,7 +124,7 @@ methods(Hidden)
     end
     
     function s = setupPotential(s, W)
-        D = W.unitDomain;
+        D = W.domain;
         av = s.location;
         if ~isin(D, av)
             error(PoTk.ErrorIdString.RuntimeError, ...

@@ -56,7 +56,7 @@ end
    
 methods(Hidden)    
     function s = setupPotential(s, W)
-        D = W.unitDomain;
+        D = W.domain;
         if isa(W.domain, 'unitDomain')
             if isempty(D.infImage)
                 error(PoTk.ErrorIdString.RuntimeError, ...

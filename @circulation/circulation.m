@@ -136,7 +136,7 @@ methods(Hidden)
     end
     
     function C = setupPotential(C, W)
-        D = W.unitDomain;
+        D = W.domain;
         circ = C.circVector;
         
         if D.m == 0 && numel(circ) ~= 1

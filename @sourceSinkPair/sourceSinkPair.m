@@ -152,7 +152,7 @@ methods(Hidden)
         alpha = s.location;
         beta = s.opposite;
         
-        D = W.unitDomain;
+        D = W.domain;
         if ~isin(D, alpha)
             error(PoTk.ErrorIdString.RuntimeError, ...
                 'The source point must be in the bounded unit domain.')

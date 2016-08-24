@@ -159,7 +159,7 @@ methods(Hidden)
     end
     
     function uf = setupPotential(uf, W)
-        D = W.unitDomain;
+        D = W.domain;
         if isempty(D.infImage)
             error(PoTk.ErrorIdString.InvalidValue, ...
                 ['The "image at infinity" must be defined in the ', ...

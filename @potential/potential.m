@@ -183,14 +183,6 @@ methods
                 
         do.publish()
     end
-    
-    function D = unitDomain(W)
-        %Access unit domain.
-        %
-        %  D = unitDomain(W);
-        
-        D = unitDomain(W.domain);
-    end
 end
 
 end
