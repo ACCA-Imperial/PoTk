@@ -74,7 +74,11 @@ methods(Hidden) % Computation
     
     function dpv = getDerivative(pv)
         if pv.entirePotential
-            dpv = getDerivativeEntireDomain(pv);
+            N = numel(pv.location);
+            dpv = @(z) reshape(sum( cell2mat( ...
+                arrayfun(@(k) pv.strength(k)./(z(:) - pv.location(k)), ...
+                    1:N, 'uniform', false) ), ...
+                2), size(z))/2i/pi;
             return
         end
         
@@ -93,13 +97,6 @@ methods(Hidden) % Computation
         end
         
         dpv = @dEval;
-    end
-    
-    function dpv = getDerivativeEntireDomain(pv)
-        N = numel(pv.location);
-        dpv = @(z) reshape(sum(cell2mat( ...
-            arrayfun(@(k) pv.strength(k)./(z(:) - pv.location(k)), 1:N, ...
-            'uniform', false)), 2), size(z))/2i/pi;
     end
     
     function pv = setupPotential(pv, W)

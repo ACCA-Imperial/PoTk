@@ -59,7 +59,7 @@ methods(Hidden)
     
     function dpv = getDerivative(pv)
         if pv.entirePotential
-            dpv = getDerivativeEntireDomain(pv);
+            dpv = getDerivative@pointVortex(pv);
             return
         end
         
