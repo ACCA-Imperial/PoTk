@@ -93,10 +93,10 @@ methods(Hidden) % Documentation
             return
         end
         if numel(C.circVector) == 1
-            str = '-\Gamma_1 G_1(\zeta,\beta,\overline{\beta})';
+            str = '-\Gamma_1 G_1(\zeta;\beta,\overline{\beta})';
         else
             str = ...
-                '-\sum_{j=0}^m \Gamma_j G_j(\zeta,\beta,\overline{\beta})';
+                '-\sum_{j=0}^m \Gamma_j G_j(\zeta;\beta,\overline{\beta})';
         end
         str = [str, ' \qquad\mathrm{(circulation, no\,net)}'];
     end
