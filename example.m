@@ -17,6 +17,8 @@ qv = [
     0.20956];
 beta = -0.6i;
 
+D = unitDomain(dv,qv,beta);
+
 res = 200;
 [xg, yg] = meshgrid(linspace(-1, 1, res));
 zg = complex(xg, yg);
